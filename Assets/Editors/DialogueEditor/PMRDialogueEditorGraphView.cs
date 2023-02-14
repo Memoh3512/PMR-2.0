@@ -9,6 +9,8 @@ namespace PMR.GraphEditor
     public class PMRDialogueEditorGraphView : PMRGraphView
     {
 
+        public PMRDialogueEditorGraphView(PMRGraphEditorWindow newEditorWindow) : base(newEditorWindow) { }
+        
         protected override IManipulator CreateNodeContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(

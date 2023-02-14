@@ -14,6 +14,7 @@ namespace PMR.GraphEditor.Elements
 
         public virtual void Initialize(Vector2 position)
         {
+            
             NodeName = "NodeName";
             
             SetPosition(new Rect(position, Vector2.zero));

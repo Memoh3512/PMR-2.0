@@ -11,11 +11,27 @@ namespace PMR.GraphEditor
     using Utilities;
     public class PMRGraphView : GraphView
     {
-        public PMRGraphView()
+        private PMRGraphEditorWindow editorWindow;
+        private PMRSearchWindow searchWindow;
+        public PMRGraphView(PMRGraphEditorWindow newEditorWindow)
         {
+            editorWindow = newEditorWindow;
             AddManipulators();
+            AddSearchWindow();
             AddGridBackground();
             AddStyles();
+        }
+
+        private void AddSearchWindow()
+        {
+            if (searchWindow == null)
+            {
+                searchWindow = ScriptableObject.CreateInstance<PMRSearchWindow>();
+                
+                searchWindow.Initialize(this);
+            }
+
+            nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -49,7 +65,7 @@ namespace PMR.GraphEditor
         private IManipulator CreateGroupContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => AddElement(CreateGroup("Node Group",actionEvent.eventInfo.localMousePosition))));
+                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => AddElement(CreateGroup("Node Group",GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
 
             return contextualMenuManipulator;
         }
@@ -67,12 +83,12 @@ namespace PMR.GraphEditor
         protected virtual IManipulator CreateNodeContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode<PMRNode>(actionEvent.eventInfo.localMousePosition))));
+                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode<PMRNode>(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
 
             return contextualMenuManipulator;
         }
 
-        protected PMRNode CreateNode<TNode>(Vector2 position) where TNode : PMRNode, new()
+        public PMRNode CreateNode<TNode>(Vector2 position) where TNode : PMRNode, new()
         {
             TNode node = new TNode();
             
@@ -96,6 +112,19 @@ namespace PMR.GraphEditor
             gridBackground.StretchToParentSize();
             
             Insert(0, gridBackground);
+        }
+
+        public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
+        {
+            Vector2 worldMousePosition = mousePosition;
+            
+            if (isSearchWindow)
+            {
+                worldMousePosition -= editorWindow.position.position;
+            }
+            
+            Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
+            return localMousePosition;
         }
     }
 }

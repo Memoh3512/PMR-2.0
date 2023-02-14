@@ -15,7 +15,7 @@ namespace PMR.GraphEditor
 
         protected override void OnEnable()
         {
-            AddGraphView(new PMRDialogueEditorGraphView());
+            AddGraphView(new PMRDialogueEditorGraphView(this));
             base.OnEnable();
         }
     }
