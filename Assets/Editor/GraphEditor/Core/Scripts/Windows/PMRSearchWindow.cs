@@ -41,7 +41,7 @@ namespace PMR.GraphEditor
                 new SearchTreeEntry(new GUIContent("Single Group", indentationIcon))
                 {
                     level = 2,
-                    userData = typeof(Group)
+                    userData = typeof(PMRGroup)
                 }
             };
 
@@ -61,10 +61,10 @@ namespace PMR.GraphEditor
                 {
                     ((PMRNode)element).Initialize(localMousePosition);
                     ((PMRNode)element).Draw();
-                } else if (element.GetType() == typeof(Group))
+                } else if (element.GetType() == typeof(PMRGroup))
                 {
-                    ((Group)element).title = "Node Group";
-                    ((Group)element).SetPosition(new Rect(localMousePosition, Vector2.zero));
+                    ((PMRGroup)element).title = "Node Group";
+                    ((PMRGroup)element).SetPosition(new Rect(localMousePosition, Vector2.zero));
                 }
                 graphView?.AddElement(element);
                 return true;

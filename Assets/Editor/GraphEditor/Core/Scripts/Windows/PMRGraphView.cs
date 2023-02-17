@@ -70,12 +70,21 @@ namespace PMR.GraphEditor
             return contextualMenuManipulator;
         }
 
-        private Group CreateGroup(string title, Vector2 position)
+        private PMRGroup CreateGroup(string title, Vector2 position)
         {
-            Group group = new Group()
+            PMRGroup group = new PMRGroup()
             {
                 title = title
             };
+
+            foreach (GraphElement selectedElement in selection)
+            {
+                if (!(selectedElement is PMRNode)) continue;
+
+                PMRNode node = (PMRNode)selectedElement;
+                group.AddElement(node);
+
+            }
             group.SetPosition(new Rect(position, Vector2.zero));
             return group;
         }

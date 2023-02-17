@@ -9,7 +9,15 @@ namespace PMR.GraphEditor
     using Utilities;
     public class PMRGraphEditorWindow : EditorWindow
     {
-        protected static void Open<TGraphEditorWindow>(string title) where TGraphEditorWindow : PMRGraphEditorWindow
+
+        private string defaultFilename;
+
+        public PMRGraphEditorWindow()
+        {
+            defaultFilename = "GraphEditor";
+        }
+
+    protected static void Open<TGraphEditorWindow>(string title) where TGraphEditorWindow : PMRGraphEditorWindow
         {
             GetWindow<TGraphEditorWindow>(title);
         }
@@ -17,6 +25,7 @@ namespace PMR.GraphEditor
         protected virtual void OnEnable()
         {
             //AddGraphView<PMRGraphView>(); //Do this for every new graph editor
+            AddToolbar();
             AddStyles();
         }
 
@@ -24,6 +33,22 @@ namespace PMR.GraphEditor
         {
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
+        }
+
+        protected void AddToolbar()
+        {
+            Toolbar tb = new Toolbar();
+
+            TextField fileNameTextField = PMRElementUtility.CreateTextField(defaultFilename, "File Name...");
+
+            Button saveBtn = PMRElementUtility.CreateButton("Save");
+            
+            tb.Add(fileNameTextField);
+            tb.Add(saveBtn);
+
+            tb.AddStyleSheets("PMRGraphView/PMRToolbarStyles.uss");
+            
+            rootVisualElement.Add(tb);
         }
         
         private void AddStyles()

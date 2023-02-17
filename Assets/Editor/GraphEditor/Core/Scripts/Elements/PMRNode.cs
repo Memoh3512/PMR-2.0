@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,11 +9,13 @@ namespace PMR.GraphEditor.Elements
     
     public class PMRNode : Node
     {
+
+        [ReadOnly] public string ID;
         public string NodeName { get; set; }
 
         public virtual void Initialize(Vector2 position)
         {
-            
+            ID = Guid.NewGuid().ToString();
             NodeName = "NodeName";
             
             SetPosition(new Rect(position, Vector2.zero));

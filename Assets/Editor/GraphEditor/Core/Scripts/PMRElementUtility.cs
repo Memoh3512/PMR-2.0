@@ -11,11 +11,12 @@ namespace PMR.GraphEditor.Utilities
     using Elements;
     public static class PMRElementUtility
     {
-        public static TextField CreateTextField(string value = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
+        public static TextField CreateTextField(string value = null, string label = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
         {
             TextField textField = new TextField()
             {
-                value = value
+                value = value,
+                label = label
             };
 
             if (onValueChanged != null)
@@ -26,9 +27,9 @@ namespace PMR.GraphEditor.Utilities
             return textField;
         }
 
-        public static TextField CreateTextArea(string value = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
+        public static TextField CreateTextArea(string value = null, string label = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
         {
-            TextField textArea = CreateTextField(value, onValueChanged);
+            TextField textArea = CreateTextField(value, label, onValueChanged);
 
             textArea.multiline = true;
 
