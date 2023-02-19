@@ -19,6 +19,9 @@ namespace PMR.GraphEditor
             AddManipulators();
             AddSearchWindow();
             AddGridBackground();
+
+            OnGraphViewChanged();
+            
             AddStyles();
         }
 
@@ -101,7 +104,7 @@ namespace PMR.GraphEditor
         {
             TNode node = new TNode();
             
-            node.Initialize(position);
+            node.Initialize(this, position);
             node.Draw();
 
             return node;
@@ -134,6 +137,42 @@ namespace PMR.GraphEditor
             
             Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
             return localMousePosition;
+        }
+
+        private void OnGraphViewChanged()
+        {
+            graphViewChanged = (changes) =>
+            {
+                if (changes.edgesToCreate != null)
+                {
+                    foreach (Edge edge in changes.edgesToCreate)
+                    {
+                        PMRPort fromPort = (PMRPort)edge.input;
+                        PMRPort toPort = (PMRPort)edge.output;
+                        fromPort.CallOnConnect(toPort);
+                        toPort.CallOnConnect(fromPort);
+
+                    }
+                }
+
+                if (changes.elementsToRemove != null)
+                {
+                    foreach (GraphElement element in changes.elementsToRemove)
+                    {
+                        if (!(element is Edge)) continue;
+
+                        Edge edge = (Edge)element;
+                        PMRPort fromPort = (PMRPort)edge.input;
+                        PMRPort toPort = (PMRPort)edge.output;
+                        fromPort.CallOnDisconnect(toPort);
+                        toPort.CallOnDisconnect(fromPort);
+
+                    }
+                }
+
+                return changes;
+
+            };
         }
     }
 }

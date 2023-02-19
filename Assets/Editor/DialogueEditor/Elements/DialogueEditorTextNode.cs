@@ -8,9 +8,9 @@ namespace PMR.GraphEditor.Elements
     public class DialogueEditorTextNode : PMRNode
     {
         private string dialogueText;
-        public override void Initialize(Vector2 position)
+        public override void Initialize(PMRGraphView pmrGraphView, Vector2 position)
         {
-            base.Initialize(position);
+            base.Initialize(pmrGraphView, position);
             NodeName = "Dialogue Text";
         }
 
@@ -18,10 +18,10 @@ namespace PMR.GraphEditor.Elements
         {
             base.Draw();
 
-            Port inputPort = this.CreatePort("Dialogue Connection", Direction.Input, Port.Capacity.Multi);
+            PMRPort inputPort = this.CreatePort("Dialogue Connection", Direction.Input, Port.Capacity.Multi);
             inputContainer.Add(inputPort);
             
-            Port outputPort = this.CreatePort("Next dialogue");
+            PMRPort outputPort = this.CreatePort("Next dialogue");
             outputContainer.Add(outputPort);
 
             //text

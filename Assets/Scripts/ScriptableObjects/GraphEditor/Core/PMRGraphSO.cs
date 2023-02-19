@@ -6,11 +6,11 @@ namespace PMR.ScriptableObjects
 {
     public class PMRGraphSO : ScriptableObject
     {
-        public string DialogueName { get; set; }
+        public string Name { get; set; }
 
-        public virtual void Initialize(string dialogueName)
+        public virtual void Initialize(string newName)
         {
-            DialogueName = dialogueName;
+            Name = newName;
         }
     }
 }

@@ -56,13 +56,14 @@ namespace PMR.GraphEditor.Utilities
             return button;
         }
 
-        public static Port CreatePort(this PMRNode node, string portName = "", Direction direction = Direction.Output,
+        public static PMRPort CreatePort(this PMRNode node, string portName = "", Direction direction = Direction.Output,
             Port.Capacity capacity = Port.Capacity.Single)
         {
             Port port = node.InstantiatePort(Orientation.Horizontal, direction, capacity, typeof(bool));
-            port.portName = portName;
+            PMRPort pmrPort = new PMRPort(port);
+            pmrPort.portName = portName;
 
-            return port;
+            return pmrPort;
         }
     }
 }

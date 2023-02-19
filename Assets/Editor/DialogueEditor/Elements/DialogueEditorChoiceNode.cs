@@ -1,23 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
-using PMR.GraphEditor.Elements;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace PMR
 {
+    using GraphEditor;
+    using GraphEditor.Elements;
     using GraphEditor.Utilities;
+    using GraphEditor.Save;
     public class DialogueEditorChoiceNode : PMRNode
     {
-        private string dialogueText;
-        private List<string> choices = new List<string>();
-        public override void Initialize(Vector2 position)
+        public  string DialogueText { get; set; }
+        public List<PMRDialogueChoiceSaveData> Choices { get; set; }
+        public override void Initialize(PMRGraphView pmrGraphView, Vector2 position)
         {
-            base.Initialize(position);
+            base.Initialize(pmrGraphView, position);
             NodeName = "Choice";
+            Choices = new List<PMRDialogueChoiceSaveData>();
+
+            PMRDialogueChoiceSaveData choiceData = new PMRDialogueChoiceSaveData()
+            {
+                Text = "New Choice"
+            };
             
-            choices.Add("New Choice");
+            Choices.Add(choiceData);
+
         }
 
         public override void Draw()
@@ -26,10 +35,13 @@ namespace PMR
 
             Button addChoiceButton = PMRElementUtility.CreateButton("Add Choice", () =>
             {
-                Port choicePort = CreateChoicePort("New Choice");
-                
-                choices.Add("New Choice");
-                
+                PMRDialogueChoiceSaveData choiceData = new PMRDialogueChoiceSaveData()
+                {
+                    Text = "New Choice"
+                };
+                Choices.Add(choiceData);
+             
+                PMRPort choicePort = CreateChoicePort(choiceData);
                 outputContainer.Add(choicePort);
             });
             addChoiceButton.AddToClassList("ds-node__button");
@@ -37,15 +49,13 @@ namespace PMR
             mainContainer.Insert(1, addChoiceButton);
             
             //input
-            Port inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
-            inputPort.portName = "Input";
-
+            PMRPort inputPort = this.CreatePort("Input", Direction.Input, Port.Capacity.Multi);
             inputContainer.Add(inputPort);
             
             //choices output
-            foreach (string choice in choices)
+            foreach (PMRDialogueChoiceSaveData choice in Choices)
             {
-                Port choicePort = CreateChoicePort(choice);
+                PMRPort choicePort = CreateChoicePort(choice);
                 outputContainer.Add(choicePort);
             }
             
@@ -55,7 +65,7 @@ namespace PMR
             
             Foldout textFoldout = PMRElementUtility.CreateFoldout("Dialogue Text");
 
-            TextField textTextField = PMRElementUtility.CreateTextArea(dialogueText);
+            TextField textTextField = PMRElementUtility.CreateTextArea(DialogueText);
             textTextField.AddClasses(
                 "ds-node__text-field",
                 "ds-node__quote-text-field");
@@ -69,15 +79,40 @@ namespace PMR
             
         }
 
-        private Port CreateChoicePort(string choice)
+        private PMRPort CreateChoicePort(PMRDialogueChoiceSaveData userData)
         {
-            Port choicePort = this.CreatePort();
-            choicePort.portName = "";
+            PMRPort choicePort = this.CreatePort();
+            choicePort.userData = userData;
 
-            Button deleteChoiceButton = PMRElementUtility.CreateButton("X");
+            choicePort.OnConnect = (other) =>
+            {
+                userData.NodeID = ((PMRNode)other.node).ID;
+            };
+            
+            choicePort.OnDisconnect = (other) =>
+            {
+                userData.NodeID = "";
+
+            };
+
+            Button deleteChoiceButton = PMRElementUtility.CreateButton("X", () =>
+            {
+                if (Choices.Count == 1) return;
+
+                if (choicePort.connected)
+                {
+                    graphView.DeleteElements(choicePort.connections);
+                }
+
+                Choices.Remove(userData);
+                graphView.RemoveElement(choicePort);
+            });
             deleteChoiceButton.AddToClassList("ds-node__button");
                 
-            TextField choiceTextField = PMRElementUtility.CreateTextField(choice);
+            TextField choiceTextField = PMRElementUtility.CreateTextField(userData.Text, null, callback =>
+            {
+                userData.Text = callback.newValue;
+            });
             choiceTextField.AddClasses(
                 "ds-node__text-field",
                 "ds-node__choice-text-field",

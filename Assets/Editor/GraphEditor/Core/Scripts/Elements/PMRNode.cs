@@ -13,11 +13,15 @@ namespace PMR.GraphEditor.Elements
         [ReadOnly] public string ID;
         public string NodeName { get; set; }
 
-        public virtual void Initialize(Vector2 position)
+        protected PMRGraphView graphView;
+
+        public virtual void Initialize(PMRGraphView pmrGraphView, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
             NodeName = "NodeName";
-            
+
+            graphView = pmrGraphView;
+                
             SetPosition(new Rect(position, Vector2.zero));
             
             mainContainer.AddToClassList("ds-node__main-container");
