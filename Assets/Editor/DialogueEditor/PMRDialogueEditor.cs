@@ -13,6 +13,12 @@ namespace PMR.GraphEditor
             Open<PMRDialogueEditor>("Dialogue Editor");
         }
 
+        public PMRDialogueEditor()
+        {
+            folderName = "DialogueEditor";
+            defaultFilename = "MyDialogueEditor"; //Make sure to set this value every time for arrangement
+        }
+
         protected override void OnEnable()
         {
             AddGraphView(new PMRDialogueEditorGraphView(this));

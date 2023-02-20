@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -66,7 +67,8 @@ namespace PMR.GraphEditor.Utilities
         
         private static void CreateStaticFolders()
         {
-            CreateFolder("Assets/Editor/", "Graphs");
+            CreateFolder("Assets/Editor", "Graphs");
+            CreateFolder("Assets/Editor/Graphs", graphFolderName);
             
             CreateFolder("Assets", graphFolderName);
             CreateFolder($"Assets/{graphFolderName}", "Graphs");
@@ -110,6 +112,17 @@ namespace PMR.GraphEditor.Utilities
             AssetDatabase.Refresh();
         }
         
+        private static void RemoveFolder(string fullPath)
+        {
+            FileUtil.DeleteFileOrDirectory($"{fullPath}.meta");
+            FileUtil.DeleteFileOrDirectory($"{fullPath}/");
+        }
+        
+        private static void RemoveAsset(string path, string assetName)
+        {
+            AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
+        }
+        
         #endregion
         
         #region Fetch
@@ -140,11 +153,19 @@ namespace PMR.GraphEditor.Utilities
         
         private static void SaveGroups(PMRGraphSaveDataSO graphData, PMRContainerSO container)
         {
+
+            List<string> groupIDs = new List<string>();
+            
             foreach (PMRGroup group in groups)
             {
                 SaveGroupToGraph(group, graphData);
                 SaveGroupToScriptableObject(group, container);
+                
+                groupIDs.Add(group.ID);
+                
             }
+
+            UpdateOldGroups(groupIDs, graphData);
         }
 
         private static void SaveGroupToGraph(PMRGroup group, PMRGraphSaveDataSO graphData)
@@ -155,10 +176,10 @@ namespace PMR.GraphEditor.Utilities
         
         private static void SaveGroupToScriptableObject(PMRGroup group, PMRContainerSO container)
         {
-            string groupName = group.title;
-            CreateFolder($"{containerFolderPath}/Groups", groupName);
+            string groupFileName = group.ID;
+            CreateFolder($"{containerFolderPath}/Groups", groupFileName);
             
-            PMRGroupSO groupSO =  (PMRGroupSO)group.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{groupName}", groupName);
+            PMRGroupSO groupSO =  (PMRGroupSO)group.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{groupFileName}", groupFileName);
             
             createdGroups.Add(group.ID, groupSO);
             
@@ -167,32 +188,58 @@ namespace PMR.GraphEditor.Utilities
             SaveAsset(groupSO);
         }
         
+        private static void UpdateOldGroups(List<string> currentGroupIDs, PMRGraphSaveDataSO graphData)
+        {
+            if (graphData.OldGroupIDs != null && graphData.OldGroupIDs.Count > 0)
+            {
+                List<string> groupsToRemove = graphData.OldGroupIDs.Except(currentGroupIDs).ToList();
+
+                foreach (string groupToRemove in groupsToRemove)
+                {
+                    RemoveFolder($"{containerFolderPath}/Groups/{groupToRemove}");
+                }
+            }
+
+            graphData.OldGroupIDs = new List<string>(currentGroupIDs);
+
+        }
+
         #endregion
         
         #region Nodes
         
         private static void SaveNodes(PMRGraphSaveDataSO graphData, PMRContainerSO container)
         {
-            
+
+            SerializableDictionary<string, List<string>> groupedNodeIDs = new SerializableDictionary<string, List<string>>();
+            List<string> ungroupedNodeIDs = new List<string>();
+
             //create scriptable objects for each nodes
             foreach (PMRNode node in nodes)
             {
                 SaveNodeToGraph(node, graphData);
                 SaveNodeToScriptableObject(node, container);
+
+                if (node.Group != null)
+                {
+                    groupedNodeIDs.AddItem(node.Group.ID, node.ID);
+                    continue;
+                }
+                
+                ungroupedNodeIDs.Add(node.ID);
             }
             
             //update connections with created SOs
             UpdateNodeConnections();
+            UpdateOldGroupedNodes(groupedNodeIDs, graphData);
+            UpdateOldUngroupedNodes(ungroupedNodeIDs, graphData);
 
         }
 
         private static void SaveNodeToGraph(PMRNode node, PMRGraphSaveDataSO graphData)
         {
-
-            //TODO faire une fonction CreateSaveData dans chaque type de Node qui va save la data a place de faire le meme objet pour chacun (ep28 30:45)
             PMRNodeSaveData nodeData = node.CreateEditorSaveData();
             graphData.Nodes.Add(nodeData);
-
         }
         
         private static void SaveNodeToScriptableObject(PMRNode node, PMRContainerSO container)
@@ -200,13 +247,13 @@ namespace PMR.GraphEditor.Utilities
             PMRGraphSO graphSO;
             if (node.Group != null)
             {
-                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{node.Group.title}", node.NodeName);
+                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{node.Group.ID}", node.ID);
                 
                 container.Groups.AddItem(createdGroups[node.Group.ID], graphSO);
             }
             else
             {
-                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Global/", node.NodeName);
+                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Global/", node.ID);
                 container.UngroupedNodes.Add(graphSO);
             }
             
@@ -225,6 +272,45 @@ namespace PMR.GraphEditor.Utilities
                 
                 SaveAsset(nodeSO);
             }
+        }
+
+        private static void UpdateOldUngroupedNodes(List<string> currentUngroupedNodeIDs, PMRGraphSaveDataSO graphData)
+        {
+            if (graphData.OldNodeIDs != null && graphData.OldNodeIDs.Count > 0)
+            {
+                List<string> nodesToRemove = graphData.OldNodeIDs.Except(currentUngroupedNodeIDs).ToList();
+
+                foreach (string nodeToRemove in nodesToRemove)
+                {
+                    RemoveAsset($"{containerFolderPath}/Global/", nodeToRemove);
+                }
+            }
+
+            graphData.OldNodeIDs = new List<string>(currentUngroupedNodeIDs);
+
+        }
+        
+        private static void UpdateOldGroupedNodes(SerializableDictionary<string,List<string>> currentGroupedNodeIDs, PMRGraphSaveDataSO graphData)
+        {
+            if (graphData.OldGroupedNodeIDs != null && graphData.OldGroupedNodeIDs.Count > 0)
+            {
+                foreach (KeyValuePair<string, List<string>> oldGroupedNode in graphData.OldGroupedNodeIDs)
+                {
+                    List<string> nodesToRemove = new List<string>();
+
+                    if (currentGroupedNodeIDs.ContainsKey(oldGroupedNode.Key))
+                    {
+                        nodesToRemove = oldGroupedNode.Value.Except(currentGroupedNodeIDs[oldGroupedNode.Key]).ToList();
+                    }
+
+                    foreach (string nodeToRemove in nodesToRemove)
+                    {
+                        RemoveAsset($"{containerFolderPath}/Groups/{oldGroupedNode.Key}", nodeToRemove);
+                    }
+                    
+                }
+            }
+            graphData.OldGroupedNodeIDs = new SerializableDictionary<string, List<string>>(currentGroupedNodeIDs);
         }
 
         #endregion

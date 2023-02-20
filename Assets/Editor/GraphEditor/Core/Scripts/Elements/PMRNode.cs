@@ -32,6 +32,12 @@ namespace PMR.GraphEditor.Elements
             extensionContainer.AddToClassList("ds-node__extension-container");
         }
 
+        public void Initialize(string setID, PMRGraphView pmrGraphView, Vector2 position)
+        {
+            Initialize(pmrGraphView, position);
+            ID = setID;
+        }
+
         public virtual void Draw()
         {
             /* Title container */

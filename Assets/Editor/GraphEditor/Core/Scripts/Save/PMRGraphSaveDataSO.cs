@@ -9,9 +9,9 @@ namespace PMR.GraphEditor.Save
         public string FileName { get; set; }
         public List<PMRGroupSaveData> Groups { get; set; }
         public List<PMRNodeSaveData> Nodes { get; set; }
-        public List<string> OldGroupNames { get; set; }
-        public List<string> OldNodeNames { get; set; }
-        public SerializableDictionary<string, List<string>> OldGroupedNodeNames { get; set; }
+        public List<string> OldGroupIDs { get; set; }
+        public List<string> OldNodeIDs { get; set; }
+        public SerializableDictionary<string, List<string>> OldGroupedNodeIDs { get; set; }
 
         public void Initialize(string filename)
         {

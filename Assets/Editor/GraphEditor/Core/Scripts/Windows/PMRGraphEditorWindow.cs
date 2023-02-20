@@ -10,11 +10,16 @@ namespace PMR.GraphEditor
     public class PMRGraphEditorWindow : EditorWindow
     {
 
-        private string defaultFilename;
+        private PMRGraphView graphView;
+        protected string defaultFilename;
+        protected string folderName;
+
+        private TextField fileNameTextField;
 
         public PMRGraphEditorWindow()
         {
-            defaultFilename = "GraphEditor";
+            folderName = "BaseGraphEditor";
+            defaultFilename = "MyGraphEditor";
         }
 
     protected static void Open<TGraphEditorWindow>(string title) where TGraphEditorWindow : PMRGraphEditorWindow
@@ -31,6 +36,7 @@ namespace PMR.GraphEditor
 
         protected void AddGraphView(PMRGraphView graphView)
         {
+            this.graphView = graphView;
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
         }
@@ -39,9 +45,9 @@ namespace PMR.GraphEditor
         {
             Toolbar tb = new Toolbar();
 
-            TextField fileNameTextField = PMRElementUtility.CreateTextField(defaultFilename, "File Name...");
+            fileNameTextField = PMRElementUtility.CreateTextField(defaultFilename, "File Name...");
 
-            Button saveBtn = PMRElementUtility.CreateButton("Save");
+            Button saveBtn = PMRElementUtility.CreateButton("Save", () => Save());
             
             tb.Add(fileNameTextField);
             tb.Add(saveBtn);
@@ -49,6 +55,22 @@ namespace PMR.GraphEditor
             tb.AddStyleSheets("PMRGraphView/PMRToolbarStyles.uss");
             
             rootVisualElement.Add(tb);
+        }
+
+        private void Save()
+        {
+
+            if (string.IsNullOrEmpty(fileNameTextField.value))
+            {
+                EditorUtility.DisplayDialog(
+                    "Invalid File Name",
+                    "Please ensure that the file name entered is valid.",
+                    "Ok");
+                return;
+            }
+            
+            PMRIOUtility.Initialize(graphView, folderName, fileNameTextField.value);
+            PMRIOUtility.Save();
         }
         
         private void AddStyles()
