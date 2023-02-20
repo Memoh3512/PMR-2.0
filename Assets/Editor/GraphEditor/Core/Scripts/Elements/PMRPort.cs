@@ -13,8 +13,6 @@ namespace PMR.GraphEditor.Elements
         public Action<PMRPort> OnConnect { get; set; }
         
         public Action<PMRPort> OnDisconnect { get; set; }
-        
-        protected PMRPort(Orientation portOrientation, Direction portDirection, Capacity portCapacity, Type type) : base(portOrientation, portDirection, portCapacity, type) { }
 
         public PMRPort(Port port) : base(port.orientation, port.direction, port.capacity, port.portType)
         {

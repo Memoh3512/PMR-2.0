@@ -6,9 +6,8 @@ using UnityEngine;
 namespace PMR.GraphEditor.Save
 {
     [Serializable]
-    public class PMRDialogueChoiceSaveData
+    public class PMRDialogueChoiceSaveData : PMRDialogueSaveData
     {
-        [field: SerializeField] public string Text { get; set; }
-        [field: SerializeField] public string NodeID { get; set; }
+        [field: SerializeField] public List<PMRChoiceSaveData> Choices { get; set; }
     }
 }

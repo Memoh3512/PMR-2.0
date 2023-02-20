@@ -20,6 +20,9 @@ namespace PMR.GraphEditor.Utilities
         private static List<PMRGroup> groups;
         private static List<PMRNode> nodes;
 
+        private static Dictionary<string, PMRGroupSO> createdGroups;
+        private static Dictionary<string, PMRGraphSO> createdNodes;
+
         public static void Initialize(PMRGraphView pmrGraphView, string graphFolder, string graphName)
         {
 
@@ -31,6 +34,9 @@ namespace PMR.GraphEditor.Utilities
 
             groups = new List<PMRGroup>();
             nodes = new List<PMRNode>();
+
+            createdGroups = new Dictionary<string, PMRGroupSO>();
+            createdNodes = new Dictionary<string, PMRGraphSO>();
         }
         
         #region Save
@@ -82,7 +88,7 @@ namespace PMR.GraphEditor.Utilities
             AssetDatabase.CreateFolder(path, folderName);
         }
         
-        private static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
         {
             string fullPath = $"{path}/{assetName}";
 
@@ -143,13 +149,7 @@ namespace PMR.GraphEditor.Utilities
 
         private static void SaveGroupToGraph(PMRGroup group, PMRGraphSaveDataSO graphData)
         {
-            PMRGroupSaveData groupData = new PMRGroupSaveData()
-            {
-                ID = group.ID,
-                Name = group.title,
-                Position = group.GetPosition().position
-            };
-            
+            PMRGroupSaveData groupData = (PMRGroupSaveData) group.CreateEditorSaveData();
             graphData.Groups.Add(groupData);
         }
         
@@ -157,9 +157,10 @@ namespace PMR.GraphEditor.Utilities
         {
             string groupName = group.title;
             CreateFolder($"{containerFolderPath}/Groups", groupName);
-
-            PMRGroupSO groupSO = CreateAsset<PMRGroupSO>($"{containerFolderPath}/Groups/{groupName}", groupName);
-            groupSO.Initialize(groupName);
+            
+            PMRGroupSO groupSO =  (PMRGroupSO)group.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{groupName}", groupName);
+            
+            createdGroups.Add(group.ID, groupSO);
             
             container.Groups.Add(groupSO, new List<PMRGraphSO>());
 
@@ -172,17 +173,74 @@ namespace PMR.GraphEditor.Utilities
         
         private static void SaveNodes(PMRGraphSaveDataSO graphData, PMRContainerSO container)
         {
+            
+            //create scriptable objects for each nodes
             foreach (PMRNode node in nodes)
             {
                 SaveNodeToGraph(node, graphData);
+                SaveNodeToScriptableObject(node, container);
             }
+            
+            //update connections with created SOs
+            UpdateNodeConnections();
+
         }
 
         private static void SaveNodeToGraph(PMRNode node, PMRGraphSaveDataSO graphData)
         {
+
             //TODO faire une fonction CreateSaveData dans chaque type de Node qui va save la data a place de faire le meme objet pour chacun (ep28 30:45)
+            PMRNodeSaveData nodeData = node.CreateEditorSaveData();
+            graphData.Nodes.Add(nodeData);
+
+        }
+        
+        private static void SaveNodeToScriptableObject(PMRNode node, PMRContainerSO container)
+        {
+            PMRGraphSO graphSO;
+            if (node.Group != null)
+            {
+                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Groups/{node.Group.title}", node.NodeName);
+                
+                container.Groups.AddItem(createdGroups[node.Group.ID], graphSO);
+            }
+            else
+            {
+                graphSO = node.CreateRuntimeSaveData($"{containerFolderPath}/Global/", node.NodeName);
+                container.UngroupedNodes.Add(graphSO);
+            }
+            
+            createdNodes.Add(node.ID, graphSO);
+            
+            SaveAsset(graphSO);
+        }
+        
+        private static void UpdateNodeConnections()
+        {
+            foreach (PMRNode node in nodes)
+            {
+                PMRGraphSO nodeSO = createdNodes[node.ID];
+
+                node.UpdateConnection(nodeSO, createdNodes);
+                
+                SaveAsset(nodeSO);
+            }
         }
 
+        #endregion
+        
+        #region Collection Utility
+
+        public static void AddItem<K, V>(this SerializableDictionary<K, List<V>> serializableDictionary, K key, V value)
+        {
+            if (serializableDictionary.ContainsKey(key))
+            {
+                serializableDictionary[key].Add(value);
+                return;
+            }
+            serializableDictionary.Add(key, new List<V>(){value});
+        }
+        
         #endregion
         
     }

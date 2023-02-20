@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PMR.Data
+namespace PMR.ScriptableObjects
 {
-    using ScriptableObjects;
     [Serializable]
-    public class PMRDialogueChoiceData
+    public class PMRDialogueChoiceSOData
     {
         [field: SerializeField] public string Text { get; set; }
-        [field: SerializeField] public PMRDIalogueSO NextDialogue { get; set; }
+        [field: SerializeField] public PMRGraphSO NextDialogue { get; set; }
     }
 }

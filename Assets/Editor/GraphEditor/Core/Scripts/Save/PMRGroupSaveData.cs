@@ -6,10 +6,5 @@ using UnityEngine;
 namespace PMR.GraphEditor.Save
 {
     [Serializable]
-    public class PMRGroupSaveData
-    {
-        [field: SerializeField] public string ID { get; set; }
-        [field: SerializeField] public string Name { get; set; }
-        [field: SerializeField] public Vector2 Position { get; set; }
-    }
+    public class PMRGroupSaveData : PMRNodeSaveData { }
 }

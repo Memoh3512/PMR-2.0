@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace PMR.ScriptableObjects
     {
         public string Name { get; set; }
 
-        public virtual void Initialize(string newName)
+        public void Initialize(string newName)
         {
             Name = newName;
         }
