@@ -7,7 +7,7 @@ using UnityEditor.Experimental.GraphView;
 
 namespace PMR.GraphEditor.Elements
 {
-    public class PMRGroup : Group, IPMRSavedNode
+    public class PMRGroup : Group
     {
         [ReadOnly] public string ID;
 
@@ -33,11 +33,6 @@ namespace PMR.GraphEditor.Elements
             PMRGroupSO groupSO = PMRIOUtility.CreateAsset<PMRGroupSO>(path, fileName);
             groupSO.Initialize(fileName);
             return groupSO;
-        }
-
-        public void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
-        {
-            
         }
     }
 }

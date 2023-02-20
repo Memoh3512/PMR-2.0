@@ -129,7 +129,7 @@ namespace PMR
             return choicePort;
         }
 
-        public new PMRNodeSaveData CreateEditorSaveData()
+        public override PMRNodeSaveData CreateEditorSaveData()
         {
 
             List<PMRChoiceSaveData> savedChoices = new List<PMRChoiceSaveData>();
@@ -156,7 +156,7 @@ namespace PMR
             return saveData;
         }
 
-        public new PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
+        public override PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
             PMRDialogueChoiceSO dialogueChoiceSO = PMRIOUtility.CreateAsset<PMRDialogueChoiceSO>(path, fileName);
             dialogueChoiceSO.Initialize(NodeName);
@@ -167,6 +167,20 @@ namespace PMR
             return dialogueChoiceSO;
         }
 
+        public override void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
+        {
+            PMRDialogueChoiceSO dialogueChoiceSO = (PMRDialogueChoiceSO)nodeSo;
+            for (int i = 0; i < dialogueChoiceSO.Choices.Count; i++)
+            {
+                PMRChoiceSaveData choice = Choices[i];
+                
+                if (string.IsNullOrEmpty(choice.NodeID)) continue;
+
+                dialogueChoiceSO.Choices[i].NextDialogue = createdNodes[choice.NodeID];
+
+            }
+        }
+        
         private List<PMRDialogueChoiceSOData> ConvertEditorToRuntimeChoices()
         {
             List<PMRDialogueChoiceSOData> convertedChoices = new List<PMRDialogueChoiceSOData>();
@@ -181,20 +195,6 @@ namespace PMR
             }
 
             return convertedChoices;
-        }
-        
-        public new void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
-        {
-            PMRDialogueChoiceSO dialogueChoiceSO = (PMRDialogueChoiceSO)nodeSo;
-            for (int i = 0; i < dialogueChoiceSO.Choices.Count; i++)
-            {
-                PMRChoiceSaveData choice = Choices[i];
-                
-                if (string.IsNullOrEmpty(choice.NodeID)) continue;
-
-                dialogueChoiceSO.Choices[i].NextDialogue = createdNodes[choice.NodeID];
-
-            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PMR.GraphEditor.Elements
 {
     using Utilities;
     
-    public class PMRNode : Node, IPMRSavedNode
+    public class PMRNode : Node
     {
 
         [ReadOnly] public string ID;
@@ -52,16 +52,16 @@ namespace PMR.GraphEditor.Elements
             
         }
 
-        public PMRNodeSaveData CreateEditorSaveData()
+        public virtual PMRNodeSaveData CreateEditorSaveData()
         {
             throw new Exception("CreateEditorSaveData called in PMRNode! This should never happen and should always be overridden with \"new\" keyword!");
         }
 
-        public PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
+        public virtual PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
             throw new Exception("CreateRuntimeSaveData called in PMRNode! This should never happen and should always be overridden with \"new\" keyword!");
         }
 
-        public void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string,PMRGraphSO> createdNodes) { }
+        public virtual void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string,PMRGraphSO> createdNodes) { }
     }
 }

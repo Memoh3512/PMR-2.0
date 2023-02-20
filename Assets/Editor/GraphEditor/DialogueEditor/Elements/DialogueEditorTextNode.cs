@@ -61,7 +61,7 @@ namespace PMR.GraphEditor.Elements
             RefreshExpandedState();
         }
 
-        public new PMRNodeSaveData CreateEditorSaveData()
+        public override PMRNodeSaveData CreateEditorSaveData()
         {
             PMRDialogueSaveData saveData = new PMRDialogueSaveData()
             {
@@ -74,7 +74,7 @@ namespace PMR.GraphEditor.Elements
             return saveData;
         }
 
-        public new PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
+        public override PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
             PMRDialogueSO dialogueSO = PMRIOUtility.CreateAsset<PMRDialogueSO>(path, fileName);
             dialogueSO.Initialize(NodeName);
@@ -84,7 +84,7 @@ namespace PMR.GraphEditor.Elements
             return dialogueSO;
         }
 
-        public new void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
+        public override void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
             PMRDialogueSO dialogueSO = (PMRDialogueSO)nodeSo;
             if (createdNodes.ContainsKey(NextNodeID))
