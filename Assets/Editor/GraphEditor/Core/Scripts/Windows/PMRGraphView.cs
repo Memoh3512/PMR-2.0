@@ -20,11 +20,12 @@ namespace PMR.GraphEditor
             AddSearchWindow();
             AddGridBackground();
 
+            OnGroupElementsAdded();
+            OnGroupElementsRemoved();
             OnGraphViewChanged();
             
             AddStyles();
         }
-
         private void AddSearchWindow()
         {
             if (searchWindow == null)
@@ -36,7 +37,6 @@ namespace PMR.GraphEditor
 
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
         }
-
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             List<Port> compatiblePorts = new List<Port>();
@@ -51,7 +51,6 @@ namespace PMR.GraphEditor
             
             return compatiblePorts;
         }
-
         private void AddManipulators()
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
@@ -64,7 +63,6 @@ namespace PMR.GraphEditor
             
             this.AddManipulator(CreateGroupContextualMenu());
         }
-
         private IManipulator CreateGroupContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
@@ -72,7 +70,6 @@ namespace PMR.GraphEditor
 
             return contextualMenuManipulator;
         }
-
         private PMRGroup CreateGroup(string title, Vector2 position)
         {
             PMRGroup group = new PMRGroup()
@@ -86,12 +83,12 @@ namespace PMR.GraphEditor
 
                 PMRNode node = (PMRNode)selectedElement;
                 group.AddElement(node);
+                node.Group = group;
 
             }
             group.SetPosition(new Rect(position, Vector2.zero));
             return group;
         }
-
         protected virtual IManipulator CreateNodeContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
@@ -99,7 +96,6 @@ namespace PMR.GraphEditor
 
             return contextualMenuManipulator;
         }
-
         public PMRNode CreateNode<TNode>(Vector2 position) where TNode : PMRNode, new()
         {
             TNode node = new TNode();
@@ -109,14 +105,12 @@ namespace PMR.GraphEditor
 
             return node;
         }
-
         private void AddStyles()
         {
             this.AddStyleSheets(
                 "PMRGraphView/PMRGraphViewStyles.uss",
                 "PMRGraphView/PMRNodeStyles.uss");
         }
-
         private void AddGridBackground()
         {
             GridBackground gridBackground = new GridBackground();
@@ -125,7 +119,6 @@ namespace PMR.GraphEditor
             
             Insert(0, gridBackground);
         }
-
         public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
         {
             Vector2 worldMousePosition = mousePosition;
@@ -138,7 +131,6 @@ namespace PMR.GraphEditor
             Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
             return localMousePosition;
         }
-
         private void OnGraphViewChanged()
         {
             graphViewChanged = (changes) =>
@@ -174,5 +166,43 @@ namespace PMR.GraphEditor
 
             };
         }
+        private void OnGroupElementsAdded()
+        {
+            elementsAddedToGroup = (group, elements) =>
+            {
+                foreach (GraphElement element in elements)
+                {
+                    if (!(element is PMRNode))
+                    {
+                        continue;
+                    }
+
+                    PMRGroup pmrGroup = (PMRGroup) group;
+                    PMRNode node = (PMRNode) element;
+
+                    node.Group = pmrGroup;
+                    Debug.Log($"Set group to grouped node! {node.NodeName} inside {pmrGroup.title}");
+                }
+            };
+        }
+        private void OnGroupElementsRemoved()
+        {
+            elementsRemovedFromGroup = (group, elements) =>
+            {
+                foreach (GraphElement element in elements)
+                {
+                    if (!(element is PMRNode))
+                    {
+                        continue;
+                    }
+
+                    PMRGroup pmrGroup = (PMRGroup) group;
+                    PMRNode node = (PMRNode) element;
+
+                    node.Group = null;
+                }
+            };
+        }
+        
     }
 }

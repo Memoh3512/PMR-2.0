@@ -41,7 +41,10 @@ namespace PMR.GraphEditor.Elements
         public virtual void Draw()
         {
             /* Title container */
-            TextField nodeNameTextField = PMRElementUtility.CreateTextField(NodeName);
+            TextField nodeNameTextField = PMRElementUtility.CreateTextField(NodeName, null, callback =>
+            {
+                NodeName = callback.newValue;
+            });
             nodeNameTextField.AddClasses(
                 "ds-node__text-field",
                 "ds-node__filename-text-field",

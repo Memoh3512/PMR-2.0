@@ -21,7 +21,7 @@ namespace PMR.GraphEditor.Elements
             PMRGroupSaveData saveData = new PMRGroupSaveData()
             {
                 ID = ID,
-                Name = name,
+                Name = title,
                 Position = GetPosition().position,
                 GroupID = ""
             };

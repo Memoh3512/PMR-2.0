@@ -161,8 +161,8 @@ namespace PMR
             PMRDialogueChoiceSO dialogueChoiceSO = PMRIOUtility.CreateAsset<PMRDialogueChoiceSO>(path, fileName);
             dialogueChoiceSO.Initialize(NodeName);
             dialogueChoiceSO.Text = DialogueText;
-            dialogueChoiceSO.IsStartingDialogue = false;
             dialogueChoiceSO.IsStartingDialogue = !((PMRPort) inputContainer.Children().First()).connected;
+            dialogueChoiceSO.Choices = ConvertEditorToRuntimeChoices();
             
             return dialogueChoiceSO;
         }
@@ -170,6 +170,17 @@ namespace PMR
         public override void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
             PMRDialogueChoiceSO dialogueChoiceSO = (PMRDialogueChoiceSO)nodeSo;
+            if (dialogueChoiceSO == null)
+            {
+                Debug.Log("DIALOGUECHOICESO NULL!! WTF UPDATECONNECTION Choice node");
+                return;
+            }
+
+            if (dialogueChoiceSO.Choices == null)
+            {                
+                Debug.Log("dialogueChoiceSO.Choices NULL!! WTF UPDATECONNECTION Choice node");
+                return;
+            }
             for (int i = 0; i < dialogueChoiceSO.Choices.Count; i++)
             {
                 PMRChoiceSaveData choice = Choices[i];
