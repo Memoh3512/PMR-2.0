@@ -181,7 +181,7 @@ namespace PMR.GraphEditor
                     PMRNode node = (PMRNode) element;
 
                     node.Group = pmrGroup;
-                    Debug.Log($"Set group to grouped node! {node.NodeName} inside {pmrGroup.title}");
+                    //Debug.Log($"Set group to grouped node! {node.NodeName} inside {pmrGroup.title}");
                 }
             };
         }
@@ -202,6 +202,11 @@ namespace PMR.GraphEditor
                     node.Group = null;
                 }
             };
+        }
+
+        public void ClearGraph()
+        {
+            graphElements.ForEach(RemoveElement);
         }
         
     }

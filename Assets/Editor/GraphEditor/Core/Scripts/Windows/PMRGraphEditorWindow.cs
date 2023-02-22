@@ -14,7 +14,7 @@ namespace PMR.GraphEditor
         protected string defaultFilename;
         protected string folderName;
 
-        private TextField fileNameTextField;
+        private static TextField fileNameTextField;
 
         public PMRGraphEditorWindow()
         {
@@ -47,14 +47,30 @@ namespace PMR.GraphEditor
 
             fileNameTextField = PMRElementUtility.CreateTextField(defaultFilename, "File Name...");
 
-            Button saveBtn = PMRElementUtility.CreateButton("Save", () => Save());
+            Button saveBtn = PMRElementUtility.CreateButton("Save", Save);
+
+            Button clearBtn = PMRElementUtility.CreateButton("Clear", Clear);
+            Button newBtn = PMRElementUtility.CreateButton("New", ResetGraph);
             
             tb.Add(fileNameTextField);
             tb.Add(saveBtn);
+            tb.Add(clearBtn);
+            tb.Add(newBtn);
 
             tb.AddStyleSheets("PMRGraphView/PMRToolbarStyles.uss");
             
             rootVisualElement.Add(tb);
+        }
+
+        private void Clear()
+        {
+            graphView.ClearGraph();
+        }
+        
+        private void ResetGraph()
+        {
+            Clear();
+            UpdateFileName(defaultFilename);
         }
 
         private void Save()
@@ -71,6 +87,11 @@ namespace PMR.GraphEditor
             
             PMRIOUtility.Initialize(graphView, folderName, fileNameTextField.value);
             PMRIOUtility.Save();
+        }
+
+        public static void UpdateFileName(string newFileName)
+        {
+            fileNameTextField.value = newFileName;
         }
         
         private void AddStyles()
