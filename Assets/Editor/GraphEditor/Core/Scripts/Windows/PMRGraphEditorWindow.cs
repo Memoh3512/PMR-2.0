@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -49,11 +50,13 @@ namespace PMR.GraphEditor
 
             Button saveBtn = PMRElementUtility.CreateButton("Save", Save);
 
+            Button loadBtn = PMRElementUtility.CreateButton("Load...", Load);
             Button clearBtn = PMRElementUtility.CreateButton("Clear", Clear);
             Button newBtn = PMRElementUtility.CreateButton("New", ResetGraph);
             
             tb.Add(fileNameTextField);
             tb.Add(saveBtn);
+            tb.Add(loadBtn);
             tb.Add(clearBtn);
             tb.Add(newBtn);
 
@@ -87,6 +90,18 @@ namespace PMR.GraphEditor
             
             PMRIOUtility.Initialize(graphView, folderName, fileNameTextField.value);
             PMRIOUtility.Save();
+        }
+
+        private void Load()
+        {
+            string filePath = EditorUtility.OpenFilePanel("Choose Graph...", $"Assets/Editor/Graphs/{folderName}", "asset");
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                Clear();
+                PMRIOUtility.Initialize(graphView, folderName, Path.GetFileNameWithoutExtension(filePath));
+                PMRIOUtility.Load();
+            }
         }
 
         public static void UpdateFileName(string newFileName)

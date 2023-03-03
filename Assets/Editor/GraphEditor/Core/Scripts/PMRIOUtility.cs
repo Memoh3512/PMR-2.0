@@ -21,8 +21,13 @@ namespace PMR.GraphEditor.Utilities
         private static List<PMRGroup> groups;
         private static List<PMRNode> nodes;
 
+        //save
         private static Dictionary<string, PMRGroupSO> createdGroups;
         private static Dictionary<string, PMRGraphSO> createdNodes;
+        
+        //load
+        private static Dictionary<string, PMRGroup> loadedGroups;
+        private static Dictionary<string, PMRNode> loadedNodes;
 
         public static void Initialize(PMRGraphView pmrGraphView, string graphFolder, string graphName)
         {
@@ -36,8 +41,14 @@ namespace PMR.GraphEditor.Utilities
             groups = new List<PMRGroup>();
             nodes = new List<PMRNode>();
 
+            //save
             createdGroups = new Dictionary<string, PMRGroupSO>();
             createdNodes = new Dictionary<string, PMRGraphSO>();
+
+            //load
+            loadedGroups = new Dictionary<string, PMRGroup>();
+            loadedNodes = new Dictionary<string, PMRNode>();
+
         }
         
         #region Save
@@ -59,6 +70,73 @@ namespace PMR.GraphEditor.Utilities
             
             SaveAsset(graphData);
             SaveAsset(container);
+        }
+
+        #endregion
+        
+        #region Load
+
+        public static void Load()
+        {
+            PMRGraphSaveDataSO graphData = LoadAsset<PMRGraphSaveDataSO>($"Assets/Editor/Graphs/{graphFolderName}", graphFileName);
+
+            if (graphData == null)
+            {
+                EditorUtility.DisplayDialog(
+                    "Could not load the file.",
+                    "The file at the following path could not be found:\n\n" + 
+                    $"Assets/Editor/Graphs/{graphFileName}\n\n" + 
+                    "Make sure you chose the right file and it's placed at the folder path above.",
+                    "Ok"
+                );
+                return;
+            }
+            
+            PMRGraphEditorWindow.UpdateFileName(graphData.FileName);
+
+            LoadGroups(graphData.Groups);
+            LoadNodes(graphData.Nodes);
+            LoadNodesConnections();
+
+        }
+
+        private static void LoadNodes(List<PMRNodeSaveData> nodes)
+        {
+            foreach (PMRNodeSaveData nodeData in nodes)
+            {
+                PMRNode node = nodeData.LoadData(graphView);
+                node.Draw();
+                graphView.AddElement(node);
+
+                if (string.IsNullOrEmpty(nodeData.GroupID)) continue;
+
+                PMRGroup group = loadedGroups[nodeData.GroupID];
+                node.Group = group;
+                
+                group.AddElement(node);
+
+                loadedNodes.Add(node.ID, node);
+            }
+        }
+
+        private static void LoadGroups(List<PMRGroupSaveData> groups)
+        {
+            foreach (PMRGroupSaveData groupData in groups)
+            {
+                PMRGroup group = graphView.CreateGroup(groupData.Name, groupData.Position);
+                group.ID = groupData.ID;
+                
+                loadedGroups.Add(group.ID, group);
+            }
+        }
+        
+        private static void LoadNodesConnections()
+        {
+            foreach (PMRNode loadedNode in loadedNodes.Values)
+            {
+                loadedNode.LoadConnections(loadedNodes);
+                loadedNode.RefreshPorts();
+            }
         }
 
         #endregion
@@ -94,7 +172,7 @@ namespace PMR.GraphEditor.Utilities
         {
             string fullPath = $"{path}/{assetName}.asset";
 
-            T asset = AssetDatabase.LoadAssetAtPath<T>(fullPath);
+            T asset = LoadAsset<T>(path, assetName);
 
             if (asset == null)
             {
@@ -103,7 +181,13 @@ namespace PMR.GraphEditor.Utilities
             }
             return asset;
         }
-        
+
+        private static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
+        {
+            string fullPath = $"{path}/{assetName}.asset";
+            return AssetDatabase.LoadAssetAtPath<T>(fullPath);
+        }
+
         private static void SaveAsset(UnityEngine.Object asset)
         {
             EditorUtility.SetDirty(asset);
@@ -268,7 +352,7 @@ namespace PMR.GraphEditor.Utilities
             {
                 PMRGraphSO nodeSO = createdNodes[node.ID];
 
-                node.UpdateConnection(nodeSO, createdNodes);
+                node.SaveConnections(nodeSO, createdNodes);
                 
                 SaveAsset(nodeSO);
             }

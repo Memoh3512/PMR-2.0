@@ -70,7 +70,7 @@ namespace PMR.GraphEditor
 
             return contextualMenuManipulator;
         }
-        private PMRGroup CreateGroup(string title, Vector2 position)
+        public PMRGroup CreateGroup(string title, Vector2 position)
         {
             PMRGroup group = new PMRGroup()
             {
@@ -92,16 +92,16 @@ namespace PMR.GraphEditor
         protected virtual IManipulator CreateNodeContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode<PMRNode>(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
+                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode<PMRNode>("New Node (should never see this)", GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
 
             return contextualMenuManipulator;
         }
-        public PMRNode CreateNode<TNode>(Vector2 position) where TNode : PMRNode, new()
+        public TNode CreateNode<TNode>(string nodeName, Vector2 position, bool shouldDraw = true) where TNode : PMRNode, new()
         {
             TNode node = new TNode();
             
-            node.Initialize(this, position);
-            node.Draw();
+            node.Initialize(nodeName, this, position);
+            if (shouldDraw) node.Draw();
 
             return node;
         }

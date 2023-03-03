@@ -16,10 +16,9 @@ namespace PMR
     {
         public string DialogueText { get; set; }
         public List<PMRChoiceSaveData> Choices { get; set; }
-        public override void Initialize(PMRGraphView pmrGraphView, Vector2 position)
+        public override void Initialize(string nodeName, PMRGraphView pmrGraphView, Vector2 position)
         {
-            base.Initialize(pmrGraphView, position);
-            NodeName = "Choice";
+            base.Initialize(nodeName, pmrGraphView, position);
             Choices = new List<PMRChoiceSaveData>();
 
             PMRChoiceSaveData choiceData = new PMRChoiceSaveData()
@@ -132,17 +131,7 @@ namespace PMR
         public override PMRNodeSaveData CreateEditorSaveData()
         {
 
-            List<PMRChoiceSaveData> savedChoices = new List<PMRChoiceSaveData>();
-
-            foreach (PMRChoiceSaveData choice in Choices)
-            {
-                PMRChoiceSaveData newChoice = new PMRChoiceSaveData()
-                {
-                    Text = choice.Text,
-                    NodeID = choice.NodeID
-                };
-                savedChoices.Add(newChoice);
-            }
+            List<PMRChoiceSaveData> savedChoices = CloneNodeChoices(Choices);
             
             PMRDialogueChoiceSaveData saveData = new PMRDialogueChoiceSaveData()
             {
@@ -156,6 +145,23 @@ namespace PMR
             return saveData;
         }
 
+        public List<PMRChoiceSaveData> CloneNodeChoices(List<PMRChoiceSaveData> choices)
+        {
+            List<PMRChoiceSaveData> clonedChoices = new List<PMRChoiceSaveData>();
+
+            foreach (PMRChoiceSaveData choice in choices)
+            {
+                PMRChoiceSaveData newChoice = new PMRChoiceSaveData()
+                {
+                    Text = choice.Text,
+                    NodeID = choice.NodeID
+                };
+                clonedChoices.Add(newChoice);
+            }
+
+            return clonedChoices;
+        }
+
         public override PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
             PMRDialogueChoiceSO dialogueChoiceSO = PMRIOUtility.CreateAsset<PMRDialogueChoiceSO>(path, fileName);
@@ -167,7 +173,7 @@ namespace PMR
             return dialogueChoiceSO;
         }
 
-        public override void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
+        public override void SaveConnections(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
             PMRDialogueChoiceSO dialogueChoiceSO = (PMRDialogueChoiceSO)nodeSo;
             if (dialogueChoiceSO == null)
@@ -189,6 +195,26 @@ namespace PMR
 
                 dialogueChoiceSO.Choices[i].NextDialogue = createdNodes[choice.NodeID];
 
+            }
+        }
+        
+        public override void LoadConnections(Dictionary<string, PMRNode> loadedNodes)
+        {
+            foreach (VisualElement outputItem in outputContainer.Children())
+            {
+                if (outputItem is PMRPort choicePort)
+                {
+                    PMRChoiceSaveData choiceData = (PMRChoiceSaveData)choicePort.userData;
+
+                    if (string.IsNullOrEmpty(choiceData.NodeID)) continue;
+                    
+                    PMRNode nextNode = loadedNodes[choiceData.NodeID];
+                    PMRPort nextNodeInput = (PMRPort)nextNode.inputContainer.Children().First();
+
+                    Edge edge = choicePort.ConnectTo(nextNodeInput);
+                    graphView.AddElement(edge);  
+
+                }
             }
         }
         

@@ -19,10 +19,10 @@ namespace PMR.GraphEditor.Elements
 
         protected PMRGraphView graphView;
 
-        public virtual void Initialize(PMRGraphView pmrGraphView, Vector2 position)
+        public virtual void Initialize(string nodeName, PMRGraphView pmrGraphView, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
-            NodeName = "NodeName";
+            NodeName = nodeName;
 
             graphView = pmrGraphView;
                 
@@ -30,12 +30,6 @@ namespace PMR.GraphEditor.Elements
             
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
-        }
-
-        public void Initialize(string setID, PMRGraphView pmrGraphView, Vector2 position)
-        {
-            Initialize(pmrGraphView, position);
-            ID = setID;
         }
 
         public virtual void Draw()
@@ -57,14 +51,19 @@ namespace PMR.GraphEditor.Elements
 
         public virtual PMRNodeSaveData CreateEditorSaveData()
         {
-            throw new Exception("CreateEditorSaveData called in PMRNode! This should never happen and should always be overridden with \"new\" keyword!");
+            throw new Exception("CreateEditorSaveData called in PMRNode! This should never happen and should always be overridden with \"override\" keyword!");
         }
-
         public virtual PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
-            throw new Exception("CreateRuntimeSaveData called in PMRNode! This should never happen and should always be overridden with \"new\" keyword!");
+            throw new Exception("CreateRuntimeSaveData called in PMRNode! This should never happen and should always be overridden with \"override\" keyword!");
         }
-
-        public virtual void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string,PMRGraphSO> createdNodes) { }
+        public virtual void SaveConnections(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
+        {
+            throw new Exception("SaveConnections called in PMRNode! This should never happen and should always be overridden with \"override\" keyword!");
+        }
+        public virtual void LoadConnections(Dictionary<string, PMRNode> loadedNodes)
+        {
+            throw new Exception("LoadConnections called in PMRNode! This should never happen and should always be overridden with \"override\" keyword!");
+        }
     }
 }

@@ -14,9 +14,9 @@ namespace PMR.GraphEditor.Elements
         public string DialogueText { get; set; }
         
         public string NextNodeID { get; set; }
-        public override void Initialize(PMRGraphView pmrGraphView, Vector2 position)
+        public override void Initialize(string nodeName, PMRGraphView pmrGraphView, Vector2 position)
         {
-            base.Initialize(pmrGraphView, position);
+            base.Initialize(nodeName, pmrGraphView, position);
             NodeName = "Dialogue Text";
         }
 
@@ -69,6 +69,7 @@ namespace PMR.GraphEditor.Elements
                 GroupID = Group?.ID,
                 Name = NodeName,
                 Position = GetPosition().position,
+                NextNodeID = NextNodeID,
                 Text = DialogueText
             };
             return saveData;
@@ -84,13 +85,23 @@ namespace PMR.GraphEditor.Elements
             return dialogueSO;
         }
 
-        public override void UpdateConnection(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
+        public override void SaveConnections(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
             PMRDialogueSO dialogueSO = (PMRDialogueSO)nodeSo;
             if (createdNodes.ContainsKey(NextNodeID))
             {
                 dialogueSO.NextNode = createdNodes[NextNodeID];
             }
+        }
+
+        public override void LoadConnections(Dictionary<string, PMRNode> loadedNodes)
+        {
+            PMRNode nextNode = loadedNodes[NextNodeID];
+            PMRPort nextNodeInput = (PMRPort)nextNode.inputContainer.Children().First();
+            PMRPort output = (PMRPort)outputContainer.Children().First();
+
+            Edge edge = output.ConnectTo(nextNodeInput);
+            graphView.AddElement(edge);
         }
         
     }

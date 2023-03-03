@@ -16,8 +16,8 @@ namespace PMR.GraphEditor
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
                 menuEvent =>
                 {
-                    menuEvent.menu.AppendAction("Add Text Node", actionEvent => AddElement(CreateNode<DialogueEditorTextNode>(actionEvent.eventInfo.localMousePosition)));
-                    menuEvent.menu.AppendAction("Add Choice Node", actionEvent => AddElement(CreateNode<DialogueEditorChoiceNode>(actionEvent.eventInfo.localMousePosition)));
+                    menuEvent.menu.AppendAction("Add Text Node", actionEvent => AddElement(CreateNode<DialogueEditorTextNode>("NewTextNode", actionEvent.eventInfo.localMousePosition)));
+                    menuEvent.menu.AppendAction("Add Choice Node", actionEvent => AddElement(CreateNode<DialogueEditorChoiceNode>("NewChoiceNode", actionEvent.eventInfo.localMousePosition)));
                 });
 
             return contextualMenuManipulator;

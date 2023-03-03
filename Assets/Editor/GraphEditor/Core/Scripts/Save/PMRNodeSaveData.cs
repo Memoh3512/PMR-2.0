@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace PMR.GraphEditor.Save
 {
+    
+    using Elements;
+    
     [Serializable]
     public class PMRNodeSaveData
     {
@@ -12,6 +15,11 @@ namespace PMR.GraphEditor.Save
         [field: SerializeField] public string GroupID { get; set; }
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public Vector2 Position { get; set; }
+
+        public virtual PMRNode LoadData(PMRGraphView graphView)
+        {
+            throw new Exception("LoadData() Called in PMRNodeSaveData. This should not happen and should always be overridden! If you are a designer, contact a programmer.");
+        }
         
         
     }
