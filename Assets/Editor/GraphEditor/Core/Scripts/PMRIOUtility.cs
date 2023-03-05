@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,6 +28,17 @@ namespace PMR.GraphEditor.Utilities
         //load
         private static Dictionary<string, PMRGroup> loadedGroups;
         private static Dictionary<string, PMRNode> loadedNodes;
+
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.All
+        };
+
+        private static JsonSerializerSettings deserializerSettings = new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
 
         public static void Initialize(PMRGraphView pmrGraphView, string graphFolder, string graphName)
         {
@@ -98,10 +110,22 @@ namespace PMR.GraphEditor.Utilities
             LoadNodesConnections();
         }
 
-        private static void LoadNodes(List<PMRNodeSaveData> graphNodes)
+        private static void LoadNodes(List<string> graphNodes)
         {
-            foreach (var nodeData in graphNodes)
+            foreach (string nodeJson in graphNodes)
             {
+                if (string.IsNullOrEmpty(nodeJson))
+                {
+                    Debug.LogError("node JSON string is null or empty while loading!!! This is not supposed to happen");
+                    continue;
+                }
+                
+                PMRNodeSaveData nodeData = JsonConvert.DeserializeObject<PMRNodeSaveData>(nodeJson, deserializerSettings);
+                if (nodeData == null)
+                {
+                    Debug.LogError("Unknown JSON format while deserializing Node!");
+                    continue;
+                }
                 Debug.Log($"TYPE: {nodeData.GetType()}");
 
                 PMRNode node = nodeData.LoadData(graphView);
@@ -109,20 +133,33 @@ namespace PMR.GraphEditor.Utilities
                 graphView.AddElement(node);
                 
                 loadedNodes.Add(node.ID, node);
-
+                
                 if (string.IsNullOrEmpty(nodeData.GroupID)) continue;
-
+                
                 PMRGroup group = loadedGroups[nodeData.GroupID];
                 node.Group = group;
-
+                
                 group.AddElement(node);
             }
         }
 
-        private static void LoadGroups(List<PMRGroupSaveData> graphGroups)
+        private static void LoadGroups(List<string> graphGroups)
         {
-            foreach (PMRGroupSaveData groupData in graphGroups)
+            foreach (string groupJson in graphGroups)
             {
+                if (string.IsNullOrEmpty(groupJson))
+                {
+                    Debug.LogError("Group JSON string is null or empty while loading!!! This is not supposed to happen");
+                    continue;
+                }
+                
+                PMRGroupSaveData groupData = JsonConvert.DeserializeObject<PMRGroupSaveData>(groupJson, deserializerSettings);
+                if (groupData == null)
+                {
+                    Debug.LogError("Unknown JSON format while deserializing Node Group!");
+                    continue;
+                }
+                
                 PMRGroup group = graphView.CreateGroup(groupData.Name, groupData.Position);
                 group.ID = groupData.ID;
 
@@ -254,7 +291,8 @@ namespace PMR.GraphEditor.Utilities
         private static void SaveGroupToGraph(PMRGroup group, PMRGraphSaveDataSO graphData)
         {
             PMRGroupSaveData groupData = (PMRGroupSaveData)group.CreateEditorSaveData();
-            graphData.Groups.Add(groupData);
+            string groupJson = JsonConvert.SerializeObject(groupData, Formatting.None, serializerSettings);
+            graphData.Groups.Add(groupJson);
         }
 
         private static void SaveGroupToScriptableObject(PMRGroup group, PMRContainerSO container)
@@ -321,7 +359,8 @@ namespace PMR.GraphEditor.Utilities
         private static void SaveNodeToGraph(PMRNode node, PMRGraphSaveDataSO graphData)
         {
             PMRNodeSaveData nodeData = node.CreateEditorSaveData();
-            graphData.Nodes.Add(nodeData);
+            string nodeJson = JsonConvert.SerializeObject(nodeData, Formatting.None, serializerSettings);
+            graphData.Nodes.Add(nodeJson);
         }
 
         private static void SaveNodeToScriptableObject(PMRNode node, PMRContainerSO container)

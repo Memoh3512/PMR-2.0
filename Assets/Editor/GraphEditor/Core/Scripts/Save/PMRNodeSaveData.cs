@@ -21,6 +21,5 @@ namespace PMR.GraphEditor.Save
             throw new Exception("LoadData() Called in PMRNodeSaveData. This should not happen and should always be overridden! If you are a designer, contact a programmer.");
         }
         
-        
     }
 }
