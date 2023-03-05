@@ -93,10 +93,7 @@ namespace PMR.GraphEditor
         }
         protected virtual IManipulator CreateNodeContextualMenu()
         {
-            ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode<PMRNode>("New Node (should never see this)", GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
-
-            return contextualMenuManipulator;
+            return null;
         }
         public TNode CreateNode<TNode>(string nodeName, Vector2 position, bool shouldDraw = true) where TNode : PMRNode, new()
         {

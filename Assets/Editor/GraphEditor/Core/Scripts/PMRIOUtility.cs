@@ -107,6 +107,8 @@ namespace PMR.GraphEditor.Utilities
                 PMRNode node = nodeData.LoadData(graphView);
                 node.Draw();
                 graphView.AddElement(node);
+                
+                loadedNodes.Add(node.ID, node);
 
                 if (string.IsNullOrEmpty(nodeData.GroupID)) continue;
 
@@ -114,8 +116,6 @@ namespace PMR.GraphEditor.Utilities
                 node.Group = group;
 
                 group.AddElement(node);
-
-                loadedNodes.Add(node.ID, node);
             }
         }
 

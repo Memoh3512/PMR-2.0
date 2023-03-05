@@ -59,7 +59,7 @@ namespace PMR.GraphEditor
                 GraphElement element = (GraphElement)Activator.CreateInstance((Type)SearchTreeEntry.userData);
                 if (element.GetType().IsSubclassOf(typeof(PMRNode)))
                 {
-                    ((PMRNode)element).Initialize("NewNode", graphView, localMousePosition);
+                    ((PMRNode)element).Initialize($"New {((Type)SearchTreeEntry.userData).ToString()}", graphView, localMousePosition);
                     ((PMRNode)element).Draw();
                 } else if (element.GetType() == typeof(PMRGroup))
                 {

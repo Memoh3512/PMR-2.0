@@ -19,7 +19,7 @@ namespace PMR
         public override void Initialize(string nodeName, PMRGraphView pmrGraphView, Vector2 position)
         {
             base.Initialize(nodeName, pmrGraphView, position);
-            NodeName = "Dialogue Choice";
+            NodeName = nodeName;
             Choices = new List<PMRChoiceSaveData>();
 
             PMRChoiceSaveData choiceData = new PMRChoiceSaveData()

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using PMR.GraphEditor.Save;
 using PMR.ScriptableObjects;
@@ -17,7 +17,7 @@ namespace PMR.GraphEditor.Elements
         public override void Initialize(string nodeName, PMRGraphView pmrGraphView, Vector2 position)
         {
             base.Initialize(nodeName, pmrGraphView, position);
-            NodeName = "Dialogue Text";
+            NodeName = nodeName;
         }
 
         public override void Draw()
@@ -88,6 +88,7 @@ namespace PMR.GraphEditor.Elements
         public override void SaveConnections(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
             PMRDialogueSO dialogueSO = (PMRDialogueSO)nodeSo;
+            if (string.IsNullOrEmpty(NextNodeID)) return; //validation d'un coup qu'on delete une connection de maniere bizarre
             if (createdNodes.ContainsKey(NextNodeID))
             {
                 dialogueSO.NextNode = createdNodes[NextNodeID];
