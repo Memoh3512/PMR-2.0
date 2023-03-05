@@ -66,7 +66,7 @@ namespace PMR.GraphEditor
         private IManipulator CreateGroupContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => AddElement(CreateGroup("Node Group",GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
+                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => CreateGroup("Node Group",GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))));
 
             return contextualMenuManipulator;
         }
@@ -76,6 +76,8 @@ namespace PMR.GraphEditor
             {
                 title = title
             };
+            
+            AddElement(group);
 
             foreach (GraphElement selectedElement in selection)
             {

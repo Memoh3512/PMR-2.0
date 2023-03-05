@@ -19,7 +19,6 @@ namespace PMR.GraphEditor.Save
             node.DialogueText = Text;
             node.ID = ID;
             node.Choices = node.CloneNodeChoices(Choices);
-            
             return node;
 
         }

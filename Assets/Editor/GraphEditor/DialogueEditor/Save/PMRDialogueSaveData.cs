@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace PMR.GraphEditor.Save
     
     using Elements;
     
+    [Serializable]
     public class PMRDialogueSaveData : PMRNodeSaveData
     {
         [field: SerializeField] public string Text { get; set; }
