@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PMR.GraphEditor.Save
 {
-    
+    using Utilities;
     using Elements;
     
     [Serializable]
@@ -14,7 +14,7 @@ namespace PMR.GraphEditor.Save
         [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public string GroupID { get; set; }
         [field: SerializeField] public string Name { get; set; }
-        [field: SerializeField] public Vector2 Position { get; set; }
+        [field: SerializeField] public PMRVector2 Position { get; set; }
 
         public virtual PMRNode LoadData(PMRGraphView graphView)
         {

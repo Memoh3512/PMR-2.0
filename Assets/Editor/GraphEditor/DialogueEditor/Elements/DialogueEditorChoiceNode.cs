@@ -139,7 +139,7 @@ namespace PMR
                 ID = ID,
                 GroupID = Group?.ID,
                 Name = NodeName,
-                Position = GetPosition().position,
+                Position = GetPosition().position.ToPMRVector2(),
                 Text = DialogueText,
                 Choices = savedChoices
             };

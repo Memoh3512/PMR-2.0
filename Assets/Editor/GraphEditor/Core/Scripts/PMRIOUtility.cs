@@ -31,12 +31,6 @@ namespace PMR.GraphEditor.Utilities
 
         private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        private static JsonSerializerSettings deserializerSettings = new JsonSerializerSettings()
-        {
             TypeNameHandling = TypeNameHandling.All
         };
 
@@ -120,7 +114,7 @@ namespace PMR.GraphEditor.Utilities
                     continue;
                 }
                 
-                PMRNodeSaveData nodeData = JsonConvert.DeserializeObject<PMRNodeSaveData>(nodeJson, deserializerSettings);
+                PMRNodeSaveData nodeData = JsonConvert.DeserializeObject<PMRNodeSaveData>(nodeJson, serializerSettings);
                 if (nodeData == null)
                 {
                     Debug.LogError("Unknown JSON format while deserializing Node!");
@@ -143,24 +137,11 @@ namespace PMR.GraphEditor.Utilities
             }
         }
 
-        private static void LoadGroups(List<string> graphGroups)
+        private static void LoadGroups(List<PMRGroupSaveData> graphGroups)
         {
-            foreach (string groupJson in graphGroups)
+            foreach (PMRGroupSaveData groupData in graphGroups)
             {
-                if (string.IsNullOrEmpty(groupJson))
-                {
-                    Debug.LogError("Group JSON string is null or empty while loading!!! This is not supposed to happen");
-                    continue;
-                }
-                
-                PMRGroupSaveData groupData = JsonConvert.DeserializeObject<PMRGroupSaveData>(groupJson, deserializerSettings);
-                if (groupData == null)
-                {
-                    Debug.LogError("Unknown JSON format while deserializing Node Group!");
-                    continue;
-                }
-                
-                PMRGroup group = graphView.CreateGroup(groupData.Name, groupData.Position);
+                PMRGroup group = graphView.CreateGroup(groupData.Name, groupData.Position.ToVector2());
                 group.ID = groupData.ID;
 
                 loadedGroups.Add(group.ID, group);
@@ -291,8 +272,7 @@ namespace PMR.GraphEditor.Utilities
         private static void SaveGroupToGraph(PMRGroup group, PMRGraphSaveDataSO graphData)
         {
             PMRGroupSaveData groupData = (PMRGroupSaveData)group.CreateEditorSaveData();
-            string groupJson = JsonConvert.SerializeObject(groupData, Formatting.None, serializerSettings);
-            graphData.Groups.Add(groupJson);
+            graphData.Groups.Add(groupData);
         }
 
         private static void SaveGroupToScriptableObject(PMRGroup group, PMRContainerSO container)
@@ -438,7 +418,7 @@ namespace PMR.GraphEditor.Utilities
 
         #region Collection Utility
 
-        public static void AddItem<K, V>(this SerializableDictionary<K, List<V>> serializableDictionary, K key, V value)
+        private static void AddItem<K, V>(this SerializableDictionary<K, List<V>> serializableDictionary, K key, V value)
         {
             if (serializableDictionary.ContainsKey(key))
             {

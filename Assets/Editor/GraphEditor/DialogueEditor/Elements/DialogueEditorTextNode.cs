@@ -68,7 +68,7 @@ namespace PMR.GraphEditor.Elements
                 ID = ID,
                 GroupID = Group?.ID,
                 Name = NodeName,
-                Position = GetPosition().position,
+                Position = GetPosition().position.ToPMRVector2(),
                 NextNodeID = NextNodeID,
                 Text = DialogueText
             };
@@ -97,6 +97,8 @@ namespace PMR.GraphEditor.Elements
 
         public override void LoadConnections(Dictionary<string, PMRNode> loadedNodes)
         {
+            if (string.IsNullOrEmpty(NextNodeID)) return;
+            
             PMRNode nextNode = loadedNodes[NextNodeID];
             PMRPort nextNodeInput = (PMRPort)nextNode.inputContainer.Children().First();
             PMRPort output = (PMRPort)outputContainer.Children().First();

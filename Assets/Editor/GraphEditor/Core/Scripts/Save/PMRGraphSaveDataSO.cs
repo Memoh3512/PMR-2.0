@@ -9,7 +9,7 @@ namespace PMR.GraphEditor.Save
     public class PMRGraphSaveDataSO : ScriptableObject
     {
         [field: SerializeField] public string FileName { get; set; }
-        [field: SerializeField] public List<string> Groups { get; set; }
+        [field: SerializeField] public List<PMRGroupSaveData> Groups { get; set; }
         [field: SerializeField] public List<string> Nodes { get; set; }
         [field: SerializeField] public List<string> OldGroupIDs { get; set; }
         [field: SerializeField] public List<string> OldNodeIDs { get; set; }
@@ -19,7 +19,7 @@ namespace PMR.GraphEditor.Save
         {
             FileName = filename;
 
-            Groups = new List<string>();
+            Groups = new List<PMRGroupSaveData>();
             Nodes = new List<string>();
         }
         

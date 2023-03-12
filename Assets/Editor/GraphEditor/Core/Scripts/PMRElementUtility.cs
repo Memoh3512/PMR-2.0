@@ -65,5 +65,10 @@ namespace PMR.GraphEditor.Utilities
 
             return pmrPort;
         }
+        
+        public static PMRVector2 ToPMRVector2(this Vector2 fromVector)
+        {
+            return new PMRVector2(fromVector);
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace PMR.GraphEditor.Elements
             {
                 ID = ID,
                 Name = title,
-                Position = GetPosition().position,
+                Position = GetPosition().position.ToPMRVector2(),
                 GroupID = ""
             };
             return saveData;

@@ -16,7 +16,7 @@ namespace PMR.GraphEditor.Save
         
         public override PMRNode LoadData(PMRGraphView graphView)
         {
-            DialogueEditorTextNode node = graphView.CreateNode<DialogueEditorTextNode>(Name, Position, false);
+            DialogueEditorTextNode node = graphView.CreateNode<DialogueEditorTextNode>(Name, Position.ToVector2(), false);
             node.DialogueText = Text;
             node.ID = ID;
             node.NextNodeID = NextNodeID;
