@@ -15,6 +15,8 @@ namespace PMR.GraphEditor
         protected string defaultFilename;
         protected string folderName;
 
+        private Button minimapBtn;
+
         private static TextField fileNameTextField;
 
         public PMRGraphEditorWindow()
@@ -53,12 +55,14 @@ namespace PMR.GraphEditor
             Button loadBtn = PMRElementUtility.CreateButton("Load...", Load);
             Button clearBtn = PMRElementUtility.CreateButton("Clear", Clear);
             Button newBtn = PMRElementUtility.CreateButton("New", ResetGraph);
+            minimapBtn = PMRElementUtility.CreateButton("Minimap", ToggleMinimap);
             
             tb.Add(fileNameTextField);
             tb.Add(saveBtn);
             tb.Add(loadBtn);
             tb.Add(clearBtn);
             tb.Add(newBtn);
+            tb.Add(minimapBtn);
 
             tb.AddStyleSheets("PMRGraphView/PMRToolbarStyles.uss");
             
@@ -102,6 +106,12 @@ namespace PMR.GraphEditor
                 PMRIOUtility.Initialize(graphView, folderName, Path.GetFileNameWithoutExtension(filePath));
                 PMRIOUtility.Load();
             }
+        }
+
+        private void ToggleMinimap()
+        {
+            graphView.ToggleMinimap();
+            minimapBtn.ToggleInClassList("ds-toolbar__button__selected");
         }
 
         public static void UpdateFileName(string newFileName)

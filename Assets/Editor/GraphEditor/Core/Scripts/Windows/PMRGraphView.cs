@@ -13,11 +13,13 @@ namespace PMR.GraphEditor
     {
         private PMRGraphEditorWindow editorWindow;
         private PMRSearchWindow searchWindow;
+        private MiniMap miniMap;
         public PMRGraphView(PMRGraphEditorWindow newEditorWindow)
         {
             editorWindow = newEditorWindow;
             AddManipulators();
             AddSearchWindow();
+            AddMinimap();
             AddGridBackground();
 
             OnGroupElementsAdded();
@@ -25,7 +27,22 @@ namespace PMR.GraphEditor
             OnGraphViewChanged();
             
             AddStyles();
+            AddMinimapStyles();
         }
+
+        private void AddMinimap()
+        {
+            miniMap = new MiniMap()
+            {
+                anchored = true,
+                visible = false
+            };
+            
+            miniMap.SetPosition(new Rect(15,50,200,180));
+
+            Add(miniMap);
+        }
+
         private void AddSearchWindow()
         {
             if (searchWindow == null)
@@ -109,6 +126,22 @@ namespace PMR.GraphEditor
             this.AddStyleSheets(
                 "PMRGraphView/PMRGraphViewStyles.uss",
                 "PMRGraphView/PMRNodeStyles.uss");
+        }
+        private void AddMinimapStyles()
+        {
+            StyleColor backgroundColor = new StyleColor(new Color32(29, 29, 30, 255));
+            StyleColor borderColor = new StyleColor(new Color32(51, 51, 51, 255));
+
+            miniMap.style.backgroundColor = backgroundColor;
+            miniMap.style.borderTopColor = borderColor;
+            miniMap.style.borderRightColor = borderColor;
+            miniMap.style.borderBottomColor = borderColor;
+            miniMap.style.borderLeftColor = borderColor;
+        }
+
+        public void ToggleMinimap()
+        {
+            miniMap.visible = !miniMap.visible;
         }
         private void AddGridBackground()
         {
