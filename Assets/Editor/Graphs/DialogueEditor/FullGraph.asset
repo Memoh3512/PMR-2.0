@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9e4d2dcb6602c4a82242c214cd983c, type: 3}
+  m_Name: FullGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Full
+  <Groups>k__BackingField:
+  - <ID>k__BackingField: 7a6c57bd-d754-4ce8-8824-87536b021428
+    <GroupID>k__BackingField: 
+    <Name>k__BackingField: DialogueGroup1
+  - <ID>k__BackingField: 79a172df-f587-45d0-b797-5846b0b0f2cb
+    <GroupID>k__BackingField: 
+    <Name>k__BackingField: DialogueGroup2
+  - <ID>k__BackingField: af10a220-38d9-4fb8-9e65-81926ccd1a9d
+    <GroupID>k__BackingField: 
+    <Name>k__BackingField: DialogueGroup3
+  <Nodes>k__BackingField:
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(3).","NextNodeID":null,"ID":"9af5139a-1fb2-40ab-8274-ee3422c3680c","GroupID":null,"Name":"Dialogue3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":-311.199982,"Y":948.8}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(4).","NextNodeID":null,"ID":"59d744d9-e57c-41bf-a10c-63648360d739","GroupID":null,"Name":"Dialogue4","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":56.8,"Y":948.8}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(1).","NextNodeID":null,"ID":"9db698b5-4b74-4b2c-a0a1-dfafc2f2c622","GroupID":"7a6c57bd-d754-4ce8-8824-87536b021428","Name":"Dialogue1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":-311.199982,"Y":698.399963}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(2).","NextNodeID":null,"ID":"2e2f39b4-3fb0-4a3b-8205-64dd5724c960","GroupID":"79a172df-f587-45d0-b797-5846b0b0f2cb","Name":"Dialogue2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":56.8,"Y":698.399963}}'
+  <OldGroupIDs>k__BackingField:
+  - 7a6c57bd-d754-4ce8-8824-87536b021428
+  - 79a172df-f587-45d0-b797-5846b0b0f2cb
+  - af10a220-38d9-4fb8-9e65-81926ccd1a9d
+  <OldNodeIDs>k__BackingField:
+  - 9af5139a-1fb2-40ab-8274-ee3422c3680c
+  - 59d744d9-e57c-41bf-a10c-63648360d739
+  <OldGroupedNodeIDs>k__BackingField:
+    list:
+    - Key: 7a6c57bd-d754-4ce8-8824-87536b021428
+      Value:
+      - 9db698b5-4b74-4b2c-a0a1-dfafc2f2c622
+    - Key: 79a172df-f587-45d0-b797-5846b0b0f2cb
+      Value:
+      - 2e2f39b4-3fb0-4a3b-8205-64dd5724c960

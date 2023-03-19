@@ -7,7 +7,7 @@ namespace PMR.ScriptableObjects
 {
     public class PMRGraphSO : ScriptableObject
     {
-        public string Name { get; set; }
+        [field: SerializeField] public string Name { get; set; }
 
         public void Initialize(string newName)
         {

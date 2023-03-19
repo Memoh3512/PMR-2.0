@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9e4d2dcb6602c4a82242c214cd983c, type: 3}
+  m_Name: GroupedDialoguesGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: GroupedDialogues
+  <Groups>k__BackingField:
+  - <ID>k__BackingField: 8a77620b-a850-4195-a186-52587a08884b
+    <GroupID>k__BackingField: 
+    <Name>k__BackingField: DialogueGroup1
+  - <ID>k__BackingField: b72401fc-9906-439a-bef7-f326a7f8a11a
+    <GroupID>k__BackingField: 
+    <Name>k__BackingField: DialogueGroup2
+  <Nodes>k__BackingField:
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text (1).","NextNodeID":null,"ID":"a0b0041a-f8a6-4eba-9510-6851c410a62d","GroupID":"8a77620b-a850-4195-a186-52587a08884b","Name":"Dialogue1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":-277.599976,"Y":612.8}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text (2).","NextNodeID":"817142db-0c4c-493a-9baf-2a25501f9b86","ID":"f745607c-0a0a-4d57-889d-790e34e2a219","GroupID":"b72401fc-9906-439a-bef7-f326a7f8a11a","Name":"Dialogue2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":81.6,"Y":617.6}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(3).","NextNodeID":null,"ID":"817142db-0c4c-493a-9baf-2a25501f9b86","GroupID":"b72401fc-9906-439a-bef7-f326a7f8a11a","Name":"Dialogue3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":368.0,"Y":608.8}}'
+  <OldGroupIDs>k__BackingField:
+  - 8a77620b-a850-4195-a186-52587a08884b
+  - b72401fc-9906-439a-bef7-f326a7f8a11a
+  <OldNodeIDs>k__BackingField: []
+  <OldGroupedNodeIDs>k__BackingField:
+    list:
+    - Key: 8a77620b-a850-4195-a186-52587a08884b
+      Value:
+      - a0b0041a-f8a6-4eba-9510-6851c410a62d
+    - Key: b72401fc-9906-439a-bef7-f326a7f8a11a
+      Value:
+      - f745607c-0a0a-4d57-889d-790e34e2a219
+      - 817142db-0c4c-493a-9baf-2a25501f9b86

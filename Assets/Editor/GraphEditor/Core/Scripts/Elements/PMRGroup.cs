@@ -4,6 +4,7 @@ using PMR.GraphEditor.Save;
 using PMR.GraphEditor.Utilities;
 using PMR.ScriptableObjects;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace PMR.GraphEditor.Elements
 {
@@ -31,7 +32,7 @@ namespace PMR.GraphEditor.Elements
         public PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
             PMRGroupSO groupSO = PMRIOUtility.CreateAsset<PMRGroupSO>(path, fileName);
-            groupSO.Initialize(fileName);
+            groupSO.Initialize(title);
             return groupSO;
         }
     }

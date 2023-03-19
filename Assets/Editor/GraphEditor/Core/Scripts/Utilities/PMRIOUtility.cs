@@ -102,6 +102,8 @@ namespace PMR.GraphEditor.Utilities
             LoadGroups(graphData.Groups);
             LoadNodes(graphData.Nodes);
             LoadNodesConnections();
+            
+            Debug.Log("Successfully loaded graph!");
         }
 
         private static void LoadNodes(List<string> graphNodes)
@@ -120,7 +122,7 @@ namespace PMR.GraphEditor.Utilities
                     Debug.LogError("Unknown JSON format while deserializing Node!");
                     continue;
                 }
-                Debug.Log($"TYPE: {nodeData.GetType()}");
+                //Debug.Log($"TYPE: {nodeData.GetType()}");
 
                 PMRNode node = nodeData.LoadData(graphView);
                 node.Draw();
@@ -178,7 +180,7 @@ namespace PMR.GraphEditor.Utilities
 
         #region Utility Methods
 
-        private static void CreateFolder(string path, string folderName)
+        public static void CreateFolder(string path, string folderName)
         {
             if (AssetDatabase.IsValidFolder($"{path}/{folderName}"))
             {
@@ -203,13 +205,13 @@ namespace PMR.GraphEditor.Utilities
             return asset;
         }
 
-        private static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
         {
             string fullPath = $"{path}/{assetName}.asset";
             return AssetDatabase.LoadAssetAtPath<T>(fullPath);
         }
 
-        private static void SaveAsset(UnityEngine.Object asset)
+        public static void SaveAsset(UnityEngine.Object asset)
         {
             EditorUtility.SetDirty(asset);
 
@@ -217,13 +219,13 @@ namespace PMR.GraphEditor.Utilities
             AssetDatabase.Refresh();
         }
 
-        private static void RemoveFolder(string fullPath)
+        public static void RemoveFolder(string fullPath)
         {
             FileUtil.DeleteFileOrDirectory($"{fullPath}.meta");
             FileUtil.DeleteFileOrDirectory($"{fullPath}/");
         }
 
-        private static void RemoveAsset(string path, string assetName)
+        public static void RemoveAsset(string path, string assetName)
         {
             AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
         }
