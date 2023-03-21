@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 9db698b5-4b74-4b2c-a0a1-dfafc2f2c622
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Dialogue1
+  <IsStartingNode>k__BackingField: 1
   <Text>k__BackingField: Dialogue Text(1).
   <NextNode>k__BackingField: {fileID: 0}
-  <IsStartingDialogue>k__BackingField: 1

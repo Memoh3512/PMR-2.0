@@ -56,7 +56,10 @@ namespace PMR.Inspectors
             PMRInspectorUtility.DrawSpace();
             DrawFiltersArea();
 
+            bool startingDialoguesOnly = startingDialoguesOnlyProperty.boolValue;
+
             List<string> dialogueNames;
+            List<PMRGraphSO> dialogues;
 
             string dialogueInfoMessage;
             
@@ -72,13 +75,27 @@ namespace PMR.Inspectors
                 DrawDialogueGroupsArea(container, container.GetGroups(), groupNames);
 
                 PMRGroupSO group = (PMRGroupSO)groupProperty.objectReferenceValue;
-                dialogueNames = container.GetGroupedDialogueNames(group);
-                dialogueInfoMessage = "There are no Dialogues in this Dialogue Group!";
+                dialogueNames = container.GetGroupedNodeNames(group, startingDialoguesOnly, 
+          typeof(PMRDialogueSO), 
+                    typeof(PMRDialogueChoiceSO));
+                dialogues = container.GetGroupedNodes(
+                    group,
+                    startingDialoguesOnly,
+          typeof(PMRDialogueSO), 
+                    typeof(PMRDialogueChoiceSO)
+                    );
+                dialogueInfoMessage = "There are no" + (startingDialoguesOnly ? " Starting" : "") + " Dialogues in this Dialogue Group!";
             }
             else
             {
-                dialogueNames = container.GetUngroupedDialogueNames();
-                dialogueInfoMessage = "There are no Ungrouped Dialogues in this Graph!";
+                dialogueNames = container.GetUngroupedNodeNames(startingDialoguesOnly, 
+          typeof(PMRDialogueSO), 
+                    typeof(PMRDialogueChoiceSO));
+                dialogues = container.GetUngroupedNodes(
+                    startingDialoguesOnly,
+          typeof(PMRDialogueSO),
+                    typeof(PMRDialogueChoiceSO));
+                dialogueInfoMessage = "There are no" + (startingDialoguesOnly ? " Starting" : "") + " Ungrouped Dialogues in this Graph!";
             }
 
             if (dialogueNames.Count == 0)
@@ -88,7 +105,7 @@ namespace PMR.Inspectors
             }
             
             PMRInspectorUtility.DrawSpace();
-            //DrawDialogueArea();
+            DrawDialogueArea(dialogues, dialogueNames);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -120,16 +137,19 @@ namespace PMR.Inspectors
             int selectedGroupIndex = PMRInspectorUtility.DrawPopup("Dialogue Group", selectedGroupProperty, groupNames);
 
             PMRGroupSO selectedGroup = groups[selectedGroupIndex];
-
             groupProperty.objectReferenceValue = selectedGroup;
             
             groupProperty.DrawPropertyField();
         }
-        private void DrawDialogueArea()
+        private void DrawDialogueArea(List<PMRGraphSO> dialogues, List<string> dialogueNames)
         {
             PMRInspectorUtility.DrawHeader("Dialogue");
 
-            PMRInspectorUtility.DrawPopup("Dialogue", selectedDialogueProperty, new List<string>());
+            int selectedDialogueIndex = PMRInspectorUtility.DrawPopup("Dialogue", selectedDialogueProperty, dialogueNames);
+
+            PMRGraphSO selectedDialogue = dialogues[selectedDialogueIndex];
+            dialogueProperty.objectReferenceValue = selectedDialogue;
+            
             dialogueProperty.DrawPropertyField();
         }
         #endregion

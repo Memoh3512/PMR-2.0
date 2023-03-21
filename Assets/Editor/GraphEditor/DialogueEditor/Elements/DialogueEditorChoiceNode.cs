@@ -168,7 +168,7 @@ namespace PMR
             PMRDialogueChoiceSO dialogueChoiceSO = PMRIOUtility.CreateAsset<PMRDialogueChoiceSO>(path, fileName);
             dialogueChoiceSO.Initialize(NodeName);
             dialogueChoiceSO.Text = DialogueText;
-            dialogueChoiceSO.IsStartingDialogue = !((PMRPort) inputContainer.Children().First()).connected;
+            dialogueChoiceSO.IsStartingNode = !((PMRPort) inputContainer.Children().First()).connected;
             dialogueChoiceSO.Choices = ConvertEditorToRuntimeChoices();
             
             return dialogueChoiceSO;

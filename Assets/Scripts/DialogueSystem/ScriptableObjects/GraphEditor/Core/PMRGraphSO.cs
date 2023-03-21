@@ -8,10 +8,12 @@ namespace PMR.ScriptableObjects
     public class PMRGraphSO : ScriptableObject
     {
         [field: SerializeField] public string Name { get; set; }
+        [field: SerializeField] public bool IsStartingNode { get; set; }
 
-        public void Initialize(string newName)
+        public void Initialize(string newName, bool isStartingNode = false)
         {
             Name = newName;
+            IsStartingNode = isStartingNode;
         }
     }
 }

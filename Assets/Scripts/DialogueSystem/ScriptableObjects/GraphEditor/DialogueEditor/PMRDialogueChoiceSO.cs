@@ -9,7 +9,6 @@ namespace PMR.ScriptableObjects
     {
 
         [field: SerializeField] [field: TextArea()] public string Text { get; set; }
-        [field: SerializeField] public bool IsStartingDialogue { get; set; }
         [field: SerializeField] public List<PMRDialogueChoiceSOData> Choices { get; set; }
         
     }

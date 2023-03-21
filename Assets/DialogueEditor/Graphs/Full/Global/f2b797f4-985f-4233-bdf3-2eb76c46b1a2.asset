@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12c067e1145e2d44687904de95ef3cd8, type: 3}
-  m_Name: 59d744d9-e57c-41bf-a10c-63648360d739
+  m_Name: f2b797f4-985f-4233-bdf3-2eb76c46b1a2
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Dialogue4
+  <IsStartingNode>k__BackingField: 1
   <Text>k__BackingField: Dialogue Text(4).
   <NextNode>k__BackingField: {fileID: 0}
-  <IsStartingDialogue>k__BackingField: 1

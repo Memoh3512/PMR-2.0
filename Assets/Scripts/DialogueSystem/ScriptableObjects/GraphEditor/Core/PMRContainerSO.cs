@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,43 +26,77 @@ namespace PMR.ScriptableObjects
         }
         public List<string> GetGroupNames()
         {
-            List<string> groupNames = new List<string>();
-            foreach (PMRGroupSO group in Groups.Keys)
-            {
-                groupNames.Add(group.Name);
-            }
-            return groupNames;
+            return GetNodeNames(Groups.Keys);
         }
 
-        public List<string> GetGroupedDialogueNames(PMRGroupSO group)
+        public List<PMRGraphSO> GetGroupedNodes(PMRGroupSO group, bool startingNodesOnly, params Type[] types)
         {
-            List<PMRGraphSO> groupedDialogues = Groups[group];
-
-            List<string> dialogueNames = new List<string>();
-
-            foreach (PMRGraphSO dialogue in groupedDialogues)
+            if (types == null || types.Length == 0)
             {
-                if (dialogue is PMRDialogueSO or PMRDialogueChoiceSO)
+                return Groups[group];
+            }
+            
+            List<PMRGraphSO> groupedNodes = new List<PMRGraphSO>();
+            foreach (PMRGraphSO node in Groups[group])
+            {
+                if (startingNodesOnly && !node.IsStartingNode) continue;
+                
+                Type nodeType = node.GetType();
+                foreach (Type t in types)
                 {
-                    dialogueNames.Add(dialogue.Name);
+                    if (nodeType == t)
+                    {
+                        groupedNodes.Add(node);
+                        break;
+                    }
                 }
             }
-
-            return dialogueNames;
+            return groupedNodes;
+        }
+        
+        public List<string> GetGroupedNodeNames(PMRGroupSO group, bool startingNodesOnly, params Type[] types)
+        {
+            return GetNodeNames(GetGroupedNodes(group, startingNodesOnly, types));
+        }
+        
+        public List<PMRGraphSO> GetUngroupedNodes(bool startingNodesOnly, params Type[] types)
+        {
+            if (types == null || types.Length == 0)
+            {
+                return UngroupedNodes;
+            }
+            
+            List<PMRGraphSO> ungroupedNodesResult = new List<PMRGraphSO>();
+            foreach (PMRGraphSO node in UngroupedNodes)
+            {
+                if (startingNodesOnly && !node.IsStartingNode) continue;
+                
+                Type nodeType = node.GetType();
+                foreach (Type t in types)
+                {
+                    if (nodeType == t)
+                    {
+                        ungroupedNodesResult.Add(node);
+                        break;
+                    }
+                }
+            }
+            return ungroupedNodesResult;
         }
 
-        public List<string> GetUngroupedDialogueNames()
+        public List<string> GetUngroupedNodeNames(bool startingNodesOnly, params Type[] types)
         {
-            List<string> dialogueNames = new List<string>();
-            foreach (PMRGraphSO dialogue in UngroupedNodes)
-            {
-                if (dialogue is PMRDialogueSO or PMRDialogueChoiceSO)
-                {
-                    dialogueNames.Add(dialogue.Name);
-                }
-            }
+            return GetNodeNames(GetUngroupedNodes(startingNodesOnly, types));
+        }
 
-            return dialogueNames;
+        private List<string> GetNodeNames(IEnumerable<PMRGraphSO> nodes)
+        {
+            List<string> nodeNames = new List<string>();
+            foreach (PMRGraphSO node in nodes)
+            {
+                nodeNames.Add(node.Name);
+            }
+            return nodeNames;
         }
 
     }

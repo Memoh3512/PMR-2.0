@@ -25,24 +25,24 @@ MonoBehaviour:
     <Name>k__BackingField: DialogueGroup3
   <Nodes>k__BackingField:
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
-    Text(3).","NextNodeID":null,"ID":"9af5139a-1fb2-40ab-8274-ee3422c3680c","GroupID":null,"Name":"Dialogue3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":-311.199982,"Y":948.8}}'
-  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
-    Text(4).","NextNodeID":null,"ID":"59d744d9-e57c-41bf-a10c-63648360d739","GroupID":null,"Name":"Dialogue4","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":56.8,"Y":948.8}}'
-  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
     Text(1).","NextNodeID":null,"ID":"9db698b5-4b74-4b2c-a0a1-dfafc2f2c622","GroupID":"7a6c57bd-d754-4ce8-8824-87536b021428","Name":"Dialogue1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
     Assembly-CSharp-Editor","X":-311.199982,"Y":698.399963}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
     Text(2).","NextNodeID":null,"ID":"2e2f39b4-3fb0-4a3b-8205-64dd5724c960","GroupID":"79a172df-f587-45d0-b797-5846b0b0f2cb","Name":"Dialogue2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
     Assembly-CSharp-Editor","X":56.8,"Y":698.399963}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(3).","NextNodeID":null,"ID":"9af5139a-1fb2-40ab-8274-ee3422c3680c","GroupID":null,"Name":"Dialogue3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":-311.199982,"Y":948.8}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
+    Text(4).","NextNodeID":null,"ID":"f2b797f4-985f-4233-bdf3-2eb76c46b1a2","GroupID":null,"Name":"Dialogue4","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":56.8,"Y":948.8}}'
   <OldGroupIDs>k__BackingField:
   - 7a6c57bd-d754-4ce8-8824-87536b021428
   - 79a172df-f587-45d0-b797-5846b0b0f2cb
   - af10a220-38d9-4fb8-9e65-81926ccd1a9d
   <OldNodeIDs>k__BackingField:
   - 9af5139a-1fb2-40ab-8274-ee3422c3680c
-  - 59d744d9-e57c-41bf-a10c-63648360d739
+  - f2b797f4-985f-4233-bdf3-2eb76c46b1a2
   <OldGroupedNodeIDs>k__BackingField:
     list:
     - Key: 7a6c57bd-d754-4ce8-8824-87536b021428

@@ -80,7 +80,7 @@ namespace PMR.GraphEditor.Elements
             PMRDialogueSO dialogueSO = PMRIOUtility.CreateAsset<PMRDialogueSO>(path, fileName);
             dialogueSO.Initialize(NodeName);
             dialogueSO.Text = DialogueText;
-            dialogueSO.IsStartingDialogue = !((PMRPort) inputContainer.Children().First()).connected;
+            dialogueSO.IsStartingNode = !((PMRPort) inputContainer.Children().First()).connected;
             
             return dialogueSO;
         }
