@@ -1,10 +1,19 @@
 using System.Collections.Generic;
+using System;
 using UnityEditor;
 
 namespace PMR.GraphEditor.Utilities
 {
     public static class PMRInspectorUtility
     {
+
+        public static void DrawDisabledFields(Action action)
+        {
+            EditorGUI.BeginDisabledGroup(true);
+            action.Invoke();
+            EditorGUI.EndDisabledGroup();
+        }
+    
         public static void DrawHeader(string label)
         {
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel);

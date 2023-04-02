@@ -110,9 +110,14 @@ namespace PMR.Inspectors
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void StopDrawing(string reason)
+        private void StopDrawing(string reason, MessageType messageType = MessageType.Info)
         {
-            PMRInspectorUtility.DrawHelpBox(reason);
+            PMRInspectorUtility.DrawHelpBox(reason, messageType);
+            
+            PMRInspectorUtility.DrawSpace();
+            
+            PMRInspectorUtility.DrawHelpBox("You need to select a dialogue for this component to work!", MessageType.Warning);
+            
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -139,7 +144,7 @@ namespace PMR.Inspectors
             PMRGroupSO selectedGroup = groups[selectedGroupIndex];
             groupProperty.objectReferenceValue = selectedGroup;
             
-            groupProperty.DrawPropertyField();
+            PMRInspectorUtility.DrawDisabledFields(() => groupProperty.DrawPropertyField());
         }
         private void DrawDialogueArea(List<PMRGraphSO> dialogues, List<string> dialogueNames)
         {
@@ -150,7 +155,7 @@ namespace PMR.Inspectors
             PMRGraphSO selectedDialogue = dialogues[selectedDialogueIndex];
             dialogueProperty.objectReferenceValue = selectedDialogue;
             
-            dialogueProperty.DrawPropertyField();
+            PMRInspectorUtility.DrawDisabledFields(() => dialogueProperty.DrawPropertyField());
         }
         #endregion
     }
