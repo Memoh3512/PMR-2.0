@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921a90cdaf296ce43b2b7579df61f9fe, type: 3}
   m_Name: 3bdf8b69-6ec3-4d1f-97b3-d162113f6b39
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Dialogue2
+  <IsStartingNode>k__BackingField: 0
   <Text>k__BackingField: Dialogue Text(2).
-  <IsStartingDialogue>k__BackingField: 0
   <Choices>k__BackingField:
   - <Text>k__BackingField: Choice1
     <NextDialogue>k__BackingField: {fileID: 0}

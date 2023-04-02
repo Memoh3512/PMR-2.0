@@ -26,10 +26,10 @@ MonoBehaviour:
     Assembly-CSharp-Editor","X":-277.599976,"Y":612.8}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
     Text (2).","NextNodeID":"817142db-0c4c-493a-9baf-2a25501f9b86","ID":"f745607c-0a0a-4d57-889d-790e34e2a219","GroupID":"b72401fc-9906-439a-bef7-f326a7f8a11a","Name":"Dialogue2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":81.6,"Y":617.6}}'
+    Assembly-CSharp-Editor","X":76.7999954,"Y":622.399963}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Dialogue
     Text(3).","NextNodeID":null,"ID":"817142db-0c4c-493a-9baf-2a25501f9b86","GroupID":"b72401fc-9906-439a-bef7-f326a7f8a11a","Name":"Dialogue3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":368.0,"Y":608.8}}'
+    Assembly-CSharp-Editor","X":363.2,"Y":613.6}}'
   <OldGroupIDs>k__BackingField:
   - 8a77620b-a850-4195-a186-52587a08884b
   - b72401fc-9906-439a-bef7-f326a7f8a11a

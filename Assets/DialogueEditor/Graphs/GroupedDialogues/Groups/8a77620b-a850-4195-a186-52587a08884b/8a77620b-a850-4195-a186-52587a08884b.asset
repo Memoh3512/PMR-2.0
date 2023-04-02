@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fce2429dd6260c4cbae7619a9e78e35, type: 3}
   m_Name: 8a77620b-a850-4195-a186-52587a08884b
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: DialogueGroup1
+  <IsStartingNode>k__BackingField: 0
