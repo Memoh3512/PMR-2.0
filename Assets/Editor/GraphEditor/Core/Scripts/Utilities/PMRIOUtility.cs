@@ -63,7 +63,7 @@ namespace PMR.GraphEditor.Utilities
             GetElementsFromGraphView();
 
             PMRGraphSaveDataSO graphData =
-                CreateAsset<PMRGraphSaveDataSO>($"Assets/Editor/Graphs/{graphFolderName}", $"{graphFileName}Graph");
+                CreateAsset<PMRGraphSaveDataSO>($"Assets/Editor/Graphs/{graphFolderName}", $"{graphFileName}");
             graphData.Initialize(graphFileName);
 
             PMRContainerSO container = CreateAsset<PMRContainerSO>(containerFolderPath, graphFileName);

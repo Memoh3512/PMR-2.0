@@ -18,7 +18,6 @@ namespace PMR.GraphEditor
         {
             editorWindow = newEditorWindow;
             AddManipulators();
-            AddSearchWindow();
             AddMinimap();
             AddGridBackground();
 
@@ -43,11 +42,11 @@ namespace PMR.GraphEditor
             Add(miniMap);
         }
 
-        private void AddSearchWindow()
+        protected void AddSearchWindow<T>() where T : PMRSearchWindow
         {
             if (searchWindow == null)
             {
-                searchWindow = ScriptableObject.CreateInstance<PMRSearchWindow>();
+                searchWindow = ScriptableObject.CreateInstance<T>();
                 
                 searchWindow.Initialize(this);
             }

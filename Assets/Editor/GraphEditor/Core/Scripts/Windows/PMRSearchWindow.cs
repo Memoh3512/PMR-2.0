@@ -11,7 +11,10 @@ namespace PMR.GraphEditor
     public class PMRSearchWindow : ScriptableObject, ISearchWindowProvider
     {
         private PMRGraphView graphView;
-        private Texture2D indentationIcon;
+        protected Texture2D indentationIcon;
+
+        protected List<SearchTreeEntry> searchEntries = new List<SearchTreeEntry>();
+
         public void Initialize(PMRGraphView newGraphView)
         {
             graphView = newGraphView;
@@ -26,27 +29,19 @@ namespace PMR.GraphEditor
             List<SearchTreeEntry> searchTreeEntries = new List<SearchTreeEntry>()
             {
                 new SearchTreeGroupEntry(new GUIContent("Create Element")),
-                new SearchTreeGroupEntry(new GUIContent("Dialogue Node"), 1),
-                new SearchTreeEntry(new GUIContent("Text", indentationIcon))
-                {
-                    level = 2,
-                    userData = typeof(DialogueEditorTextNode)
-                },
-                new SearchTreeEntry(new GUIContent("Choice", indentationIcon))
-                {
-                    level = 2,
-                    userData = typeof(DialogueEditorChoiceNode)
-                },
+                //elements ici
+            };
+            searchTreeEntries.AddRange(searchEntries);
+            searchTreeEntries.AddRange(new[]
+            {
                 new SearchTreeGroupEntry(new GUIContent("Group"), 1),
                 new SearchTreeEntry(new GUIContent("Single Group", indentationIcon))
                 {
                     level = 2,
                     userData = typeof(PMRGroup)
                 }
-            };
-
+            });
             return searchTreeEntries;
-
         }
 
         public bool OnSelectEntry(SearchTreeEntry SearchTreeEntry, SearchWindowContext context)
@@ -69,7 +64,6 @@ namespace PMR.GraphEditor
                 graphView?.AddElement(element);
                 return true;
             }
-
             return false;
         }
     }

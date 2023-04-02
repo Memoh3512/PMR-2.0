@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace PMR.GraphEditor
@@ -9,7 +6,10 @@ namespace PMR.GraphEditor
     public class PMRDialogueEditorGraphView : PMRGraphView
     {
 
-        public PMRDialogueEditorGraphView(PMRGraphEditorWindow newEditorWindow) : base(newEditorWindow) { }
+        public PMRDialogueEditorGraphView(PMRDialogueEditor newEditorWindow) : base(newEditorWindow)
+        {
+            AddSearchWindow<PMRDialogueEditorSearchWindow>();
+        }
         
         protected override IManipulator CreateNodeContextualMenu()
         {
@@ -19,7 +19,6 @@ namespace PMR.GraphEditor
                     menuEvent.menu.AppendAction("Add Text Node", actionEvent => AddElement(CreateNode<DialogueEditorTextNode>("NewTextNode", actionEvent.eventInfo.localMousePosition)));
                     menuEvent.menu.AppendAction("Add Choice Node", actionEvent => AddElement(CreateNode<DialogueEditorChoiceNode>("NewChoiceNode", actionEvent.eventInfo.localMousePosition)));
                 });
-
             return contextualMenuManipulator;
         }
     }

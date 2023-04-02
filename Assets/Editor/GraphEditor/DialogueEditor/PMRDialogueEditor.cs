@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 namespace PMR.GraphEditor
 {
     public class PMRDialogueEditor : PMRGraphEditorWindow
     {
-        [MenuItem("Window/PMR/Dialogue Editor")]
+        [MenuItem("PMR/Dialogue Editor")]
         protected static void Open()
         {
             Open<PMRDialogueEditor>("Dialogue Editor");
@@ -16,7 +13,7 @@ namespace PMR.GraphEditor
         public PMRDialogueEditor()
         {
             folderName = "DialogueEditor";
-            defaultFilename = "MyDialogueEditor"; //Make sure to set this value every time for arrangement
+            defaultFilename = "MyDialogue"; //Make sure to set this value every time for arrangement
         }
 
         protected override void OnEnable()
