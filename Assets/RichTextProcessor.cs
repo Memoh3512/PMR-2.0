@@ -12,6 +12,8 @@ namespace PMR
         private TextMeshProUGUI textComp;
         public TextSettings textSettings;
 
+        private Dictionary<int, Vector3> posBases = new Dictionary<int, Vector3>();
+
         private static readonly string[] CustomLinkTags =
         {
             "t",
@@ -80,8 +82,9 @@ namespace PMR
 
                 Color32[] newColors = originalTextInfo[materialIndex].colors32;
                 Vector3[] newVertices = originalTextInfo[materialIndex].vertices;
- 
-                Vector3 offset = new Vector2(0, Mathf.Sin((time * textSettings.waveLength) + (i))) * textSettings.waveHeight;
+
+                float sin = Mathf.Sin((time * textSettings.waveLength) + i);
+                Vector3 offset = new Vector2(0, sin) * textSettings.waveHeight;
                 // Loop all vertexes of the current characters
                 for (int j = 0; j < 4; j++)
                 {
@@ -90,14 +93,16 @@ namespace PMR
                    
                     // Offset and Rainbow effects, replace it with any other effect you want.
                     Color32 rainbow = Color.HSVToRGB(((time) + (vertexIndex * (0.001f))) % 1f, 1f, 1f);
-                   
+
+                    if (!posBases.ContainsKey(vertexIndex)) posBases.Add(vertexIndex, newVertices[vertexIndex]);
+                    
                     // Sets the new effects
                     newColors[vertexIndex] = rainbow;
-                    newVertices[vertexIndex] += offset;
+                    newVertices[vertexIndex] = posBases[vertexIndex] + offset;
                 }
 
                 textComp.textInfo.meshInfo[materialIndex].colors32 = newColors;
-                textComp.textInfo.meshInfo[materialIndex].vertices = newVertices;
+                
             }  
         }
         
