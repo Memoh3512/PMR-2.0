@@ -9,10 +9,28 @@ namespace PMR
     public class RichTextProcessor : MonoBehaviour
     {
 
+        struct CustomTag
+        {
+            public string tag;
+            public string entryTag;
+            public string exitTag;
+            public CustomTag(string _tag, string _entryTag, string _exitTag)
+            {
+                tag = _tag;
+                entryTag = _entryTag;
+                exitTag = _exitTag;
+            }
+        }
+        
         private TextMeshProUGUI textComp;
         public TextSettings textSettings;
 
         private Dictionary<int, Vector3> posBases = new Dictionary<int, Vector3>();
+
+        private static readonly CustomTag[] CustomTags =
+        {
+            new CustomTag("w", "<b><font=\"pmdialog SDF\" material=\"pmdialog_Rainbow\"><w>", "</b></w></font>"),
+        };
 
         private static readonly string[] CustomLinkTags =
         {
@@ -21,17 +39,23 @@ namespace PMR
             "w",
             "star",
         };
-
-        public static string ProcessTextTags(string text)
+        
+        private static string ProcessTags(string text)
         {
-            string tagStart, tagEnd, linkStart;
+            foreach (CustomTag tag in CustomTags)
+            {
+                text = text.Replace($"<{tag.tag}>", tag.entryTag);
+                text = text.Replace($"</{tag.tag}>", tag.exitTag);
+            }
+            return text;
+        }
+
+        private static string ProcessLinkTags(string text)
+        {
             foreach (string tag in CustomLinkTags)
             {
-                tagStart = $"<{tag}>";
-                tagEnd = $"</{tag}>";
-                linkStart = $"<link=\"{tag}\">";
-                text = text.Replace(tagStart, linkStart);
-                text = text.Replace(tagEnd, "</link>");
+                text = text.Replace($"<{tag}>", $"<link=\"{tag}\">");
+                text = text.Replace($"</{tag}>", "</link>");
             }
             return text;
         }
@@ -40,13 +64,22 @@ namespace PMR
         void Start()
         {
             textComp = GetComponent<TextMeshProUGUI>();
-            textComp.text = ProcessTextTags(textComp.text);
-            textComp.ForceMeshUpdate();
             
-            originalTextInfo = (TMP_MeshInfo[])textComp.textInfo.meshInfo.Clone();
-        }
+            //process tags
+            string text = textComp.text;
+            text = ProcessTags(text);
+            textComp.text = ProcessLinkTags(text);
+            
+            textComp.ForceMeshUpdate();
 
-        private TMP_MeshInfo[] originalTextInfo;
+            if (textSettings == null)
+            {
+                Debug.LogError("No settings attached to text processor!");
+                gameObject.SetActive(false);
+                return;
+            }
+            
+        }
 
         // Update is called once per frame
         void Update()
@@ -55,14 +88,12 @@ namespace PMR
 
             //process custom link tags
             var info = textComp.textInfo;
-
-            //TODO Build table avec valeurs originales selon le material index de couleurs et vertex positions
             
             foreach (var linkInfo in info.linkInfo)
             {
                 switch (linkInfo.GetLinkID())
                 {
-                    case "star": Wave(linkInfo); break;
+                    case "w": Wave(linkInfo); break;
                 }
             }
             
@@ -73,36 +104,35 @@ namespace PMR
 
         void Wave(TMP_LinkInfo linkInfo)
         {
+
+            if (textSettings.waveMaterial == null)
+            {
+                Debug.LogError("No material set in settings for wave effect!");
+                return;
+            }
+            
             float time = Time.realtimeSinceStartup;
             // Loops all characters containing the rainbow link.
             for (int i = linkInfo.linkTextfirstCharacterIndex; i < linkInfo.linkTextfirstCharacterIndex + linkInfo.linkTextLength; i++)
             {
                 TMP_CharacterInfo charInfo = textComp.textInfo.characterInfo[i]; // Gets info on the current character
+                
                 int materialIndex = charInfo.materialReferenceIndex; // Gets the index of the current character material
 
-                Color32[] newColors = originalTextInfo[materialIndex].colors32;
-                Vector3[] newVertices = originalTextInfo[materialIndex].vertices;
-
+                Vector3[] vertices = textComp.textInfo.meshInfo[materialIndex].vertices;
                 float sin = Mathf.Sin((time * textSettings.waveLength) + i);
                 Vector3 offset = new Vector2(0, sin) * textSettings.waveHeight;
+
                 // Loop all vertexes of the current characters
                 for (int j = 0; j < 4; j++)
                 {
                     if (charInfo.character == ' ') continue; // Skips spaces
                     int vertexIndex = charInfo.vertexIndex + j;
-                   
-                    // Offset and Rainbow effects, replace it with any other effect you want.
-                    Color32 rainbow = Color.HSVToRGB(((time) + (vertexIndex * (0.001f))) % 1f, 1f, 1f);
-
-                    if (!posBases.ContainsKey(vertexIndex)) posBases.Add(vertexIndex, newVertices[vertexIndex]);
+                    if (!posBases.ContainsKey(vertexIndex)) posBases.Add(vertexIndex, vertices[vertexIndex]);
                     
                     // Sets the new effects
-                    newColors[vertexIndex] = rainbow;
-                    newVertices[vertexIndex] = posBases[vertexIndex] + offset;
+                    vertices[vertexIndex] = posBases[vertexIndex] + offset;
                 }
-
-                textComp.textInfo.meshInfo[materialIndex].colors32 = newColors;
-                
             }  
         }
         

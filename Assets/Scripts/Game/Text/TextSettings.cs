@@ -10,6 +10,7 @@ namespace PMR
         [Header("Wave")] 
         public float waveLength = 1;
         public float waveHeight = 1;
+        public Material waveMaterial;
 
     }
 }

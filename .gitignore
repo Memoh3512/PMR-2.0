@@ -64,3 +64,13 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+
+Assets/FastScriptReload/
+
+Assets/Plugins/
+
+Assets/Plugins.meta
+
+Assets/FastScriptReload.meta
+
+UserSettings/

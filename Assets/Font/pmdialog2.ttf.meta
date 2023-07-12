@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7740e95a9077c1747b4e6eb83142a78e
+guid: dca12df3b0e52a244b398872442a1aa7
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - PM Dialog
+  - pmdialog2
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
