@@ -6,14 +6,14 @@ using UnityEngine;
 namespace PMR
 {
     using ScriptableObjects;
-    
-    public class Dialogue : MonoBehaviour
+    [CreateAssetMenu(fileName = "DialogueInstance", menuName = "PMR/Create Dialogue Instance", order = 0)]
+    public class Dialogue : ScriptableObject
     {
 
         //Dialogue scriptable objects
         [SerializeField] private PMRContainerSO dialogueContainer;
         [SerializeField] private PMRGroupSO dialogueGroup;
-        [SerializeField] public PMRDialogueSO dialogue;
+        [SerializeField] public PMRGraphSO dialogue;
         
         //filters
         [SerializeField] private bool groupedDialogues;
@@ -22,17 +22,5 @@ namespace PMR
         //indexes
         [SerializeField] private string selectedGroup;
         [SerializeField] private string selectedDialogue;
-        
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
     }
 }

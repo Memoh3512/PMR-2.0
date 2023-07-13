@@ -15,5 +15,11 @@ namespace PMR.ScriptableObjects
             Name = newName;
             IsStartingNode = isStartingNode;
         }
+
+        public virtual PMRGraphSO Execute()
+        {
+            Debug.LogWarning($"Executing a PMRGraphSO that has no Execute() method! {Name}");
+            return null;
+        }
     }
 }
