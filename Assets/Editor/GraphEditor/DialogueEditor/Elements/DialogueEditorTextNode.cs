@@ -77,21 +77,21 @@ namespace PMR.GraphEditor.Elements
 
         public override PMRGraphSO CreateRuntimeSaveData(string path, string fileName)
         {
-            PMRDialogueSO dialogueSO = PMRIOUtility.CreateAsset<PMRDialogueSO>(path, fileName);
-            dialogueSO.Initialize(NodeName);
-            dialogueSO.Text = DialogueText;
-            dialogueSO.IsStartingNode = !((PMRPort) inputContainer.Children().First()).connected;
+            PMRDialogueSO dialogueSo = PMRIOUtility.CreateAsset<PMRDialogueSO>(path, fileName);
+            dialogueSo.Initialize(NodeName);
+            dialogueSo.Text = DialogueText;
+            dialogueSo.IsStartingNode = !((PMRPort) inputContainer.Children().First()).connected;
             
-            return dialogueSO;
+            return dialogueSo;
         }
 
         public override void SaveConnections(PMRGraphSO nodeSo, Dictionary<string, PMRGraphSO> createdNodes)
         {
-            PMRDialogueSO dialogueSO = (PMRDialogueSO)nodeSo;
+            PMRDialogueSO dialogueSo = (PMRDialogueSO)nodeSo;
             if (string.IsNullOrEmpty(NextNodeID)) return; //validation d'un coup qu'on delete une connection de maniere bizarre
             if (createdNodes.ContainsKey(NextNodeID))
             {
-                dialogueSO.NextNode = createdNodes[NextNodeID];
+                dialogueSo.NextNode = createdNodes[NextNodeID];
             }
         }
 

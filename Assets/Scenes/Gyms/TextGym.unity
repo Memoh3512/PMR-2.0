@@ -436,6 +436,7 @@ GameObject:
   - component: {fileID: 1547287204}
   - component: {fileID: 1547287203}
   - component: {fileID: 1547287202}
+  - component: {fileID: 1547287206}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -525,6 +526,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1547287206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547287201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4715c4556a1491438b0c50beaa42b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playDialogueOnStart: 1
+  dialogueToAutoPlay: {fileID: 11400000, guid: 94f5da2c92e1ea34ba9a671d81081f87, type: 2}
+  textObject: {fileID: 1977562034}
 --- !u!1 &1977562034
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,9 +752,9 @@ MonoBehaviour:
   isResettingTimeOnNewText: 1
   useDefaultDatabases: 1
   databaseBehaviors: {fileID: 11400000, guid: 69a93e2ffc0ebd84f9980867b2614f15, type: 2}
-  databaseAppearances: {fileID: 11400000, guid: 37d76e1e98b830848a81d55ce1382855,
+  databaseAppearances: {fileID: 11400000, guid: 2aebf9e2f5a0ad64a9d9b4165ea4e796,
     type: 2}
-  databaseActions: {fileID: 11400000, guid: dde7bb1be05b1f044be1ad4d85edbb9e, type: 2}
+  databaseActions: {fileID: 11400000, guid: 5d138b610ef5d5f49b48f75f2211b357, type: 2}
   defaultAppearancesTags: []
   defaultDisappearancesTags: []
   defaultBehaviorsTags: []
@@ -889,7 +905,7 @@ MonoBehaviour:
   waitLong: 0.6
   waitMiddle: 0.2
   avoidMultiplePunctuactionWait: 0
-  waitForNewLines: 1
+  waitForNewLines: 0
   waitForLastCharacter: 0
   useTypewriterWaitForDisappearances: 1
   disappearanceWaitTime: 0.015

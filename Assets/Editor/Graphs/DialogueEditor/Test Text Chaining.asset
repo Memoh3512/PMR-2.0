@@ -15,12 +15,12 @@ MonoBehaviour:
   <FileName>k__BackingField: Test Text Chaining
   <Groups>k__BackingField: []
   <Nodes>k__BackingField:
-  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"<r>Bonanza</r>!
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"<c>Bonanza</c>!
     soos","NextNodeID":null,"ID":"8b4d6000-765c-49fb-bf2c-0caf813efcb6","GroupID":null,"Name":"2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":970.4,"Y":246.400009}}'
+    Assembly-CSharp-Editor","X":970.0,"Y":246.0}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Hello!
     I am feeling <w>wavy</w>! Hope OU raving a wonderfun day\naasads.....","NextNodeID":"8b4d6000-765c-49fb-bf2c-0caf813efcb6","ID":"73f5aa6e-1d67-45ab-85a4-06b946da0580","GroupID":null,"Name":"1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":426.4,"Y":246.400009}}'
+    Assembly-CSharp-Editor","X":426.0,"Y":246.0}}'
   <OldGroupIDs>k__BackingField: []
   <OldNodeIDs>k__BackingField:
   - 8b4d6000-765c-49fb-bf2c-0caf813efcb6

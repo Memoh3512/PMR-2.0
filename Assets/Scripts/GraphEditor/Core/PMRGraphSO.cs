@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PMR.ScriptableObjects
 {
-    public class PMRGraphSO : ScriptableObject
+    public class PMRGraphSO : ScriptableObject, IGraphExecutable
     {
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public bool IsStartingNode { get; set; }
@@ -15,8 +15,7 @@ namespace PMR.ScriptableObjects
             Name = newName;
             IsStartingNode = isStartingNode;
         }
-
-        public virtual PMRGraphSO Execute()
+        public virtual GraphExecutionResult Execute(GraphExecutionContext context)
         {
             Debug.LogWarning($"Executing a PMRGraphSO that has no Execute() method! {Name}");
             return null;

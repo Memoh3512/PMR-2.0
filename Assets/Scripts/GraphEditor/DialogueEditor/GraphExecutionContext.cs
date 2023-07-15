@@ -3,18 +3,18 @@ using UnityEngine.Assertions;
 
 namespace PMR.ScriptableObjects
 {
-    public class DialogueExecutionContext
+    public class GraphExecutionContext
     {
         public DialoguePlayer DialoguePlayer { get; }
         public GameObject Source { get; }
         public GameObject Target { get; }
         
-        public DialogueExecutionContext(DialoguePlayer dialoguePlayer)
+        public GraphExecutionContext(DialoguePlayer dialoguePlayer)
         {
             DialoguePlayer = dialoguePlayer;
         }
 
-        public DialogueExecutionContext(DialoguePlayer dialoguePlayer, GameObject source, GameObject target)
+        public GraphExecutionContext(DialoguePlayer dialoguePlayer, GameObject source, GameObject target)
         {
             DialoguePlayer = dialoguePlayer;
             Source = source;
@@ -22,29 +22,29 @@ namespace PMR.ScriptableObjects
         }
     }
 
-    public class DialogueExecutionResult
+    public class GraphExecutionResult
     {
-        public DialogueExecutionStatus Status { get; set; }
+        public GraphExecutionStatus Status { get; set; }
         public PMRGraphSO NextNode { get; set; }
 
-        public DialogueExecutionResult(DialogueExecutionStatus status, PMRGraphSO nextNode)
+        public GraphExecutionResult(GraphExecutionStatus status, PMRGraphSO nextNode)
         {
             Status = status;
             NextNode = nextNode;
             
-            Assert.IsTrue(status != DialogueExecutionStatus.Continue || nextNode != null, 
+            Assert.IsTrue(status != GraphExecutionStatus.Continue || nextNode != null, 
                 $"Execution status set to \"Continue\" but next node is null! {GetType()}");
         }
-        public DialogueExecutionResult(DialogueExecutionStatus status)
+        public GraphExecutionResult(GraphExecutionStatus status)
         {
             Status = status;
             
-            Assert.IsTrue(status != DialogueExecutionStatus.Continue, 
+            Assert.IsTrue(status != GraphExecutionStatus.Continue, 
                 $"Execution status set to \"Continue\" but next node is null! {GetType()}");
         }
     }
 
-    public enum DialogueExecutionStatus
+    public enum GraphExecutionStatus
     {
         Continue,
         Stop,
