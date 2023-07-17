@@ -15,10 +15,10 @@ namespace PMR.ScriptableObjects
             Name = newName;
             IsStartingNode = isStartingNode;
         }
-        public virtual GraphExecutionResult Execute(GraphExecutionContext context)
+
+        public virtual void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback)
         {
             Debug.LogWarning($"Executing a PMRGraphSO that has no Execute() method! {Name}");
-            return null;
         }
     }
 }

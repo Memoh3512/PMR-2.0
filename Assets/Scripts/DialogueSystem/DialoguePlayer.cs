@@ -1,10 +1,9 @@
-   using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Febucci.UI;
 using PMR.ScriptableObjects;
+using UnityEngine.Events;
 
-namespace PMR
+   namespace PMR
 {
     public class DialoguePlayer : MonoBehaviour, IGraphExecutor
     {
@@ -20,7 +19,11 @@ namespace PMR
         private PMRGraphSO nextNodeToExecute;
         private GraphExecutionContext currentContext;
         private bool DisplayingText = false;
-        
+
+        public UnityEvent OnDialogueEnd;
+        public UnityEvent OnDialogueStart;
+        public UnityEvent OnDialogueAdvance;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -72,6 +75,8 @@ namespace PMR
             //TODO context.Source = player;
             //TODO context.Target = other;
             ExecuteDialogueNode(dialogue.dialogue, currentContext);
+            
+            OnDialogueStart.Invoke();
         }
 
         void EndDialogue()
@@ -83,25 +88,36 @@ namespace PMR
             typeWriter = null;
             Destroy(textObject);
             textObject = null;
+            
+            OnDialogueEnd.Invoke();
         }
 
         public void ExecuteDialogueNode(IGraphExecutable node, GraphExecutionContext context)
         {
             if (node == null)
             {
-                Debug.LogError("Trying to execute null node in ExecuteDialogueNode!");
+                //end of dialogue (we get here when previous node was text and there is no next node
+                EndDialogue();
                 return;
             }
 
-            GraphExecutionResult result = node.Execute(context);
-
-            if (result.Status == GraphExecutionStatus.Continue)
+            node.Execute(context, OnNodeExecutionFinished);
+        }
+        
+        void OnNodeExecutionFinished(GraphExecutionResult result)
+        {
+            switch (result.Status)
             {
-                result.NextNode.Execute(context);
-                nextNodeToExecute = result.NextNode;
-            } else if (result.Status == GraphExecutionStatus.Wait)
-            {
-                nextNodeToExecute = result.NextNode;
+                case GraphExecutionStatus.Continue:
+                    //nextNodeToExecute = result.NextNode; Re-add maybe? If needed
+                    ExecuteDialogueNode(result.NextNode, currentContext);
+                    break;
+                case GraphExecutionStatus.Wait:
+                    nextNodeToExecute = result.NextNode;
+                    break;
+                case GraphExecutionStatus.Stop:
+                    EndDialogue();
+                    break;
             }
         }
 
@@ -112,6 +128,8 @@ namespace PMR
                 typeWriter.ShowText(text);
                 typeWriter.StartShowingText(true);
                 DisplayingText = true;
+                
+                OnDialogueAdvance.Invoke();
             }
         }
     }

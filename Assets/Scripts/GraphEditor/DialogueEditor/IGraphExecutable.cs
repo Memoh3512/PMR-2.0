@@ -1,7 +1,9 @@
-﻿namespace PMR.ScriptableObjects
+﻿using System;
+
+namespace PMR.ScriptableObjects
 {
     public interface IGraphExecutable
     {
-        public GraphExecutionResult Execute(GraphExecutionContext context);
+        public void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback);
     }
 }
