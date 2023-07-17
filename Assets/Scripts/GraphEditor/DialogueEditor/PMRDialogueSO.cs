@@ -11,10 +11,9 @@ namespace PMR.ScriptableObjects
         public override GraphExecutionResult Execute(GraphExecutionContext context)
         {
             context.DialoguePlayer.TriggerText(Text);
-            
-            GraphExecutionResult result = new GraphExecutionResult(GraphExecutionStatus.Wait);
-            result.NextNode = NextNode;
-            return result;
+
+            GraphExecutionStatus status = NextNode == null ? GraphExecutionStatus.Stop : GraphExecutionStatus.Wait;
+            return new GraphExecutionResult(status, NextNode);
         }
     }
 }

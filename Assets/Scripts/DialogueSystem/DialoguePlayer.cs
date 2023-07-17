@@ -12,13 +12,15 @@ namespace PMR
         [SerializeField] private bool playDialogueOnStart;
         [SerializeField] private Dialogue dialogueToAutoPlay;
 
-        [SerializeField] private GameObject textObject;
+        [SerializeField] private GameObject textPrefab;
 
+        private GameObject textObject;
         private TypewriterByCharacter typeWriter;
+        
         private PMRGraphSO nextNodeToExecute;
         private GraphExecutionContext currentContext;
-
         private bool DisplayingText = false;
+        
         // Start is called before the first frame update
         void Start()
         {
@@ -54,20 +56,33 @@ namespace PMR
         /// <param name="dialogue"></param>
         public void PlayDialogue(Dialogue dialogue)
         {
-            
             //TODO spawn dialogue box and hookup to it
+
+            textObject = Instantiate(textPrefab);
+            
             if (textObject == null)
             {
                 Debug.LogError($"Trying to play dialogue that has a null text object! {gameObject.name}");
             }
 
-            typeWriter = textObject.GetComponent<TypewriterByCharacter>();
+            typeWriter = textObject.GetComponentInChildren<TypewriterByCharacter>();
             typeWriter.onTextShowed.AddListener(OnTextShowed);
-                
+            
             currentContext = new GraphExecutionContext(this);
             //TODO context.Source = player;
             //TODO context.Target = other;
             ExecuteDialogueNode(dialogue.dialogue, currentContext);
+        }
+
+        void EndDialogue()
+        {
+            //clean up
+            currentContext = null;
+            nextNodeToExecute = null;
+            
+            typeWriter = null;
+            Destroy(textObject);
+            textObject = null;
         }
 
         public void ExecuteDialogueNode(IGraphExecutable node, GraphExecutionContext context)
@@ -95,6 +110,7 @@ namespace PMR
             if (typeWriter != null)
             {
                 typeWriter.ShowText(text);
+                typeWriter.StartShowingText(true);
                 DisplayingText = true;
             }
         }
