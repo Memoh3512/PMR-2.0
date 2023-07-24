@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 921a90cdaf296ce43b2b7579df61f9fe, type: 3}
+  m_Name: a24c8004-5090-4fa4-b028-833021dcffd1
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: 3 (choice)
+  <IsStartingNode>k__BackingField: 0
+  <Text>k__BackingField: Do you agree with <t>me</t>???
+  <Choices>k__BackingField:
+  - <Text>k__BackingField: Yes
+    <NextDialogue>k__BackingField: {fileID: 0}
+  - <Text>k__BackingField: No I do not agree
+    <NextDialogue>k__BackingField: {fileID: 0}
+  - <Text>k__BackingField: idk fuck you
+    <NextDialogue>k__BackingField: {fileID: 0}

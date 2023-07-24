@@ -8,7 +8,7 @@ namespace PMR.ScriptableObjects
         public DialoguePlayer DialoguePlayer { get; }
         public GameObject Source { get; }
         public GameObject Target { get; }
-        
+
         public GraphExecutionContext(DialoguePlayer dialoguePlayer)
         {
             DialoguePlayer = dialoguePlayer;

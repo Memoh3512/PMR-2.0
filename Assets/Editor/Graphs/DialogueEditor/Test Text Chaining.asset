@@ -16,14 +16,22 @@ MonoBehaviour:
   <Groups>k__BackingField: []
   <Nodes>k__BackingField:
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"<c>Bonanza</c>!
-    soos","NextNodeID":null,"ID":"8b4d6000-765c-49fb-bf2c-0caf813efcb6","GroupID":null,"Name":"2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":970.0,"Y":246.0}}'
+    soos","NextNodeID":"a24c8004-5090-4fa4-b028-833021dcffd1","ID":"8b4d6000-765c-49fb-bf2c-0caf813efcb6","GroupID":null,"Name":"2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":970.4,"Y":245.599991}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"Hello!
     I am feeling <w>wavy</w>! Hope OU raving a wonderfun day\naasads.....","NextNodeID":"8b4d6000-765c-49fb-bf2c-0caf813efcb6","ID":"73f5aa6e-1d67-45ab-85a4-06b946da0580","GroupID":null,"Name":"1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
-    Assembly-CSharp-Editor","X":426.0,"Y":246.0}}'
+    Assembly-CSharp-Editor","X":451.2,"Y":245.599991}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueChoiceSaveData, Assembly-CSharp-Editor","Choices":{"$type":"System.Collections.Generic.List`1[[PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor]], mscorlib","$values":[{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"Yes","NodeID":null},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"No I do not agree","NodeID":null},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"idk fuck you","NodeID":null}]},"Text":"Do you
+    agree with <t>me</t>???","NextNodeID":null,"ID":"a24c8004-5090-4fa4-b028-833021dcffd1","GroupID":null,"Name":"3
+    (choice)","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2, Assembly-CSharp-Editor","X":1278.3999,"Y":245.599991}}'
   <OldGroupIDs>k__BackingField: []
   <OldNodeIDs>k__BackingField:
   - 8b4d6000-765c-49fb-bf2c-0caf813efcb6
   - 73f5aa6e-1d67-45ab-85a4-06b946da0580
+  - a24c8004-5090-4fa4-b028-833021dcffd1
   <OldGroupedNodeIDs>k__BackingField:
     list: []

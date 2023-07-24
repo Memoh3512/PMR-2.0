@@ -7,20 +7,30 @@ namespace PMR
 {
     public class PMRSelectable : MonoBehaviour
     {
-        [SerializeField] private Vector2 cursorOffset;
-        [SerializeField] private PMRSelectable leftElement;
-        [SerializeField] private PMRSelectable rightElement;
-        [SerializeField] private PMRSelectable upElement;
-        [SerializeField] private PMRSelectable downElement;
+        public Vector2 cursorOffset;
+        public PMRSelectable leftElement;
+        public PMRSelectable rightElement;
+        public PMRSelectable upElement;
+        public PMRSelectable downElement;
 
         //Events
-        public UnityEvent OnCursorEnter;
-        public UnityEvent OnCursorExit;
-        public UnityEvent OnSelect;
+        [SerializeField] private UnityEvent OnCursorEnter;
+        [SerializeField] private UnityEvent OnCursorExit;
+        [SerializeField] private UnityEvent OnSelect;
 
         public void Select()
         {
             OnSelect.Invoke();
+        }
+
+        public void OnEnter()
+        {
+            OnCursorEnter.Invoke();
+        }
+
+        public void OnExit()
+        {
+            OnCursorExit.Invoke();
         }
     }
 }

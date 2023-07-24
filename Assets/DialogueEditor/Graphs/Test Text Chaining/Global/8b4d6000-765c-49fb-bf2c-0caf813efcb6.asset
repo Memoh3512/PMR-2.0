@@ -15,4 +15,5 @@ MonoBehaviour:
   <Name>k__BackingField: 2
   <IsStartingNode>k__BackingField: 0
   <Text>k__BackingField: <c>Bonanza</c>! soos
-  <NextNode>k__BackingField: {fileID: 0}
+  <NextNode>k__BackingField: {fileID: 11400000, guid: ec040865e9dfc394e977a757b6183de3,
+    type: 2}

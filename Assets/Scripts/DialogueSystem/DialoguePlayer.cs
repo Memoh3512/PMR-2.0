@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 using Febucci.UI;
 using PMR.ScriptableObjects;
@@ -12,6 +13,11 @@ using UnityEngine.Events;
         [SerializeField] private Dialogue dialogueToAutoPlay;
 
         [SerializeField] private GameObject textPrefab;
+        
+        [Category("Customization")] 
+        public GameObject ChoiceMenu;
+        [Category("Customization")] 
+        public GameObject ChoicePrefab;
 
         private GameObject textObject;
         private TypewriterByCharacter typeWriter;

@@ -15,18 +15,25 @@ namespace PMR
         {
             if (spawnCursorOnStart)
             {
-                SpawnCursor();
+                SpawnCursor(defaultSelectedItem);
             }
         }
 
-        private void SpawnCursor()
+        public void SpawnCursor(PMRSelectable selectedItem)
         {
             GameObject cursorPrefab = PMRSettings.menuSettings.DefaultMenuCursor;
 
             GameObject cursorInstance = Instantiate(cursorPrefab, transform);
 
-            cursorInstance.transform.position = defaultSelectedItem.transform.position;
+            PMRMenuCursor cursorComponent = cursorInstance.GetComponent<PMRMenuCursor>();
 
+            if (cursorComponent is null)
+            {
+                Debug.LogError($"Trying to instantiate menu cursor prefab that has no cursor component! {cursorPrefab.name}");
+                return;
+            }
+            
+            cursorComponent.Init(selectedItem);
         }
     }
 }

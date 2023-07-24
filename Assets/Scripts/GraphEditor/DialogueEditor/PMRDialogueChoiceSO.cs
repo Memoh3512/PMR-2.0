@@ -1,6 +1,5 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using PMR.ScriptableObjects;
 using UnityEngine;
 
 namespace PMR.ScriptableObjects
@@ -10,6 +9,22 @@ namespace PMR.ScriptableObjects
 
         [field: SerializeField] [field: TextArea()] public string Text { get; set; }
         [field: SerializeField] public List<PMRDialogueChoiceSOData> Choices { get; set; }
+        
+        public override void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback)
+        {
+            context.DialoguePlayer.TriggerText(Text);
+
+            GameObject menuPrefab = context.DialoguePlayer.ChoiceMenu == null
+                ? PMRSettings.menuSettings.DefaultChoiceMenu
+                : context.DialoguePlayer.ChoiceMenu;
+            GameObject choiceMenuInstance = Instantiate(menuPrefab);
+
+            PMRChoiceMenu choiceMenuComponent = choiceMenuInstance.GetComponent<PMRChoiceMenu>();
+            choiceMenuComponent.SetChoices(Choices);
+
+            GraphExecutionStatus status = GraphExecutionStatus.Wait;
+            finishedCallback(new GraphExecutionResult(status, null));
+        }
         
     }
 }
