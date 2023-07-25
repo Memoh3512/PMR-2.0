@@ -23,15 +23,33 @@ MonoBehaviour:
     Assembly-CSharp-Editor","X":451.2,"Y":245.599991}}'
   - '{"$type":"PMR.GraphEditor.Save.PMRDialogueChoiceSaveData, Assembly-CSharp-Editor","Choices":{"$type":"System.Collections.Generic.List`1[[PMR.GraphEditor.Save.PMRChoiceSaveData,
     Assembly-CSharp-Editor]], mscorlib","$values":[{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
-    Assembly-CSharp-Editor","Text":"Yes","NodeID":null},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
-    Assembly-CSharp-Editor","Text":"No I do not agree","NodeID":null},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
-    Assembly-CSharp-Editor","Text":"idk fuck you","NodeID":null}]},"Text":"Do you
-    agree with <t>me</t>???","NextNodeID":null,"ID":"a24c8004-5090-4fa4-b028-833021dcffd1","GroupID":null,"Name":"3
+    Assembly-CSharp-Editor","Text":"Yes","NodeID":"70bf9c66-327e-46c7-b7a1-d6fc271feee4"},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"No I do not agree","NodeID":"bb85d910-9066-47fd-9e5b-2e130a717b1a"},{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"idk fuck you","NodeID":"647ac29c-114c-4eac-ae64-90cfccc9522b"}]},"Text":"Do
+    you agree with <t>me</t>???","NextNodeID":null,"ID":"a24c8004-5090-4fa4-b028-833021dcffd1","GroupID":null,"Name":"3
     (choice)","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2, Assembly-CSharp-Editor","X":1278.3999,"Y":245.599991}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"You
+    Chose <b>Yes</>!","NextNodeID":null,"ID":"70bf9c66-327e-46c7-b7a1-d6fc271feee4","GroupID":null,"Name":"c1","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":1641.6,"Y":79.2}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueChoiceSaveData, Assembly-CSharp-Editor","Choices":{"$type":"System.Collections.Generic.List`1[[PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor]], mscorlib","$values":[{"$type":"PMR.GraphEditor.Save.PMRChoiceSaveData,
+    Assembly-CSharp-Editor","Text":"New Choice","NodeID":null}]},"Text":"you Chose
+    :: <t>No I do not agree</>...","NextNodeID":null,"ID":"bb85d910-9066-47fd-9e5b-2e130a717b1a","GroupID":null,"Name":"c2","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":1641.6,"Y":293.599976}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"you
+    chose <c>idk fuck you<c>???","NextNodeID":"c9a98dc9-12d7-4c2e-b263-e6b9e583c4f2","ID":"647ac29c-114c-4eac-ae64-90cfccc9522b","GroupID":null,"Name":"c3","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":1641.6,"Y":524.0}}'
+  - '{"$type":"PMR.GraphEditor.Save.PMRDialogueSaveData, Assembly-CSharp-Editor","Text":"How
+    <w>rude</w>...","NextNodeID":null,"ID":"c9a98dc9-12d7-4c2e-b263-e6b9e583c4f2","GroupID":null,"Name":"c3-followup","Position":{"$type":"PMR.GraphEditor.Utilities.PMRVector2,
+    Assembly-CSharp-Editor","X":1944.0,"Y":524.0}}'
   <OldGroupIDs>k__BackingField: []
   <OldNodeIDs>k__BackingField:
   - 8b4d6000-765c-49fb-bf2c-0caf813efcb6
   - 73f5aa6e-1d67-45ab-85a4-06b946da0580
   - a24c8004-5090-4fa4-b028-833021dcffd1
+  - 70bf9c66-327e-46c7-b7a1-d6fc271feee4
+  - bb85d910-9066-47fd-9e5b-2e130a717b1a
+  - 647ac29c-114c-4eac-ae64-90cfccc9522b
+  - c9a98dc9-12d7-4c2e-b263-e6b9e583c4f2
   <OldGroupedNodeIDs>k__BackingField:
     list: []

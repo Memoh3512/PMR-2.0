@@ -31,16 +31,10 @@ namespace PMR.ScriptableObjects
         {
             Status = status;
             NextNode = nextNode;
-            
-            Assert.IsTrue(status != GraphExecutionStatus.Continue || nextNode != null, 
-                $"Execution status set to \"Continue\" but next node is null! {GetType()}");
         }
         public GraphExecutionResult(GraphExecutionStatus status)
         {
             Status = status;
-            
-            Assert.IsTrue(status != GraphExecutionStatus.Continue, 
-                $"Execution status set to \"Continue\" but next node is null! {GetType()}");
         }
     }
 

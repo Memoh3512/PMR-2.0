@@ -14,9 +14,9 @@ namespace PMR
         public PMRSelectable downElement;
 
         //Events
-        [SerializeField] private UnityEvent OnCursorEnter;
-        [SerializeField] private UnityEvent OnCursorExit;
-        [SerializeField] private UnityEvent OnSelect;
+        public UnityEvent OnCursorEnter;
+        public UnityEvent OnCursorExit;
+        public UnityEvent OnSelect;
 
         public void Select()
         {

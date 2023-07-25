@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Febucci.UI;
 using PMR.ScriptableObjects;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PMR
 {
@@ -16,6 +18,8 @@ namespace PMR
         [SerializeField] private float itemSpacing;
         
         private PMRCursorMenu cursorMenuComponent;
+
+        public Action<PMRDialogueChoiceSOData> OnChoiceTaken;
         private void Awake()
         {
             cursorMenuComponent = GetComponent<PMRCursorMenu>();
@@ -50,10 +54,10 @@ namespace PMR
 
                 choiceItem.name = $"Choice ({choice.Text})";
                 
-                //Set text
+                //Set Text
                 choiceItem.GetComponent<TextAnimator_TMP>().SetText(choice.Text);
-                
-                //Set navigation
+
+                //Set Navigation
                 PMRSelectable itemSelectableComp = choiceItem.GetComponent<PMRSelectable>();
                 if (firstChoice == null) firstChoice = itemSelectableComp;
                 if (lastChoice != null)
@@ -64,7 +68,10 @@ namespace PMR
                 
                 lastChoice = itemSelectableComp;
                 
-                //set pos
+                //Set Action
+                itemSelectableComp.OnSelect.AddListener(() => OnChoiceClick(choice));
+
+                //Set Pos
                 Vector3 localPosition = choiceItem.transform.localPosition;
                 localPosition = new Vector3(localPosition.x, currentY, localPosition.z);
                 choiceItem.transform.localPosition = localPosition;
@@ -72,15 +79,21 @@ namespace PMR
                 currentY -= (itemSpacing + prefabHeight);
             }
             
-            //loopover navigation
-            if (firstChoice != null && lastChoice != null)
+            //Loopover Navigation
+            if (firstChoice != null && lastChoice != null && lastChoice != firstChoice)
             {
                 firstChoice.upElement = lastChoice;
                 lastChoice.downElement = firstChoice;   
             }
             
-            //spawn cursor
+            //Spawn Cursor
             cursorMenuComponent.SpawnCursor(firstChoice);
+        }
+
+        private void OnChoiceClick(PMRDialogueChoiceSOData choice)
+        {
+            OnChoiceTaken(choice);
+            CloseMenu();
         }
 
         public void OpenMenu()

@@ -25,6 +25,7 @@ using UnityEngine.Events;
         private PMRGraphSO nextNodeToExecute;
         private GraphExecutionContext currentContext;
         private bool DisplayingText = false;
+        private bool IsChoice = false;
 
         public UnityEvent OnDialogueEnd;
         public UnityEvent OnDialogueStart;
@@ -47,7 +48,7 @@ using UnityEngine.Events;
                 {
                     typeWriter.SkipTypewriter();
                 }
-                else
+                else if (!IsChoice)
                 {
                     ExecuteDialogueNode(nextNodeToExecute, currentContext);
                 }
@@ -115,7 +116,7 @@ using UnityEngine.Events;
             switch (result.Status)
             {
                 case GraphExecutionStatus.Continue:
-                    //nextNodeToExecute = result.NextNode; Re-add maybe? If needed
+                    //nextNodeToExecute = result.NextNode; //Re-add maybe? If needed
                     ExecuteDialogueNode(result.NextNode, currentContext);
                     break;
                 case GraphExecutionStatus.Wait:
@@ -127,13 +128,14 @@ using UnityEngine.Events;
             }
         }
 
-        public void TriggerText(string text)
+        public void TriggerText(string text, bool isChoice = false)
         {
             if (typeWriter != null)
             {
                 typeWriter.ShowText(text);
                 typeWriter.StartShowingText(true);
                 DisplayingText = true;
+                IsChoice = isChoice;
                 
                 OnDialogueAdvance.Invoke();
             }

@@ -12,8 +12,8 @@ namespace PMR.ScriptableObjects
         
         public override void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback)
         {
-            context.DialoguePlayer.TriggerText(Text);
-
+            context.DialoguePlayer.TriggerText(Text, true);
+            
             GameObject menuPrefab = context.DialoguePlayer.ChoiceMenu == null
                 ? PMRSettings.menuSettings.DefaultChoiceMenu
                 : context.DialoguePlayer.ChoiceMenu;
@@ -22,8 +22,11 @@ namespace PMR.ScriptableObjects
             PMRChoiceMenu choiceMenuComponent = choiceMenuInstance.GetComponent<PMRChoiceMenu>();
             choiceMenuComponent.SetChoices(Choices);
 
-            GraphExecutionStatus status = GraphExecutionStatus.Wait;
-            finishedCallback(new GraphExecutionResult(status, null));
+            choiceMenuComponent.OnChoiceTaken += (choice) =>
+            {
+                GraphExecutionStatus status = GraphExecutionStatus.Continue;
+                finishedCallback(new GraphExecutionResult(status, choice.NextDialogue));  
+            };
         }
         
     }

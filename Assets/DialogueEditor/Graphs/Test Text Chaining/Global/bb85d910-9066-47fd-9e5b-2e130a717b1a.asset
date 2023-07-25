@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 921a90cdaf296ce43b2b7579df61f9fe, type: 3}
+  m_Name: bb85d910-9066-47fd-9e5b-2e130a717b1a
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: c2
+  <IsStartingNode>k__BackingField: 0
+  <Text>k__BackingField: 'you Chose :: <t>No I do not agree</>...'
+  <Choices>k__BackingField:
+  - <Text>k__BackingField: New Choice
+    <NextDialogue>k__BackingField: {fileID: 0}
