@@ -27,9 +27,10 @@ using UnityEngine.Events;
         private bool DisplayingText = false;
         private bool IsChoice = false;
 
-        public UnityEvent OnDialogueEnd;
         public UnityEvent OnDialogueStart;
+        public UnityEvent OnTextEnd;
         public UnityEvent OnDialogueAdvance;
+        public UnityEvent OnDialogueEnd;
 
         // Start is called before the first frame update
         void Start()
@@ -58,6 +59,7 @@ using UnityEngine.Events;
         void OnTextShowed()
         {
             DisplayingText = false;
+            OnTextEnd.Invoke();
         }
 
         /// <summary>
@@ -66,8 +68,6 @@ using UnityEngine.Events;
         /// <param name="dialogue"></param>
         public void PlayDialogue(Dialogue dialogue)
         {
-            //TODO spawn dialogue box and hookup to it
-
             textObject = Instantiate(textPrefab);
             
             if (textObject == null)
@@ -79,6 +79,8 @@ using UnityEngine.Events;
             typeWriter.onTextShowed.AddListener(OnTextShowed);
             
             currentContext = new GraphExecutionContext(this);
+            currentContext.FinishedCallback = OnNodeExecutionFinished;
+            
             //TODO context.Source = player;
             //TODO context.Target = other;
             ExecuteDialogueNode(dialogue.dialogue, currentContext);
@@ -91,8 +93,12 @@ using UnityEngine.Events;
             //clean up
             currentContext = null;
             nextNodeToExecute = null;
-            
-            typeWriter = null;
+
+            if (typeWriter != null)
+            {
+                typeWriter.onTextShowed.RemoveAllListeners();
+                typeWriter = null;   
+            }
             Destroy(textObject);
             textObject = null;
             
@@ -108,7 +114,7 @@ using UnityEngine.Events;
                 return;
             }
 
-            node.Execute(context, OnNodeExecutionFinished);
+            node.Execute(context);
         }
         
         void OnNodeExecutionFinished(GraphExecutionResult result)

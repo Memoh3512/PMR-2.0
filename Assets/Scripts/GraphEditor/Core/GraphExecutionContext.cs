@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace PMR.ScriptableObjects
@@ -8,6 +9,8 @@ namespace PMR.ScriptableObjects
         public DialoguePlayer DialoguePlayer { get; }
         public GameObject Source { get; }
         public GameObject Target { get; }
+
+        public Action<GraphExecutionResult> FinishedCallback;
 
         public GraphExecutionContext(DialoguePlayer dialoguePlayer)
         {
@@ -19,6 +22,11 @@ namespace PMR.ScriptableObjects
             DialoguePlayer = dialoguePlayer;
             Source = source;
             Target = target;
+        }
+
+        public void Finish(GraphExecutionResult result)
+        {
+            FinishedCallback(result);
         }
     }
 

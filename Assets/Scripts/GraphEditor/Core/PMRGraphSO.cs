@@ -16,7 +16,7 @@ namespace PMR.ScriptableObjects
             IsStartingNode = isStartingNode;
         }
 
-        public virtual void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback)
+        public virtual void Execute(GraphExecutionContext context)
         {
             Debug.LogWarning($"Executing a PMRGraphSO that has no Execute() method! {Name}");
         }

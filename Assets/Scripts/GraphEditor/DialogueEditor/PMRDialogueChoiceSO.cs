@@ -10,24 +10,44 @@ namespace PMR.ScriptableObjects
         [field: SerializeField] [field: TextArea()] public string Text { get; set; }
         [field: SerializeField] public List<PMRDialogueChoiceSOData> Choices { get; set; }
         
-        public override void Execute(GraphExecutionContext context, Action<GraphExecutionResult> finishedCallback)
+        //Instance variables (to clean after finishing execution)
+        private GraphExecutionContext currentContext;
+        
+        public override void Execute(GraphExecutionContext context)
         {
-            context.DialoguePlayer.TriggerText(Text, true);
+            currentContext = context;
             
-            GameObject menuPrefab = context.DialoguePlayer.ChoiceMenu == null
+            currentContext.DialoguePlayer.TriggerText(Text, true);
+            
+            currentContext.DialoguePlayer.OnTextEnd.AddListener(OnTextEnd);
+        }
+
+        void OnTextEnd()
+        {
+            DialoguePlayer dialoguePlayer = currentContext.DialoguePlayer;
+            
+            GameObject menuPrefab = dialoguePlayer.ChoiceMenu == null
                 ? PMRSettings.menuSettings.DefaultChoiceMenu
-                : context.DialoguePlayer.ChoiceMenu;
+                : dialoguePlayer.ChoiceMenu;
             GameObject choiceMenuInstance = Instantiate(menuPrefab);
 
             PMRChoiceMenu choiceMenuComponent = choiceMenuInstance.GetComponent<PMRChoiceMenu>();
             choiceMenuComponent.SetChoices(Choices);
 
-            choiceMenuComponent.OnChoiceTaken += (choice) =>
+            choiceMenuComponent.OnChoiceTaken = (choice) =>
             {
+                currentContext.DialoguePlayer.OnTextEnd.RemoveListener(OnTextEnd);
+                
                 GraphExecutionStatus status = GraphExecutionStatus.Continue;
-                finishedCallback(new GraphExecutionResult(status, choice.NextDialogue));  
+                currentContext.Finish((new GraphExecutionResult(status, choice.NextDialogue)));
+
+                CleanupRuntimeData();
             };
         }
-        
+
+        void CleanupRuntimeData()
+        {
+            currentContext = null;
+        }
     }
 }
