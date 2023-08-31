@@ -10,6 +10,7 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - pmdialog2
+  - pmdialog
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
