@@ -13,6 +13,7 @@ namespace PMR
         
         private void Start()
         {
+            SetTooltipText("Throw away which one?");
             InitializeListMenu(testListItem);
             OnItemSelected = (item) =>
             {

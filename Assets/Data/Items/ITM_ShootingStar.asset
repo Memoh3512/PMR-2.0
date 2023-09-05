@@ -17,4 +17,7 @@ MonoBehaviour:
     Power: 6'
   <itemSprite>k__BackingField: {fileID: 1673344451, guid: 5cf4f11f1730cfa43bac07583e466700,
     type: 3}
+  <itemDisabledSprite>k__BackingField: {fileID: 1095181139, guid: 5cf4f11f1730cfa43bac07583e466700,
+    type: 3}
   <canUseOutsideCombat>k__BackingField: 0
+  itemLogic: {fileID: 0}

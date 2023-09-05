@@ -16,5 +16,7 @@ MonoBehaviour:
   <itemDescription>k__BackingField: A regular Mushroom. Restores 5 HP.
   <itemSprite>k__BackingField: {fileID: -992497765, guid: 5cf4f11f1730cfa43bac07583e466700,
     type: 3}
+  <itemDisabledSprite>k__BackingField: {fileID: -2048980334, guid: 5cf4f11f1730cfa43bac07583e466700,
+    type: 3}
   <canUseOutsideCombat>k__BackingField: 1
   itemLogic: {fileID: 0}

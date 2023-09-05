@@ -5,6 +5,7 @@ using Febucci.UI;
 using PMR.ScriptableObjects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PMR
 {
@@ -12,15 +13,36 @@ namespace PMR
     public class PMRListMenu <ListItemType> : MonoBehaviour, IPMRMenu 
            where ListItemType : PMRListItem
     {
+        
+        [Header("Objects")]
         [SerializeField] private RectTransform listContainer;
         [SerializeField] private GameObject itemPrefab;
-        [SerializeField] private TextMeshProUGUI DescriptionText;
+        [SerializeField] private Image titleBackground;
+        [SerializeField] private TextMeshProUGUI DescriptionTextObject;
+        [SerializeField] private TextMeshProUGUI TitleTextObject;
+        [SerializeField] private TextMeshProUGUI TooltipTextObject;
+        [SerializeField] private Image UpArrowObject;
+        [SerializeField] private Image DownArrow;
+
+        [Header("Visual")]
+        [SerializeField] private Color titleColor;
         [SerializeField] private float verticalPadding;
         [SerializeField] private float itemSpacing;
+
+        [Header("Content")]
+        [SerializeField] private string titleText;
+        private string tooltipText;
+        
+        [Header("Events")]
+        public Action<ListItemType> OnItemSelected;
         
         private PMRCursorMenu cursorMenuComponent;
 
-        public Action<ListItemType> OnItemSelected;
+        public void SetTooltipText(string text)
+        {
+            tooltipText = text;
+        }
+        
         private void Awake()
         {
             cursorMenuComponent = GetComponent<PMRCursorMenu>();
@@ -33,6 +55,11 @@ namespace PMR
                 Debug.LogError($"No valid item prefab to use! {name} {{PMRListMenu}}.InitializeListMenu");
                 return;
             }
+            
+            //setup title and tooltip
+            TitleTextObject.text = titleText;
+            titleBackground.color = titleColor;
+            TooltipTextObject.text = tooltipText;
 
             float containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
             float prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
@@ -52,8 +79,12 @@ namespace PMR
 
                 //Set Navigation
                 PMRSelectable itemSelectableComp = itemInstance.GetComponent<PMRSelectable>();
-                if (firstItem == null) firstItem = itemSelectableComp;
-                if (lastItem != null)
+                if (firstItem == null)
+                {
+                    firstItem = itemSelectableComp;
+                    DescriptionTextObject.text = item.itemDescription;
+                }
+                else if (lastItem != null)
                 {
                     lastItem.downElement = itemSelectableComp;
                     itemSelectableComp.upElement = lastItem;
@@ -61,8 +92,9 @@ namespace PMR
                 
                 lastItem = itemSelectableComp;
                 
-                //Set Action
+                //Set Actions
                 itemSelectableComp.OnSelect.AddListener(() => OnItemClicked(item));
+                itemSelectableComp.OnCursorEnter.AddListener(() => OnItemHovered(item));
 
                 //Set Pos
                 Vector3 localPosition = itemInstance.transform.localPosition;
@@ -85,13 +117,26 @@ namespace PMR
 
         private void OnItemClicked(ListItemType item)
         {
-            OnItemSelected(item);
-            CloseMenu();
+            if (item.CanUse())
+            {
+                Debug.Log($"List Menu selected {item.itemName}!");
+                OnItemSelected(item);
+                CloseMenu();
+            }
+            else
+            {
+                //TODO Feedback sound
+            }
         }
 
-        public void OpenMenu()
+        private void OnItemHovered(ListItemType item)
         {
-            //TODO Anim
+            DescriptionTextObject.text = item.itemDescription;
+        }
+
+        public virtual void OpenMenu()
+        {
+            //TODO Anim and select first item
         }
 
         public void CloseMenu()

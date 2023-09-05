@@ -16,7 +16,7 @@ namespace PMR
         public void SetItem(PMRListItem item)
         {
             //this.item = item;
-            spriteRenderer.sprite = item.itemSprite;
+            spriteRenderer.sprite = item.CanUse() ? item.itemSprite : item.itemDisabledSprite;
             textComponent.text = item.itemName;
         }
     }

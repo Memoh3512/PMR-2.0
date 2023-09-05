@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 117.62364, y: 0}
-  m_SizeDelta: {x: 640.7647, y: 60}
+  m_SizeDelta: {x: 640.7647, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3010307671992172557
 CanvasRenderer:
@@ -174,7 +174,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0000076293945, y: 76}
-  m_SizeDelta: {x: 876.02, y: 60}
+  m_SizeDelta: {x: 876.02, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6447826142103311941
 MonoBehaviour:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f552092e12c645243a711cde1b719cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorOffset: {x: -160, y: 0}
+  cursorOffset: {x: -190, y: 0}
   leftElement: {fileID: 0}
   rightElement: {fileID: 0}
   upElement: {fileID: 0}
@@ -252,7 +252,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -261, y: 0}
-  m_SizeDelta: {x: 60, y: 60}
+  m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3010307672235689045
 CanvasRenderer:

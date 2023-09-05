@@ -30,6 +30,11 @@ namespace PMR.Item
             
             itemLogic.OnUseInCombat();
         }
+
+        public override bool CanUse()
+        {
+            return GameState.IsInCombat || canUseOutsideCombat;
+        }
     }
 
     public abstract class PMRItemLogic : ScriptableObject
