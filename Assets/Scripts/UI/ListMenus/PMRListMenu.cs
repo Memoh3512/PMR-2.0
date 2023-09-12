@@ -5,6 +5,7 @@ using Febucci.UI;
 using PMR.ScriptableObjects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace PMR
@@ -34,7 +35,8 @@ namespace PMR
         private string tooltipText;
         
         [Header("Events")]
-        public Action<ListItemType> OnItemSelected;
+        public UnityEvent<ListItemType> OnItemSelected;
+        public UnityEvent<ListItemType, int> OnItemHovered;
         
         private PMRCursorMenu cursorMenuComponent;
 
@@ -57,9 +59,9 @@ namespace PMR
             }
             
             //setup title and tooltip
-            TitleTextObject.text = titleText;
+            if (TitleTextObject != null) TitleTextObject.text = titleText;
             titleBackground.color = titleColor;
-            TooltipTextObject.text = tooltipText;
+            if (TooltipTextObject != null) TooltipTextObject.text = tooltipText;
 
             float containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
             float prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
@@ -68,8 +70,11 @@ namespace PMR
             
             PMRSelectable lastItem = null;
             PMRSelectable firstItem = null;
+            int index = 0;
             foreach (ListItemType item in items)
             {
+                int itemIndex = index + 1;
+                
                 GameObject itemInstance = Instantiate(itemPrefab, listContainer.transform);
 
                 itemInstance.name = $"ListItem - {item.name}";
@@ -82,7 +87,7 @@ namespace PMR
                 if (firstItem == null)
                 {
                     firstItem = itemSelectableComp;
-                    DescriptionTextObject.text = item.itemDescription;
+                    SetDescriptionText(item.itemDescription);
                 }
                 else if (lastItem != null)
                 {
@@ -94,7 +99,7 @@ namespace PMR
                 
                 //Set Actions
                 itemSelectableComp.OnSelect.AddListener(() => OnItemClicked(item));
-                itemSelectableComp.OnCursorEnter.AddListener(() => OnItemHovered(item));
+                itemSelectableComp.OnCursorEnter.AddListener(() => ItemHovered(item, itemIndex));
 
                 //Set Pos
                 Vector3 localPosition = itemInstance.transform.localPosition;
@@ -102,6 +107,8 @@ namespace PMR
                 itemInstance.transform.localPosition = localPosition;
 
                 currentY -= (itemSpacing + prefabHeight);
+
+                index = itemIndex;
             }
             
             //Loopover Navigation
@@ -120,18 +127,19 @@ namespace PMR
             if (item.CanUse())
             {
                 Debug.Log($"List Menu selected {item.itemName}!");
-                OnItemSelected(item);
-                CloseMenu();
-            }
-            else
-            {
-                //TODO Feedback sound
+                OnItemSelected.Invoke(item);
             }
         }
 
-        private void OnItemHovered(ListItemType item)
+        private void ItemHovered(ListItemType item, int index)
         {
-            DescriptionTextObject.text = item.itemDescription;
+            OnItemHovered.Invoke(item, index);
+            SetDescriptionText(item.itemDescription);
+        }
+
+        void SetDescriptionText(string text)
+        {
+            if (DescriptionTextObject != null) DescriptionTextObject.text = text;
         }
 
         public virtual void OpenMenu()

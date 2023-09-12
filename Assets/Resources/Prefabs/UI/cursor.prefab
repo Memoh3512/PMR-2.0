@@ -80,7 +80,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88935de618390754b911e57d9ad1617a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedItem: {fileID: 0}
+  onSelectItem:
+    m_PersistentCalls:
+      m_Calls: []
+  onSelectionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  positionCurve: {fileID: 11400000, guid: 64aed5b9901614f42b3f5a47e5d45775, type: 2}
 --- !u!1 &9162001519677108272
 GameObject:
   m_ObjectHideFlags: 0

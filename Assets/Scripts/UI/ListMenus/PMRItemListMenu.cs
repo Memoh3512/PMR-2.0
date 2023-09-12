@@ -15,10 +15,11 @@ namespace PMR
         {
             SetTooltipText("Throw away which one?");
             InitializeListMenu(testListItem);
-            OnItemSelected = (item) =>
+            OnItemSelected.AddListener((item) =>
             {
+                CloseMenu();
                 Debug.Log($"Use {item.itemName}!");
-            };
+            });
         }
     }
 }

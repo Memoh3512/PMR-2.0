@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace PMR
 {
@@ -10,8 +11,9 @@ namespace PMR
 
         private PMRSelectable selectedItem;
 
-        [SerializeField] private UnityEvent OnSelectItem;
-        [SerializeField] private UnityEvent OnSelectionChanged;
+        [FormerlySerializedAs("OnSelectItem")] [SerializeField] private UnityEvent onSelectItem;
+        [FormerlySerializedAs("OnSelectionChanged")] [SerializeField] private UnityEvent onSelectionChanged;
+        [SerializeField] private ScriptedTimeCurveVector2 positionCurve;
 
         public void Init(PMRSelectable initialSelectedItem)
         {
@@ -23,6 +25,12 @@ namespace PMR
         {
             if (selectedItem is null) return;
             
+            //anim
+            if (positionCurve.IsStarted())
+            {
+                transform.position = positionCurve.Value();
+            } 
+                
             //Temporary Input method
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -61,9 +69,21 @@ namespace PMR
             if (selectedItem != null) selectedItem.OnExit();
             selectedItem = newItem;
             selectedItem.OnEnter();
-            transform.position = newItem.transform.position + (Vector3)newItem.cursorOffset;
             
-            if (sendChangedEvent) OnSelectionChanged.Invoke();
+            //movement
+            Vector2 newPosition = newItem.transform.position + (Vector3)newItem.cursorOffset;
+            
+            if (positionCurve == null)
+            {
+                transform.position = newPosition;
+            }
+            else
+            {
+                positionCurve.SetValues(transform.position, newPosition);
+                positionCurve.Start();
+            }
+            
+            if (sendChangedEvent) onSelectionChanged.Invoke();
         }
     }
 }
