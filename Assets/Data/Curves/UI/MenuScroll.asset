@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20cf6e2adee44326a421daf6f0199ae6, type: 3}
-  m_Name: MenuCursorCurve
+  m_Name: MenuScroll
   m_EditorClassIdentifier: 
   curveToFollow:
     serializedVersion: 2
@@ -36,4 +36,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  time: 0.2
+  time: 0.5

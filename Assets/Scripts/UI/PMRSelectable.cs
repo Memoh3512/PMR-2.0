@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,14 @@ namespace PMR
         public UnityEvent OnCursorEnter;
         public UnityEvent OnCursorExit;
         public UnityEvent OnSelect;
+
+        //Position container to coordinate animations with curves. Use only for this purpose
+        [HideInInspector] public Vector3 desiredPosition;
+
+        private void Start()
+        {
+            desiredPosition = transform.position;
+        }
 
         public void Select()
         {

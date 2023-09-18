@@ -30,9 +30,21 @@ namespace PMR
         [SerializeField] private float verticalPadding;
         [SerializeField] private float itemSpacing;
 
+        [Header("Scroll")]
+        [SerializeField] private bool scroll;
+        [Min(0), Tooltip("Max number of items shown in list at the same time. Used for scrolling")]
+        [SerializeField] private int maxItems;
+        [SerializeField] private ScriptedTimeCurveVector2 scrollCurve;
+
+        private int selectedIndex;
+        private int scrollIndex;
+
         [Header("Content")]
         [SerializeField] private string titleText;
         private string tooltipText;
+
+        private float containerHeight;
+        private float prefabHeight;
         
         [Header("Events")]
         public UnityEvent<ListItemType> OnItemSelected;
@@ -50,7 +62,16 @@ namespace PMR
             cursorMenuComponent = GetComponent<PMRCursorMenu>();
         }
 
-        public void InitializeListMenu(List<ListItemType> items)
+        private void Update()
+        {
+            //curve update
+            if (scrollCurve != null && scrollCurve.IsStartedNotElapsed())
+            {
+                listContainer.transform.localPosition = scrollCurve.Value();
+            }
+        }
+
+        protected void InitializeListMenu(List<ListItemType> items)
         {
             if (itemPrefab is null)
             {
@@ -63,8 +84,8 @@ namespace PMR
             titleBackground.color = titleColor;
             if (TooltipTextObject != null) TooltipTextObject.text = tooltipText;
 
-            float containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
-            float prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+            containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
+            prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
             
             float currentY = -(verticalPadding + prefabHeight/2.0f) + (containerHeight/2.0f);
             
@@ -73,7 +94,7 @@ namespace PMR
             int index = 0;
             foreach (ListItemType item in items)
             {
-                int itemIndex = index + 1;
+                int itemIndex = index;
                 
                 GameObject itemInstance = Instantiate(itemPrefab, listContainer.transform);
 
@@ -99,7 +120,7 @@ namespace PMR
                 
                 //Set Actions
                 itemSelectableComp.OnSelect.AddListener(() => OnItemClicked(item));
-                itemSelectableComp.OnCursorEnter.AddListener(() => ItemHovered(item, itemIndex));
+                itemSelectableComp.OnCursorEnter.AddListener(() => ItemHovered(item, itemSelectableComp, itemIndex));
 
                 //Set Pos
                 Vector3 localPosition = itemInstance.transform.localPosition;
@@ -108,7 +129,7 @@ namespace PMR
 
                 currentY -= (itemSpacing + prefabHeight);
 
-                index = itemIndex;
+                index = itemIndex + 1;
             }
             
             //Loopover Navigation
@@ -131,10 +152,40 @@ namespace PMR
             }
         }
 
-        private void ItemHovered(ListItemType item, int index)
+        private void ItemHovered(ListItemType item, PMRSelectable selectableInstance, int index)
         {
             OnItemHovered.Invoke(item, index);
             SetDescriptionText(item.itemDescription);
+
+            Vector2 scrollPosition;
+            
+            //scrolling (algo is rough, TODO Finish, then clean up)
+            bool updateScroll = false;
+            if (index >= scrollIndex + maxItems)
+            {
+                scrollIndex = index - maxItems + 1;
+                updateScroll = true;
+            } else if (index < scrollIndex)
+            {
+                scrollIndex = index;
+                updateScroll = true;
+            }
+            
+            Debug.Log($"INDEX IS {index} SCROLLINDEX IS {scrollIndex}");
+
+            if (updateScroll)
+            {
+                scrollPosition = new Vector2(0, scrollIndex * (itemSpacing + prefabHeight));
+                
+                if (scrollCurve == null)
+                {
+                    listContainer.transform.localPosition = scrollPosition;
+                }
+                else
+                {
+                    scrollCurve.StartFromEnd(scrollPosition);
+                }
+            }
         }
 
         void SetDescriptionText(string text)

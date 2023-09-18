@@ -45,10 +45,26 @@ namespace PMR
         protected TValueType startValue;
         protected TValueType endValue;
 
+        private bool valuesSet = false;
+
         public void SetValues(TValueType startValue, TValueType endValue)
         {
             this.startValue = startValue;
             this.endValue = endValue;
+            valuesSet = true;
+        }
+
+        public void StartFromEnd(TValueType endValue)
+        {
+            if (valuesSet)
+            {
+                SetValues(this.endValue, endValue);
+            }
+            else
+            {
+                SetValues(endValue, endValue);
+            }
+            Start();
         }
         
         public TValueType Value()
