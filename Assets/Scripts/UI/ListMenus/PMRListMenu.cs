@@ -23,7 +23,7 @@ namespace PMR
         [SerializeField] private TextMeshProUGUI TitleTextObject;
         [SerializeField] private TextMeshProUGUI TooltipTextObject;
         [SerializeField] private Image UpArrowObject;
-        [SerializeField] private Image DownArrow;
+        [SerializeField] private Image DownArrowObject;
 
         [Header("Visual")]
         [SerializeField] private Color titleColor;
@@ -149,6 +149,8 @@ namespace PMR
                 lastItem.downElement = firstItem;   
             }
             
+            UpdateArrowVisibility();
+            
             //Spawn Cursor
             cursorMenuComponent.SpawnCursor(firstItem);
         }
@@ -185,6 +187,8 @@ namespace PMR
 
             if (updateScroll)
             {
+                UpdateArrowVisibility();
+                
                 scrollPosition = new Vector2(0, scrollIndex * (itemSpacing + prefabHeight));
                 
                 if (scrollTimeCurve == null)
@@ -193,8 +197,22 @@ namespace PMR
                 }
                 else
                 {
-                    scrollTimeCurve.StartFromEnd(scrollPosition);
+                    scrollTimeCurve.SetValues(listContainer.transform.localPosition, scrollPosition);
+                    scrollTimeCurve.Start();
                 }
+            }
+        }
+
+        private void UpdateArrowVisibility()
+        {
+            if (UpArrowObject != null)
+            {
+                UpArrowObject.enabled = scrollIndex > 0;
+            }
+
+            if (DownArrowObject != null)
+            {
+                UpArrowObject.enabled = scrollIndex < (itemsCount - maxItems);
             }
         }
 
