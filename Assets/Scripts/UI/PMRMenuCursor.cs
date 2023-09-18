@@ -26,7 +26,7 @@ namespace PMR
             if (selectedItem is null) return;
             
             //anim
-            if (positionCurve.IsStarted())
+            if (positionCurve.IsStartedNotElapsed())
             {
                 transform.position = positionCurve.Value();
             } 
@@ -66,22 +66,23 @@ namespace PMR
         {
             if (newItem == selectedItem || newItem is null) return;
 
-            if (selectedItem != null) selectedItem.OnExit();
-            selectedItem = newItem;
-            selectedItem.OnEnter();
-            
-            //movement
             Vector2 newPosition = newItem.transform.position + (Vector3)newItem.cursorOffset;
             
-            if (positionCurve == null)
+            if (positionCurve == null || selectedItem == null)
             {
                 transform.position = newPosition;
             }
             else
             {
+                selectedItem.OnExit();
+                
                 positionCurve.SetValues(transform.position, newPosition);
                 positionCurve.Start();
             }
+            
+            //selection
+            selectedItem = newItem;
+            selectedItem.OnEnter();
             
             if (sendChangedEvent) onSelectionChanged.Invoke();
         }
