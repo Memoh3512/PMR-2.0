@@ -19,11 +19,10 @@ namespace PMR
         [SerializeField] private RectTransform listContainer;
         [SerializeField] private GameObject itemPrefab;
         [SerializeField] private Image titleBackground;
-        [SerializeField] private TextMeshProUGUI DescriptionTextObject;
         [SerializeField] private TextMeshProUGUI TitleTextObject;
         [SerializeField] private TextMeshProUGUI TooltipTextObject;
-        [SerializeField] private Image UpArrowObject;
-        [SerializeField] private Image DownArrowObject;
+        [SerializeField] private Image upArrowObject;
+        [SerializeField] private Image downArrowObject;
 
         [Header("Visual")]
         [SerializeField] private Color titleColor;
@@ -167,11 +166,9 @@ namespace PMR
         private void ItemHovered(ListItemType item, int index)
         {
             OnItemHovered.Invoke(item, index);
-            SetDescriptionText(item.itemDescription);
             
             Vector2 scrollPosition;
             
-            //scrolling (algo is rough, TODO Finish, then clean up)
             bool updateScroll = false;
             if (index >= scrollIndex + maxItems)
             {
@@ -183,7 +180,7 @@ namespace PMR
                 updateScroll = true;
             }
             
-            Debug.Log($"INDEX IS {index} SCROLLINDEX IS {scrollIndex}");
+            //Debug.Log($"INDEX IS {index} SCROLLINDEX IS {scrollIndex}");
 
             if (updateScroll)
             {
@@ -205,19 +202,26 @@ namespace PMR
 
         private void UpdateArrowVisibility()
         {
-            if (UpArrowObject != null)
+            if (upArrowObject != null)
             {
-                UpArrowObject.enabled = scrollIndex > 0;
+                upArrowObject.enabled = scrollIndex > 0;
             }
 
-            if (DownArrowObject != null)
+            if (downArrowObject != null)
             {
-                UpArrowObject.enabled = scrollIndex < (itemsCount - maxItems);
+                downArrowObject.enabled = scrollIndex < (itemsCount - maxItems);
             }
         }
 
         void ProcessSelectionChangedContext(CursorSelectionChangeContext context, int index)
         {
+            //don't allow moving if scrolling anim is still ongoing
+            if (scrollTimeCurve.IsStartedNotElapsed())
+            {
+                context.AllowSelection = false;
+                return;
+            }
+            
             //move cursor to first/last element position if overflowing
             if (index == 0 && scrollIndex > 0)
             {
@@ -239,11 +243,6 @@ namespace PMR
             {
                 context.MoveCursor = false;
             }
-        }
-
-        void SetDescriptionText(string text)
-        {
-            if (DescriptionTextObject != null) DescriptionTextObject.text = text;
         }
 
         public virtual void OpenMenu()

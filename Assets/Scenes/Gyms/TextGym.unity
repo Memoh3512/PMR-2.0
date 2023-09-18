@@ -375,11 +375,10 @@ MonoBehaviour:
   itemPrefab: {fileID: 3010307672107794082, guid: d221e878b304be344ad1f0f0b4679489,
     type: 3}
   titleBackground: {fileID: 528794309}
-  DescriptionTextObject: {fileID: 1227455452}
   TitleTextObject: {fileID: 1319665320}
   TooltipTextObject: {fileID: 1155645231}
-  UpArrowObject: {fileID: 422401344}
-  DownArrowObject: {fileID: 727969649}
+  upArrowObject: {fileID: 422401344}
+  downArrowObject: {fileID: 727969649}
   titleColor: {r: 0.34117648, g: 0.40000004, b: 0.6666667, a: 1}
   verticalPadding: 0
   itemSpacing: 10
@@ -392,7 +391,19 @@ MonoBehaviour:
       m_Calls: []
   OnItemHovered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2004461262}
+        m_TargetAssemblyTypeName: PMR.UIItemDescriptionBox, Assembly-CSharp
+        m_MethodName: SetDescriptionItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   testListItem:
   - {fileID: 11400000, guid: 857ac6808688b324ab7aaa190fbf1faf, type: 2}
   - {fileID: 11400000, guid: cdebe78b9fcc60f4d98a705e125d0171, type: 2}
@@ -414,6 +425,7 @@ GameObject:
   - component: {fileID: 422401345}
   - component: {fileID: 422401344}
   - component: {fileID: 422401346}
+  - component: {fileID: 422401347}
   m_Layer: 5
   m_Name: UpArrow
   m_TagString: Untagged
@@ -487,7 +499,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422401342}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4bc1e0e0cc9fed7428cd4521e115d66a, type: 2}
   m_CullingMode: 0
@@ -499,6 +511,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!225 &422401347
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422401342}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &528794307
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +612,7 @@ GameObject:
   - component: {fileID: 727969650}
   - component: {fileID: 727969649}
   - component: {fileID: 727969651}
+  - component: {fileID: 727969652}
   m_Layer: 5
   m_Name: DownArrow
   m_TagString: Untagged
@@ -661,7 +686,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727969647}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4bc1e0e0cc9fed7428cd4521e115d66a, type: 2}
   m_CullingMode: 0
@@ -673,6 +698,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!225 &727969652
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727969647}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &749109429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,8 +1707,9 @@ GameObject:
   - component: {fileID: 2004461259}
   - component: {fileID: 2004461261}
   - component: {fileID: 2004461260}
+  - component: {fileID: 2004461262}
   m_Layer: 5
-  m_Name: BGDescription
+  m_Name: BGDescriptionBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1737,6 +1775,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004461258}
   m_CullTransparentMesh: 1
+--- !u!114 &2004461262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004461258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3627acc0a82f53841b3481cd2aa2243a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1227455452}
 --- !u!1 &2014993616
 GameObject:
   m_ObjectHideFlags: 0

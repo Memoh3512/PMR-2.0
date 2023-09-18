@@ -8,12 +8,19 @@ namespace PMR
 {
     public class CursorSelectionChangeContext
     {
+        private bool allowSelection = true;
         private bool moveCursor = true;
         private bool animate = true;
         private bool callSelectionChanged = true;
         private bool overridePosition = false;
         private Vector3 overriddenPosition = Vector3.zero;
 
+        public bool AllowSelection
+        {
+            get => allowSelection;
+            set => allowSelection = value;
+        }
+        
         public bool MoveCursor
         {
             get => moveCursor;
@@ -127,6 +134,8 @@ namespace PMR
             CursorSelectionChangeContext context = new CursorSelectionChangeContext();
             newItem.OnTryEnter(context);
 
+            if (context.AllowSelection == false) return;
+            
             if (context.MoveCursor)
             {
                 Move(newItem, context);
