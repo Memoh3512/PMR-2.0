@@ -30,7 +30,9 @@ namespace PMR
         [SerializeField] private float verticalPadding;
         [SerializeField] private float itemSpacing;
 
-        [Header("Scroll")] 
+        [Header("Scroll")]
+        [Min(0), Tooltip("Max number of items shown in list at the same time. Used for scrolling")]
+        [SerializeField] private int maxItems;
         [SerializeField] private ScriptedTimeCurveVector3 scrollTimeCurve;
 
         [Header("Content")]
