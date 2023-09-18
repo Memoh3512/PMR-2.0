@@ -70,7 +70,7 @@ namespace PMR
             //anim
             if (positionCurve.IsStarted())
             {
-                transform.position = positionCurve.Value();
+                transform.localPosition = positionCurve.Value();
             } 
                 
             //Temporary Input method
@@ -108,7 +108,7 @@ namespace PMR
             Vector2 newPosition;
             if (context.OverridePosition)
             {
-                newPosition = context.OverriddenPosition;
+                newPosition = context.OverriddenPosition + newItem.cursorOffset;
             }
             else
             {
@@ -117,11 +117,11 @@ namespace PMR
 
             if (context.Animate == false || positionCurve == null || selectedItem == null)
             {
-                transform.position = newPosition;
+                transform.localPosition = newPosition;
             }
             else
             {
-                positionCurve.SetValues(transform.position, newPosition);
+                positionCurve.SetValues(transform.localPosition, newPosition);
                 positionCurve.Start();
             }
         }

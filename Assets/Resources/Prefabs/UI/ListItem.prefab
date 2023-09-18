@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f552092e12c645243a711cde1b719cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorOffset: {x: -190, y: 0}
+  cursorOffset: {x: -370, y: 0}
   leftElement: {fileID: 0}
   rightElement: {fileID: 0}
   upElement: {fileID: 0}
@@ -214,6 +214,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnSelect:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTryCursorEnter:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &3010307672235689032

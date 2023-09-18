@@ -35,8 +35,6 @@ namespace PMR
         [SerializeField] private ScriptedTimeCurveVector2 scrollTimeCurve;
         
         private int scrollIndex;
-        private Vector3 firstListPos;
-        private Vector3 lastListPos;
 
         [Header("Content")]
         [SerializeField] private string titleText;
@@ -118,17 +116,11 @@ namespace PMR
                 if (firstItem == null)
                 {
                     firstItem = itemSelectableComp;
-                    firstListPos = itemInstance.transform.position + (Vector3)itemSelectableComp.cursorOffset;
                 }
                 else if (lastItem != null)
                 {
                     lastItem.downElement = itemSelectableComp;
                     itemSelectableComp.upElement = lastItem;
-                }
-                
-                if (itemIndex + 1 == maxItems) //if this is the last item visible on list view, set last list pos
-                {
-                    lastListPos = itemInstance.transform.position + (Vector3)itemSelectableComp.cursorOffset;
                 }
                 
                 lastItem = itemSelectableComp;
@@ -166,27 +158,17 @@ namespace PMR
         private void ItemHovered(ListItemType item, int index)
         {
             OnItemHovered.Invoke(item, index);
-            
-            Vector2 scrollPosition;
-            
-            bool updateScroll = false;
-            if (index >= scrollIndex + maxItems)
-            {
-                scrollIndex = index - maxItems + 1;
-                updateScroll = true;
-            } else if (index < scrollIndex)
-            {
-                scrollIndex = index;
-                updateScroll = true;
-            }
-            
-            //Debug.Log($"INDEX IS {index} SCROLLINDEX IS {scrollIndex}");
 
-            if (updateScroll)
+            int calculatedScrollIndex = CalculateScrollIndex(index);
+            //Debug.Log($"INDEX IS {index} SCROLLINDEX IS {calculatedScrollIndex}");
+
+            if (calculatedScrollIndex != scrollIndex)
             {
+                scrollIndex = calculatedScrollIndex;
+                
                 UpdateArrowVisibility();
                 
-                scrollPosition = new Vector2(0, scrollIndex * (itemSpacing + prefabHeight));
+                Vector2 scrollPosition = new Vector2(0, scrollIndex * (itemSpacing + prefabHeight));
                 
                 if (scrollTimeCurve == null)
                 {
@@ -200,6 +182,35 @@ namespace PMR
             }
         }
 
+        void ProcessSelectionChangedContext(CursorSelectionChangeContext context, int index)
+        {
+            //move to container desired position
+            context.OverridePosition = true;
+            int clampedIndex = Math.Clamp(index - scrollIndex, 0, maxItems - 1);
+            context.OverriddenPosition = GetItemPosition(clampedIndex);
+        }
+        
+        private Vector2 GetItemPosition(int index)
+        {
+            Transform containerTransform = listContainer.transform;
+            return containerTransform.GetChild(index).localPosition;
+        }
+        
+        private int CalculateScrollIndex(int index)
+        {
+            if (index >= scrollIndex + maxItems)
+            {
+                return index - maxItems + 1;
+            }
+
+            if (index < scrollIndex)
+            {
+                return index;
+            }
+
+            return scrollIndex;
+        }
+
         private void UpdateArrowVisibility()
         {
             if (upArrowObject != null)
@@ -210,38 +221,6 @@ namespace PMR
             if (downArrowObject != null)
             {
                 downArrowObject.enabled = scrollIndex < (itemsCount - maxItems);
-            }
-        }
-
-        void ProcessSelectionChangedContext(CursorSelectionChangeContext context, int index)
-        {
-            //don't allow moving if scrolling anim is still ongoing
-            if (scrollTimeCurve.IsStartedNotElapsed())
-            {
-                context.AllowSelection = false;
-                return;
-            }
-            
-            //move cursor to first/last element position if overflowing
-            if (index == 0 && scrollIndex > 0)
-            {
-                //overflow from bottom to top
-                context.OverridePosition = true;
-                context.OverriddenPosition = firstListPos;
-                return;
-            }
-            if (index == itemsCount - 1 && scrollIndex == 0)
-            {
-                //overflow from top to bottom
-                context.OverridePosition = true;
-                context.OverriddenPosition = lastListPos;
-                return;
-            }
-            
-            //do not move cursor if we scroll from the interior
-            if (index >= scrollIndex + maxItems || index < scrollIndex)
-            {
-                context.MoveCursor = false;
             }
         }
 

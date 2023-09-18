@@ -8,6 +8,7 @@ namespace PMR
     public class PMRCursorMenu : MonoBehaviour
     {
         [SerializeField] private PMRSelectable defaultSelectedItem;
+        [SerializeField] private Transform cursorParent;
 
         [SerializeField] private bool spawnCursorOnStart = true;
 
@@ -23,7 +24,7 @@ namespace PMR
         {
             GameObject cursorPrefab = PMRSettings.menuSettings.DefaultMenuCursor;
 
-            GameObject cursorInstance = Instantiate(cursorPrefab, transform);
+            GameObject cursorInstance = Instantiate(cursorPrefab, cursorParent == null ? transform : cursorParent);
 
             PMRMenuCursor cursorComponent = cursorInstance.GetComponent<PMRMenuCursor>();
 
