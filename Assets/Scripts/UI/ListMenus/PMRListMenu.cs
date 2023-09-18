@@ -19,23 +19,33 @@ namespace PMR
         [SerializeField] private RectTransform listContainer;
         [SerializeField] private GameObject itemPrefab;
         [SerializeField] private Image titleBackground;
-        [SerializeField] private TextMeshProUGUI DescriptionTextObject;
         [SerializeField] private TextMeshProUGUI TitleTextObject;
         [SerializeField] private TextMeshProUGUI TooltipTextObject;
-        [SerializeField] private Image UpArrowObject;
-        [SerializeField] private Image DownArrow;
+        [SerializeField] private Image upArrowObject;
+        [SerializeField] private Image downArrowObject;
 
         [Header("Visual")]
         [SerializeField] private Color titleColor;
         [SerializeField] private float verticalPadding;
         [SerializeField] private float itemSpacing;
 
-        [Header("Scroll")] 
-        [SerializeField] private ScriptedTimeCurveVector3 scrollTimeCurve;
+        [Header("Scroll")]
+        [Min(0), Tooltip("Max number of items shown in list at the same time. Used for scrolling")]
+        [SerializeField] private int maxItems;
+        [SerializeField] private ScriptedTimeCurveVector2 scrollTimeCurve;
+        
+        private int scrollIndex;
+        private Vector3 firstListPos;
+        private Vector3 lastListPos;
 
         [Header("Content")]
         [SerializeField] private string titleText;
         private string tooltipText;
+        
+        private float containerHeight;
+        private float prefabHeight;
+
+        protected int itemsCount;
         
         [Header("Events")]
         public UnityEvent<ListItemType> OnItemSelected;
@@ -53,21 +63,32 @@ namespace PMR
             cursorMenuComponent = GetComponent<PMRCursorMenu>();
         }
 
-        public void InitializeListMenu(List<ListItemType> items)
+        private void Update()
+        {
+            //curve update
+            if (scrollTimeCurve != null && scrollTimeCurve.IsStarted())
+            {
+                listContainer.transform.localPosition = scrollTimeCurve.Value();
+            }
+        }
+        
+        protected void InitializeListMenu(List<ListItemType> items)
         {
             if (itemPrefab is null)
             {
                 Debug.LogError($"No valid item prefab to use! {name} {{PMRListMenu}}.InitializeListMenu");
                 return;
             }
+
+            itemsCount = items.Count;
             
             //setup title and tooltip
             if (TitleTextObject != null) TitleTextObject.text = titleText;
             titleBackground.color = titleColor;
             if (TooltipTextObject != null) TooltipTextObject.text = tooltipText;
 
-            float containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
-            float prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+            containerHeight = listContainer.GetComponent<RectTransform>().sizeDelta.y;
+            prefabHeight = itemPrefab.GetComponent<RectTransform>().sizeDelta.y;
             
             float currentY = -(verticalPadding + prefabHeight/2.0f) + (containerHeight/2.0f);
             
@@ -76,33 +97,11 @@ namespace PMR
             int index = 0;
             foreach (ListItemType item in items)
             {
-                int itemIndex = index + 1;
+                int itemIndex = index;
                 
                 GameObject itemInstance = Instantiate(itemPrefab, listContainer.transform);
 
                 itemInstance.name = $"ListItem - {item.name}";
-                
-                //Set Text
-                itemInstance.GetComponent<PMRListItemUI>().SetItem(item);
-
-                //Set Navigation
-                PMRSelectable itemSelectableComp = itemInstance.GetComponent<PMRSelectable>();
-                if (firstItem == null)
-                {
-                    firstItem = itemSelectableComp;
-                    SetDescriptionText(item.itemDescription);
-                }
-                else if (lastItem != null)
-                {
-                    lastItem.downElement = itemSelectableComp;
-                    itemSelectableComp.upElement = lastItem;
-                }
-                
-                lastItem = itemSelectableComp;
-                
-                //Set Actions
-                itemSelectableComp.OnSelect.AddListener(() => OnItemClicked(item));
-                itemSelectableComp.OnCursorEnter.AddListener(() => ItemHovered(item, itemIndex));
 
                 //Set Pos
                 Vector3 localPosition = itemInstance.transform.localPosition;
@@ -110,8 +109,36 @@ namespace PMR
                 itemInstance.transform.localPosition = localPosition;
 
                 currentY -= (itemSpacing + prefabHeight);
+                
+                //Set Text
+                itemInstance.GetComponent<PMRListItemUI>().SetItem(item);
+                
+                //Set Navigation
+                PMRSelectable itemSelectableComp = itemInstance.GetComponent<PMRSelectable>();
+                if (firstItem == null)
+                {
+                    firstItem = itemSelectableComp;
+                    firstListPos = itemInstance.transform.position + (Vector3)itemSelectableComp.cursorOffset;
+                }
+                else if (lastItem != null)
+                {
+                    lastItem.downElement = itemSelectableComp;
+                    itemSelectableComp.upElement = lastItem;
+                }
+                
+                if (itemIndex + 1 == maxItems) //if this is the last item visible on list view, set last list pos
+                {
+                    lastListPos = itemInstance.transform.position + (Vector3)itemSelectableComp.cursorOffset;
+                }
+                
+                lastItem = itemSelectableComp;
+                
+                //Set Actions
+                itemSelectableComp.OnSelect.AddListener(() => OnItemClicked(item));
+                itemSelectableComp.OnCursorEnter.AddListener(() => ItemHovered(item, itemIndex));
+                itemSelectableComp.OnTryCursorEnter.AddListener((context) => ProcessSelectionChangedContext(context, itemIndex));
 
-                index = itemIndex;
+                index = itemIndex + 1;
             }
             
             //Loopover Navigation
@@ -120,6 +147,8 @@ namespace PMR
                 firstItem.upElement = lastItem;
                 lastItem.downElement = firstItem;   
             }
+            
+            UpdateArrowVisibility();
             
             //Spawn Cursor
             cursorMenuComponent.SpawnCursor(firstItem);
@@ -137,12 +166,83 @@ namespace PMR
         private void ItemHovered(ListItemType item, int index)
         {
             OnItemHovered.Invoke(item, index);
-            SetDescriptionText(item.itemDescription);
+            
+            Vector2 scrollPosition;
+            
+            bool updateScroll = false;
+            if (index >= scrollIndex + maxItems)
+            {
+                scrollIndex = index - maxItems + 1;
+                updateScroll = true;
+            } else if (index < scrollIndex)
+            {
+                scrollIndex = index;
+                updateScroll = true;
+            }
+            
+            //Debug.Log($"INDEX IS {index} SCROLLINDEX IS {scrollIndex}");
+
+            if (updateScroll)
+            {
+                UpdateArrowVisibility();
+                
+                scrollPosition = new Vector2(0, scrollIndex * (itemSpacing + prefabHeight));
+                
+                if (scrollTimeCurve == null)
+                {
+                    listContainer.transform.localPosition = scrollPosition;
+                }
+                else
+                {
+                    scrollTimeCurve.SetValues(listContainer.transform.localPosition, scrollPosition);
+                    scrollTimeCurve.Start();
+                }
+            }
         }
 
-        void SetDescriptionText(string text)
+        private void UpdateArrowVisibility()
         {
-            if (DescriptionTextObject != null) DescriptionTextObject.text = text;
+            if (upArrowObject != null)
+            {
+                upArrowObject.enabled = scrollIndex > 0;
+            }
+
+            if (downArrowObject != null)
+            {
+                downArrowObject.enabled = scrollIndex < (itemsCount - maxItems);
+            }
+        }
+
+        void ProcessSelectionChangedContext(CursorSelectionChangeContext context, int index)
+        {
+            //don't allow moving if scrolling anim is still ongoing
+            if (scrollTimeCurve.IsStartedNotElapsed())
+            {
+                context.AllowSelection = false;
+                return;
+            }
+            
+            //move cursor to first/last element position if overflowing
+            if (index == 0 && scrollIndex > 0)
+            {
+                //overflow from bottom to top
+                context.OverridePosition = true;
+                context.OverriddenPosition = firstListPos;
+                return;
+            }
+            if (index == itemsCount - 1 && scrollIndex == 0)
+            {
+                //overflow from top to bottom
+                context.OverridePosition = true;
+                context.OverriddenPosition = lastListPos;
+                return;
+            }
+            
+            //do not move cursor if we scroll from the interior
+            if (index >= scrollIndex + maxItems || index < scrollIndex)
+            {
+                context.MoveCursor = false;
+            }
         }
 
         public virtual void OpenMenu()

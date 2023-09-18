@@ -48,12 +48,28 @@ namespace PMR
         protected TValueType startValue;
         protected TValueType endValue;
 
+        protected bool valuesSet;
+
         protected ScriptedTimeCurve(TimeCurveData data) : base(data) {}
 
         public void SetValues(TValueType startValue, TValueType endValue)
         {
             this.startValue = startValue;
             this.endValue = endValue;
+            valuesSet = true;
+        }
+        
+        public void StartFromEnd(TValueType endValue)
+        {
+            if (valuesSet)
+            {
+                SetValues(this.endValue, endValue);
+            }
+            else
+            {
+                SetValues(endValue, endValue);
+            }
+            Start();
         }
         
         public TValueType Value()
