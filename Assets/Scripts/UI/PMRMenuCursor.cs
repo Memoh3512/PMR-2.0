@@ -48,12 +48,11 @@ namespace PMR
 
         [FormerlySerializedAs("OnSelectItem")] [SerializeField] private UnityEvent onSelectItem;
         [FormerlySerializedAs("OnSelectionChanged")] [SerializeField] private UnityEvent onSelectionChanged;
-        [SerializeField] private UnityEvent<CursorSelectionChangeContext> OnTrySelectionChanged; //Use to change the selection changed parameters depending on the case. Example: not animating when having to scroll menu
         [SerializeField] private ScriptedTimeCurveVector2 positionCurve;
 
         public void Init(PMRSelectable initialSelectedItem)
         {
-            ChangeSelection(initialSelectedItem, false);
+            ChangeSelection(initialSelectedItem);
         }
 
         // Update is called once per frame
@@ -62,7 +61,7 @@ namespace PMR
             if (selectedItem is null) return;
             
             //anim
-            if (positionCurve.IsStartedNotElapsed())
+            if (positionCurve.IsStarted())
             {
                 transform.position = positionCurve.Value();
             } 
@@ -106,9 +105,9 @@ namespace PMR
             }
             else
             {
-                newPosition = newItem.transform.position + (Vector3)newItem.cursorOffset;
+                newPosition = (Vector2)newItem.transform.position + newItem.cursorOffset;
             }
-            
+
             if (context.Animate == false || positionCurve == null || selectedItem == null)
             {
                 transform.position = newPosition;
@@ -120,12 +119,13 @@ namespace PMR
             }
         }
 
-        void ChangeSelection(PMRSelectable newItem, bool sendChangedEvent = true)
+        void ChangeSelection(PMRSelectable newItem)
         {
             if (newItem == selectedItem || newItem is null) return;
 
+            //send the context to the selectable so it can set the params
             CursorSelectionChangeContext context = new CursorSelectionChangeContext();
-            OnTrySelectionChanged.Invoke(context);
+            newItem.OnTryEnter(context);
 
             if (context.MoveCursor)
             {
@@ -137,7 +137,7 @@ namespace PMR
             selectedItem = newItem;
             selectedItem.OnEnter();
             
-            if (sendChangedEvent && context.CallSelectionChanged) onSelectionChanged.Invoke();
+            if (context.CallSelectionChanged) onSelectionChanged.Invoke();
         }
     }
 }

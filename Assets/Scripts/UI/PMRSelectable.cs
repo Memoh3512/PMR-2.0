@@ -17,6 +17,8 @@ namespace PMR
         public UnityEvent OnCursorEnter;
         public UnityEvent OnCursorExit;
         public UnityEvent OnSelect;
+        public UnityEvent<CursorSelectionChangeContext> OnTryCursorEnter; //Use to change the selection changed parameters depending on the case. Example: not animating when having to scroll menu
+
 
         public void Select()
         {
@@ -26,6 +28,11 @@ namespace PMR
         public void OnEnter()
         {
             OnCursorEnter.Invoke();
+        }
+
+        public void OnTryEnter(CursorSelectionChangeContext context)
+        {
+            OnTryCursorEnter.Invoke(context);
         }
 
         public void OnExit()

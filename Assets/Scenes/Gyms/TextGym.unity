@@ -383,6 +383,9 @@ MonoBehaviour:
   titleColor: {r: 0.34117648, g: 0.40000004, b: 0.6666667, a: 1}
   verticalPadding: 0
   itemSpacing: 10
+  maxItems: 6
+  scrollTimeCurve:
+    data: {fileID: 11400000, guid: 2d827290be2313549a944f71c564fe5a, type: 2}
   titleText: Items
   OnItemSelected:
     m_PersistentCalls:
