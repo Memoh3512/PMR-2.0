@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace PMR
 {
-    [CreateAssetMenu(fileName = "MyIntTimeCurve", menuName = "PMR/TimeCurves/Vector2")]
+    [Serializable]
     public class ValueTimeCurveVector2 : ValueTimeCurve<Vector2>
     {
+        public ValueTimeCurveVector2(TimeCurveData data) : base(data) {}
+
         protected override Vector2 EvaluateValue(float delta)
         {
             return Vector2.Lerp(startValue, endValue, delta);

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20cf6e2adee44326a421daf6f0199ae6, type: 3}
+  m_Script: {fileID: 11500000, guid: ef9c93211f3844caba5e5a50518bc87a, type: 3}
   m_Name: MenuCursorCurve
   m_EditorClassIdentifier: 
   curveToFollow:
@@ -36,4 +36,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  time: 0.5
+  duration: 0.3

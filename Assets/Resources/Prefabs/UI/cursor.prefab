@@ -86,7 +86,8 @@ MonoBehaviour:
   onSelectionChanged:
     m_PersistentCalls:
       m_Calls: []
-  positionCurve: {fileID: 11400000, guid: 64aed5b9901614f42b3f5a47e5d45775, type: 2}
+  positionCurve:
+    data: {fileID: 11400000, guid: 362907d65c6c55545bf1ba08549a8025, type: 2}
 --- !u!1 &9162001519677108272
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +100,7 @@ GameObject:
   - component: {fileID: 7180902813099568331}
   - component: {fileID: 8906841639148584578}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: CursorSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

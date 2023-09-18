@@ -2,22 +2,26 @@ using System;
 using UnityEngine;
 
 namespace PMR
-{    
+{
     [Serializable]
-    public class TimeCurve: ScriptableObject
-    {
-        [field: SerializeField] private AnimationCurve curveToFollow;
-        [field: SerializeField] private float time;
+    public class TimeCurve
+    { 
+        [field: SerializeField] private TimeCurveData data;
         
         private float startTime;
+        
+        public TimeCurve(TimeCurveData data)
+        {
+            this.data = data;
+        }
         
         //Returns the value of the curve at the current time fraction
         public float EvaluateCurve()
         {
             float deltaTime = Time.realtimeSinceStartup - startTime;
-            float timeFraction = deltaTime / time;
+            float timeFraction = deltaTime / data.GetDuration();
             
-            return curveToFollow.Evaluate(timeFraction);
+            return data.GetCurve().Evaluate(timeFraction);
         }
         
         public void Start(/*MonoBehaviour owner*/)
@@ -31,19 +35,20 @@ namespace PMR
             startTime = Time.realtimeSinceStartup;
         }
 
-        public bool IsElapsed() => (Time.realtimeSinceStartup - startTime) >= time;
-
+        public bool IsElapsed() => (Time.realtimeSinceStartup - startTime) >= data.GetDuration();
         public bool IsStarted() => startTime != 0;
-
         public bool IsStartedNotElapsed() => IsStarted() && !IsElapsed();
-
         public void Stop() => startTime = 0;
+        public void Reset() => Stop();
     }
 
+    [Serializable]
     public abstract class ScriptedTimeCurve<TValueType> : TimeCurve
     {
         protected TValueType startValue;
         protected TValueType endValue;
+
+        protected ScriptedTimeCurve(TimeCurveData data) : base(data) {}
 
         public void SetValues(TValueType startValue, TValueType endValue)
         {
@@ -64,6 +69,8 @@ namespace PMR
         [field: SerializeField] protected TValueType startValue;
         [field: SerializeField] protected TValueType endValue;
         
+        protected ValueTimeCurve(TimeCurveData data) : base(data) {}
+
         public TValueType Value()
         {
             return EvaluateValue(EvaluateCurve());

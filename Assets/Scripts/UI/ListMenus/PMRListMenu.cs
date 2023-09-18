@@ -30,6 +30,9 @@ namespace PMR
         [SerializeField] private float verticalPadding;
         [SerializeField] private float itemSpacing;
 
+        [Header("Scroll")] 
+        [SerializeField] private ScriptedTimeCurveVector3 scrollTimeCurve;
+
         [Header("Content")]
         [SerializeField] private string titleText;
         private string tooltipText;
