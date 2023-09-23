@@ -46,6 +46,8 @@ namespace PMR
         protected int itemsCount;
         
         [Header("Events")]
+        public UnityEvent OnMenuOpened;
+        public UnityEvent OnMenuClosed;
         public UnityEvent<ListItemType> OnItemSelected;
         public UnityEvent<ListItemType, int> OnItemHovered;
         
@@ -226,14 +228,18 @@ namespace PMR
 
         public virtual void OpenMenu()
         {
-            //TODO Anim and select first item
+            OnMenuOpened.Invoke();
         }
 
         public void CloseMenu()
         {
-            //TODO Anim or maybe event
+            OnMenuClosed.Invoke();
 
             OnItemSelected = null;
+        }
+
+        public void DestroyMenu()
+        {
             Destroy(gameObject);
         }
     }

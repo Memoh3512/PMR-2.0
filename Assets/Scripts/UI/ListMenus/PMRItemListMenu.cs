@@ -20,6 +20,8 @@ namespace PMR
                 CloseMenu();
                 Debug.Log($"Use {item.itemName}!");
             });
+            
+            OpenMenu();
         }
     }
 }

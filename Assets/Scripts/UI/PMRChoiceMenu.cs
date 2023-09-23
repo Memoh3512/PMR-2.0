@@ -103,9 +103,13 @@ namespace PMR
 
         public void CloseMenu()
         {
-            //TODO Anim or maybe event
 
             OnChoiceTaken = null;
+            DestroyMenu();
+        }
+
+        public void DestroyMenu()
+        {
             Destroy(gameObject);
         }
     }

@@ -252,10 +252,11 @@ GameObject:
   - component: {fileID: 326017130}
   - component: {fileID: 326017129}
   - component: {fileID: 326017128}
+  - component: {fileID: 326017134}
   - component: {fileID: 326017132}
   - component: {fileID: 326017133}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ItemMenuCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -387,6 +388,36 @@ MonoBehaviour:
   scrollTimeCurve:
     data: {fileID: 11400000, guid: 2d827290be2313549a944f71c564fe5a, type: 2}
   titleText: Items
+  OnMenuOpened:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 326017134}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Open
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMenuClosed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 326017134}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Close
+          m_BoolArgument: 0
+        m_CallState: 2
   OnItemSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -414,6 +445,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f2836d991c3fc24cb91963c38a94b15, type: 2}
   - {fileID: 11400000, guid: 6f2836d991c3fc24cb91963c38a94b15, type: 2}
   - {fileID: 11400000, guid: 6f2836d991c3fc24cb91963c38a94b15, type: 2}
+--- !u!95 &326017134
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326017127}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc15bd2d30597f241a5ff9698441bf26, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &422401342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,6 +1310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1216522285}
   - component: {fileID: 1216522284}
+  - component: {fileID: 1216522286}
   m_Layer: 0
   m_Name: DialoguePlayer
   m_TagString: Untagged
@@ -1311,6 +1363,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1216522286
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216522283}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1227455450
 GameObject:
   m_ObjectHideFlags: 0
