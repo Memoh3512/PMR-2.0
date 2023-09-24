@@ -12,6 +12,8 @@ namespace PMR
 
         [SerializeField] private bool spawnCursorOnStart = true;
 
+        private PMRMenuCursor cursorInstance;
+
         private void Start()
         {
             if (spawnCursorOnStart)
@@ -24,17 +26,39 @@ namespace PMR
         {
             GameObject cursorPrefab = PMRSettings.menuSettings.DefaultMenuCursor;
 
-            GameObject cursorInstance = Instantiate(cursorPrefab, cursorParent == null ? transform : cursorParent);
+            GameObject newCursorInstance = Instantiate(cursorPrefab, cursorParent == null ? transform : cursorParent);
 
-            PMRMenuCursor cursorComponent = cursorInstance.GetComponent<PMRMenuCursor>();
+            cursorInstance = newCursorInstance.GetComponent<PMRMenuCursor>();
 
-            if (cursorComponent is null)
+            if (cursorInstance is null)
             {
                 Debug.LogError($"Trying to instantiate menu cursor prefab that has no cursor component! {cursorPrefab.name}");
                 return;
             }
             
-            cursorComponent.Init(selectedItem);
+            cursorInstance.Init(selectedItem);
+        }
+
+        //use primarily to change selection scope for menus with multiple scopes. Leave newParent null to not change it
+        public void SelectItem(PMRSelectable item)
+        {
+            if (item == null)
+            {
+                Debug.LogError("menu cursor trying to select a null item! Please verify your use of PMRCursorMenu.SelectItem.");
+            }
+
+            if (cursorInstance != null)
+            {
+                cursorInstance.ChangeSelection(item);
+            }
+        }
+
+        public void SetCursorParent(Transform newParent)
+        {
+            if (cursorInstance != null && newParent != null)
+            {
+                cursorInstance.transform.SetParent(newParent.transform, false);
+            }
         }
     }
 }

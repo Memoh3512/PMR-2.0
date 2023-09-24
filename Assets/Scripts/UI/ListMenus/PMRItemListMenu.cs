@@ -13,6 +13,7 @@ namespace PMR
         
         private void Start()
         {
+            //Example of how to start list item menu
             SetTooltipText("Throw away which one?");
             InitializeListMenu(testListItem);
             OnItemSelected.AddListener((item) =>

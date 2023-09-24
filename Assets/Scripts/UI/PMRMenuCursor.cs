@@ -112,7 +112,7 @@ namespace PMR
             }
             else
             {
-                newPosition = (Vector2)newItem.transform.position + newItem.cursorOffset;
+                newPosition = (Vector2)newItem.transform.localPosition + newItem.cursorOffset;
             }
 
             if (context.Animate == false || positionCurve == null || selectedItem == null)
@@ -126,7 +126,7 @@ namespace PMR
             }
         }
 
-        void ChangeSelection(PMRSelectable newItem)
+        public void ChangeSelection(PMRSelectable newItem)
         {
             if (newItem == selectedItem || newItem is null) return;
 

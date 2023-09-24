@@ -16,6 +16,22 @@ namespace PMR
             }
         }
         
+        public void SetDescriptionText(string newText)
+        {
+            if (text != null)
+            {
+                text.text = newText;
+            }
+        }
+        
+        public void SetDescriptionText(PMRDescriptionItem descriptionItem)
+        {
+            if (text != null)
+            {
+                text.text = descriptionItem.GetDescriptionText();
+            }
+        }
+        
         //TODO Handle scrolling with buttons
     }
 }
