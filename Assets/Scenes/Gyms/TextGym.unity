@@ -563,8 +563,8 @@ RectTransform:
   - {fileID: 1371663076}
   - {fileID: 1706193793}
   - {fileID: 791762844}
-  m_Father: {fileID: 1702320108}
-  m_RootOrder: 2
+  m_Father: {fileID: 1240295861}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1475,6 +1475,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1702320108}
+  - {fileID: 544429249}
   - {fileID: 1607436633}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -3733,7 +3734,7 @@ RectTransform:
   - {fileID: 1077785061}
   - {fileID: 118515053}
   - {fileID: 526561263}
-  m_Father: {fileID: 1702320108}
+  m_Father: {fileID: 121461138}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4797,6 +4798,30 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1702320110}
+        m_TargetAssemblyTypeName: PMR.PMRMainMenuTabSwitcher, Assembly-CSharp
+        m_MethodName: SetNextTab
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2057310644}
+          m_ObjectArgumentAssemblyTypeName: PMR.PMRMainMenuTab, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1702320111}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Switch
           m_BoolArgument: 0
         m_CallState: 2
   OnCursorExit:
@@ -6757,6 +6782,66 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!1 &1240295860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1240295861}
+  - component: {fileID: 1240295862}
+  m_Layer: 5
+  m_Name: StatsTab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1240295861
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240295860}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 33955131}
+  - {fileID: 1800280479}
+  m_Father: {fileID: 1702320108}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1240295862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240295860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc405895c96d85a47aa01e1e49a50581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundColor1: {r: 0.82745105, g: 0.7843138, b: 0.6627451, a: 1}
+  backgroundColor2: {r: 0.77647066, g: 0.7058824, b: 0.53333336, a: 1}
+  tabContentRoot: {fileID: 1240295860}
+  OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1244297872
 GameObject:
   m_ObjectHideFlags: 0
@@ -7384,6 +7469,30 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1702320110}
+        m_TargetAssemblyTypeName: PMR.PMRMainMenuTabSwitcher, Assembly-CSharp
+        m_MethodName: SetNextTab
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1240295862}
+          m_ObjectArgumentAssemblyTypeName: PMR.PMRMainMenuTab, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1702320111}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Switch
           m_BoolArgument: 0
         m_CallState: 2
   OnCursorExit:
@@ -8066,7 +8175,7 @@ PrefabInstance:
     - target: {fileID: 6012762104022858547, guid: f0ccff133ed427945b2cfd1005e6e42f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6012762104022858547, guid: f0ccff133ed427945b2cfd1005e6e42f,
         type: 3}
@@ -8285,6 +8394,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1702320108}
   - component: {fileID: 1702320109}
+  - component: {fileID: 1702320111}
+  - component: {fileID: 1702320110}
   m_Layer: 5
   m_Name: MenuParent
   m_TagString: Untagged
@@ -8305,9 +8416,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 237396610}
-  - {fileID: 544429249}
-  - {fileID: 33955131}
-  - {fileID: 1800280479}
+  - {fileID: 1240295861}
+  - {fileID: 2057310643}
   m_Father: {fileID: 121461138}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8329,8 +8439,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSelectedItem: {fileID: 1389344447}
-  cursorParent: {fileID: 1702320108}
+  cursorParent: {fileID: 121461138}
   spawnCursorOnStart: 1
+--- !u!114 &1702320110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702320107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c353d60a7d6584dafcd18c3c561db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkerImage1: {fileID: 237396611}
+  checkerImage2: {fileID: 823948458}
+  OnTabSwitch:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!95 &1702320111
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702320107}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ad728e5e900abcf44a270b48c7c7f0c6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1706193792
 GameObject:
   m_ObjectHideFlags: 0
@@ -8576,8 +8723,8 @@ RectTransform:
   - {fileID: 1477057795}
   - {fileID: 35061158}
   - {fileID: 1307625681}
-  m_Father: {fileID: 1702320108}
-  m_RootOrder: 3
+  m_Father: {fileID: 1240295861}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9066,3 +9213,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022966925}
   m_CullTransparentMesh: 1
+--- !u!1 &2057310642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057310643}
+  - component: {fileID: 2057310644}
+  m_Layer: 5
+  m_Name: BadgesTab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2057310643
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057310642}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1702320108}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2057310644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057310642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc405895c96d85a47aa01e1e49a50581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundColor1: {r: 0.9333334, g: 0.48627454, b: 0.2901961, a: 1}
+  backgroundColor2: {r: 0.8862746, g: 0.42352945, b: 0.10980393, a: 1}
+  tabContentRoot: {fileID: 2057310642}
+  OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
